@@ -1,0 +1,25 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+}
+
+div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-space);
+}
+
+section {
+  background: linear-gradient(var(--gradient-angle), var(--mainer) 33%, var(--mainest));
+  border-radius: var(--md-rounded-radius);
+  padding: var(--md-space);
+  box-shadow: var(--shadow);
+}

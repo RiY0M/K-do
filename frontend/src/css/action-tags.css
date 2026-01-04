@@ -1,0 +1,52 @@
+:is(a, .link, .action) {
+  color: var(--action);
+  text-decoration: inherit;
+  cursor: pointer;
+  transition: color var(--sm-speed);
+}
+
+:is(a, .link, .action):hover {
+  color: var(--action-hover);
+}
+
+input, textarea {
+  background-color: var(--input-bg);
+  border-radius: var(--sm-rounded-radius);
+  width: 100%;
+}
+
+input:not([type="checkbox"], [type="radio"]) {
+  padding: var(--xs-space) var(--sm-space);
+}
+
+input:is([type="checkbox"], [type="radio"]) {
+  width: initial;
+  cursor: pointer;
+  accent-color: var(--action);
+}
+
+textarea {
+  padding: var(--sm-space);
+}
+
+button {
+  border-radius: var(--md-rounded-radius);
+  padding: var(--sm-space) var(--md-space);
+  cursor: pointer;
+  background: linear-gradient(var(--gradient-angle), var(--mainest) 67%, var(--mainer)) border-box;
+  text-align: center;
+}
+
+:is(input, textarea, button) {
+  display: block;
+  outline: none;
+  border: var(--sm-size) solid transparent;
+  background-clip: border-box;
+  box-shadow: var(--shadow);
+  transition: border-color var(--sm-speed), box-shadow var(--sm-speed);
+}
+
+:is(input, textarea, button):is(:hover, :focus, :focus-visible) {
+  box-shadow: var(--shadow-size) var(--action-hover);
+  border-color: var(--action-hover);
+}

@@ -1,0 +1,116 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  color: var(--color);
+  background-color: var(--main);
+
+  --sm-rounded-radius: 5px;
+  --md-rounded-radius: 10px;
+  --lg-rounded-radius: 20px;
+
+  --sm-size: .075rem;
+
+  --sm-speed: .25s ease-in-out;
+  --md-speed: .5s ease-in-out;
+  --lg-speed: 1s ease-in-out;
+
+  --shadow-size: 0 0 var(--sm-size) var(--sm-size);
+  --shadow: var(--shadow-size) var(--shadow-color);
+
+  --gradient-angle: 145deg;
+
+  --xs-space: .25rem;
+  --sm-space: .5rem;
+  --md-space: 1rem;
+  --lg-space: 2rem;
+  --xl-space: 4rem;
+
+  --mobile-width: 480px;
+  --tablet-width: 768px;
+  --tablet-landscape-width: 1024px;
+  --laptop-width: 1600px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color: #ffffffde;
+    --important: #f87171;
+    --input-bg: #3b3b3b;
+    --main: #242424;
+    --mainer: #1c1c1c;
+    --mainest: #141414;
+    --shadow-color: #ffffff03;
+    --action: #7077ff;
+    --action-hover: #3e47f7;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color: #213547;
+    --important: #f87171;
+    --input-bg: #fff;
+    --main: #f9f9f9;
+    --mainer: #ededed;
+    --mainest: #e0e0e0;
+    --shadow-color: #fffffffc;
+    --action: #1cbafd;
+    --action-hover: #747bff;
+  }
+}
+
+/* Small mobile display */
+@media only screen and (max-width: 319px) {
+  :root {
+    --current-display: small-mobile;
+    --behaviour-display: portrait;
+  }
+}
+/* Mobile display */
+@media only screen and (min-width: 320px) and (max-width: 480px) {
+  :root {
+    --current-display: mobile;
+    --behaviour-display: portrait;
+  }
+}
+
+/* Tablet portrait display */
+@media only screen and (min-width: 481px) and (max-width: 768px) and (orientation: portrait) {
+  :root {
+    --current-display: tablet-portrait;
+    --behaviour-display: portrait;
+  }
+}
+
+/* Tablet landscape display */
+@media only screen and (min-width: 769px) and (max-width: 1024px) and (orientation: landscape) {
+  :root {
+    --current-display: tablet-landscape;
+    --behaviour-display: landscape;
+  }
+}
+
+/* Laptop display */
+@media only screen and (min-width: 1025px) and (max-width: 1600px) {
+  :root {
+    --current-display: laptop;
+    --behaviour-display: landscape;
+  }
+}
+
+/* Desktop display */
+@media only screen and (min-width: 1601px) {
+  :root {
+    --current-display: desktop;
+    --behaviour-display: landscape;
+  }
+}

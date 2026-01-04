@@ -1,0 +1,103 @@
+generator client {
+    provider = "prisma-client-ts"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id           String   @id @default(uuid())
+    username     String   @unique
+    email        String?  @unique
+    passwordHash String
+    picture      Bytes?
+    description  String?
+    lastSave     DateTime
+
+    createdAt  DateTime    @default(now())
+    updatedAt  DateTime    @updatedAt
+    deletedAt  DateTime?
+    groups     Group[]
+    userGroups UserGroup[]
+    kdos       KDo[]
+    userKDos   UserKDo[]
+
+    @@map("users")
+}
+
+model Group {
+    id          String  @id @default(uuid())
+    description String?
+    authorId    String
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    deletedAt DateTime?
+
+    user       User        @relation(fields: [authorId], references: [id])
+    userGroups UserGroup[]
+    groupKDos  GroupKDo[]
+
+    @@map("groups")
+}
+
+model UserGroup {
+    id      String @id @default(uuid())
+    userId  String
+    groupId String
+
+    user  User  @relation(fields: [userId], references: [id])
+    group Group @relation(fields: [groupId], references: [id])
+
+    @@map("users_groups")
+}
+
+model KDo {
+    id        String  @id @default(uuid())
+    label     String
+    authorId  String
+    isChecked Boolean @default(false) // Is checked by author, not by other poeple
+    position  Int
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    deletedAt DateTime?
+
+    user      User       @relation(fields: [authorId], references: [id])
+    userKDos  UserKDo[]
+    groupKDos GroupKDo[]
+    links     Link[]
+
+    @@map("k_dos")
+}
+
+model UserKDo {
+    id     String @id @default(uuid())
+    userId String
+    kDoId  String
+
+    user User @relation(fields: [userId], references: [id])
+    kDo  KDo  @relation(fields: [kDoId], references: [id])
+
+    @@map("users_k_dos")
+}
+
+model GroupKDo {
+    id      String @id @default(uuid())
+    groupId String
+    kDoId   String
+
+    group Group @relation(fields: [groupId], references: [id])
+    kDo   KDo   @relation(fields: [kDoId], references: [id])
+
+    @@map("groups_k_dos")
+}
+
+model Link {
+    kDoId String
+    href  String
+
+    kDo KDo @relation(fields: [kDoId], references: [id])
+}
