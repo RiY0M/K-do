@@ -1,13 +1,21 @@
-import { useState } from "react";
 import { CSS } from "../services/utils";
 import CheckLine from "./CheckLine";
 import AddInput from "./inputs/AddInput";
+import { Item } from "../interfaces/item";
+import { createItem } from "../services/items";
 
-export default function UnCheckedList() {
-  const [items, setItems] = useState<number[]>([0, 1, 2]);
+interface Props {
+  items: Item[];
+}
 
-  const handleAddInput = () => {
-    setItems(prev => [...prev, prev.length]);
+export default function UnCheckedList({
+  items
+}: Readonly<Props>) {
+
+  const handleAddInput = async () => {
+    const newItem = await createItem();
+
+    // setItems(prev => [...prev, newItem]);
   };
 
   const styles: CSS = {
@@ -18,11 +26,10 @@ export default function UnCheckedList() {
 
   return (
     <div style={styles.div}>
-      {items.map((id) => (
+      {items.map((item) => (
         <CheckLine
-          key={id}
-          name={`nb-${id}`}
-          value="Placeholder"
+          key={item.id}
+          item={item}
         />
       ))}
 

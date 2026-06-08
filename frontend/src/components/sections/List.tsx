@@ -1,30 +1,31 @@
-import { useState } from "react";
-import TypingInput from "../inputs/TypingInput";
 import CheckedList from "../CheckedList";
 import UnCheckedList from "../UnCheckedList";
+import Description from "../Description";
+import { getCheckedItems, getUncheckedItems } from "../../services/items";
+import { useEffect, useState } from "react";
+import { Item } from "../../interfaces/item";
 
 export default function List() {
-	const [description, setDescription] = useState<string>("");
 
-	const checkedElements = true;
+	const [unCheckedItems, setUnCheckedItems] = useState<Item[]>([]);
+	const [checkedItems, setCheckedItems] = useState<Item[]>([]);
+
+	useEffect(() => {
+		getUncheckedItems().then(setUnCheckedItems);
+		getCheckedItems().then(setCheckedItems);
+	}, []);
 
 	return (
 		<section>
 			<div>
 				<h1>Liste</h1>
 
-				<TypingInput
-					label="Autres commentaires"
-					name="description"
-					type="textarea"
-					value={description}
-					setValue={setDescription}
-				/>
+				<Description />
 
-				<UnCheckedList />
+				<UnCheckedList items={unCheckedItems} />
 
-				{checkedElements &&
-					<CheckedList />
+				{checkedItems &&
+					<CheckedList items={checkedItems} />
 				}
 			</div>
 		</section>

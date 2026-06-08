@@ -4,9 +4,10 @@ import { CSS } from "../../services/utils";
 interface Props {
   children: ReactNode;
   onClick: MouseEventHandler<HTMLButtonElement>;
+  visibility?: string;
 }
 
-export default function NoStyleButton({ children, onClick }: Readonly<Props>) {
+export default function NoStyleButton({ children, onClick, visibility = "visible" }: Readonly<Props>) {
 
   const styles: CSS = {
     button: {
@@ -15,6 +16,7 @@ export default function NoStyleButton({ children, onClick }: Readonly<Props>) {
       boxShadow: "none",
       border: "none",
       textAlign: "left",
+      visibility: visibility
     },
   }
 

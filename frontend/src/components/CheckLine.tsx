@@ -1,29 +1,41 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CSS } from "../services/utils";
 import NoStyleButton from "./buttons/NoStyleButton";
 import XMark from "../assets/svgs/XMark";
 import Checkbox from "./inputs/Checkbox";
 import NoStyleTypingInput from "./inputs/NoStyleTypingInput";
 import LinkIcon from "../assets/svgs/LinkIcon";
+import { Item } from "../interfaces/item";
+import { deleteItem, updateItem } from "../services/items";
 
 interface Props {
-  name: string;
-  value: string;
-  checked?: boolean
-  canDelete?: boolean;
+  item: Item;
+  canEdit?: boolean;
+  onDelete?: (id: number) => {};
 }
 
 export default function CheckLine({
-  name,
-  value,
-  checked = false,
-  canDelete = true,
+  item,
+  canEdit = true,
+  onDelete,
 }: Readonly<Props>) {
-  const [check, setCheck] = useState(checked);
-  const [text, setText] = useState<string>(value);
+  const [check, setCheck] = useState(item?.isChecked ?? false);
+  const [text, setText] = useState<string>(item?.value);
+  const [isFocused, setIsFocused] = useState(false);
+  const timeout = useRef<number>(0);
+
+  const updateText = (newText: string) => {
+    setText(newText);
+    clearTimeout(timeout.current);
+
+    timeout.current = setTimeout(() => {
+      updateItem(item.id, { ...item, value: newText });
+    }, 500);
+  }
 
   const handleDelete = () => {
-    console.log("delete")
+    deleteItem(item.id);
+    onDelete!(item.id);
   }
 
   const handleLink = () => {
@@ -45,19 +57,25 @@ export default function CheckLine({
   // TODO: Use IconInlineText
   return (
     <div style={styles.div}>
-      <Checkbox name={`check-${name}`} checked={check} setChecked={setCheck} />
+      <Checkbox name={`check-${item?.id}`} checked={check} setChecked={setCheck} />
       <span style={styles.input}>
-        <NoStyleTypingInput name={name} value={text} setValue={setText} />
+        <NoStyleTypingInput
+          name={`value-${item?.id}`}
+          value={text}
+          setValue={canEdit ? updateText : () => { }}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+        />
       </span>
 
-      <NoStyleButton onClick={handleLink}>
-        <div><LinkIcon /></div>
-      </NoStyleButton>
-      {canDelete &&
-        <NoStyleButton onClick={handleDelete}>
+      {onDelete && canEdit &&
+        <NoStyleButton onClick={handleDelete} visibility={isFocused ? "visible" : "hidden"}>
           <div><XMark /></div>
         </NoStyleButton>
       }
+      <NoStyleButton onClick={handleLink}>
+        <div><LinkIcon /></div>
+      </NoStyleButton>
     </div>
   );
 }

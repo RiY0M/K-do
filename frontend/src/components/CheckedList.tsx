@@ -1,11 +1,15 @@
-import { useState } from "react";
 import { CSS } from "../services/utils";
 import FullAccordion from "./accordions/FullAccordion";
 import CheckLine from "./CheckLine";
+import { Item } from "../interfaces/item";
 
-export default function CheckedList() {
+interface Props {
+  items: Item[];
+}
 
-  const [items, setItems] = useState<number[]>([0, 1, 2]);
+export default function CheckedList({
+  items
+}: Readonly<Props>) {
 
   const styles: CSS = {
     div: {
@@ -16,12 +20,10 @@ export default function CheckedList() {
   return (
     <FullAccordion label="Éléments cochés" defaultOpening={true}>
       <div style={styles.div}>
-        {items.map((id) => (
+        {items.map((item) => (
           <CheckLine
-            key={id}
-            name={`nb-${id}`}
-            value="Placeholder"
-            checked
+            key={item.id}
+            item={item}
           />
         ))}
       </div>
