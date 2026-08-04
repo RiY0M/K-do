@@ -1,5 +1,4 @@
 import { useBehaviourDisplay } from "../../hooks/useBehaviourDisplay";
-import { useCurrentDisplay } from "../../hooks/useCurrentDisplay";
 import { Group } from "../../interfaces/group";
 import FullAccordion from "../accordions/FullAccordion";
 import GroupBody from "../groups/GroupBody";
@@ -13,9 +12,7 @@ export default function Groups({
 }: Readonly<Props>) {
 
 	const behaviourDisplay = useBehaviourDisplay();
-	const currentDisplay = useCurrentDisplay();
 	const behaviourLandscape = behaviourDisplay === "landscape";
-	console.log(behaviourDisplay, currentDisplay)
 
 	return (
 		<section>
