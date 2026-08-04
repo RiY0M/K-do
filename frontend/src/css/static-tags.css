@@ -2,6 +2,7 @@
   margin: 0;
   box-sizing: border-box;
   font-family: inherit;
+  font-size: var(--md-size);
 }
 
 body {
@@ -9,6 +10,10 @@ body {
   display: flex;
   flex-direction: column;
   place-items: center;
+}
+
+h1 {
+  font-size: var(--xl-size);
 }
 
 div {

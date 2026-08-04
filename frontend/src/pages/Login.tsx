@@ -1,5 +1,5 @@
 import { useState, FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigation } from "react-router-dom";
 import { login } from "../services/auth";
 import { CSS } from "../services/utils";
 import TypingInput from "../components/inputs/TypingInput";
@@ -9,6 +9,8 @@ export default function Register() {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // const navigation = useNavigation();
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -20,6 +22,8 @@ export default function Register() {
         name: email,
         password: password,
       });
+
+      // navigation.navigate("/", "/");
     } catch (err) {
       setError(`${err}`);
     } finally {
@@ -36,10 +40,10 @@ export default function Register() {
     },
     error: {
       color: "var(--important)",
-      fontSize: "0.9rem",
+      fontSize: "var(--sm-size)",
     },
     switch: {
-      fontSize: "0.9rem",
+      fontSize: "var(--sm-size)",
     },
   };
 

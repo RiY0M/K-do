@@ -1,10 +1,9 @@
-import List from "../components/sections/List";
-import Groups from "../components/sections/Groups";
+import GuestList from "../components/sections/GuestList";
 import { CSS } from "../services/utils";
 import { useBehaviourDisplay } from "../hooks/useBehaviourDisplay";
 import { Link } from "react-router-dom";
 
-export default function Home() {
+export default function GuestHome() {
 
   const behaviourDisplay = useBehaviourDisplay();
 
@@ -19,10 +18,9 @@ export default function Home() {
 
   return (
     <div style={styles.mainDiv}>
-      <Link to="/login">Déconnexion</Link>
+      <Link to="/">Accueil</Link>
       <div style={styles.subDiv}>
-        <Groups />
-        <List />
+        <GuestList />
       </div>
     </div>
   );

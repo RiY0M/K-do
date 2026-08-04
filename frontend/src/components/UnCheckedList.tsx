@@ -1,21 +1,24 @@
 import { CSS } from "../services/utils";
-import CheckLine from "./CheckLine";
+import TaggedCheckLine from "./TaggedCheckLine";
 import AddInput from "./inputs/AddInput";
 import { Item } from "../interfaces/item";
 import { createItem } from "../services/items";
+import { Dispatch, SetStateAction } from "react";
 
 interface Props {
   items: Item[];
+  setItems: Dispatch<SetStateAction<Item[]>>
 }
 
 export default function UnCheckedList({
-  items
+  items,
+  setItems,
 }: Readonly<Props>) {
 
   const handleAddInput = async () => {
     const newItem = await createItem();
 
-    // setItems(prev => [...prev, newItem]);
+    setItems([...items, newItem]);
   };
 
   const styles: CSS = {
@@ -27,7 +30,7 @@ export default function UnCheckedList({
   return (
     <div style={styles.div}>
       {items.map((item) => (
-        <CheckLine
+        <TaggedCheckLine
           key={item.id}
           item={item}
         />

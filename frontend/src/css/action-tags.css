@@ -40,13 +40,13 @@ button {
 :is(input, textarea, button) {
   display: block;
   outline: none;
-  border: var(--sm-size) solid transparent;
+  border: var(--shadow-size) solid transparent;
   background-clip: border-box;
   box-shadow: var(--shadow);
   transition: border-color var(--sm-speed), box-shadow var(--sm-speed);
 }
 
 :is(input, textarea, button):is(:hover, :focus, :focus-visible) {
-  box-shadow: var(--shadow-size) var(--action-hover);
+  box-shadow: var(--shadow-proportions) var(--action-hover);
   border-color: var(--action-hover);
 }

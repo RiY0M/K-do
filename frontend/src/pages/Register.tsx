@@ -38,10 +38,10 @@ export default function Register() {
     },
     error: {
       color: "var(--important)",
-      fontSize: "0.9rem",
+      fontSize: "var(--sm-size)",
     },
     switch: {
-      fontSize: "0.9rem",
+      fontSize: "var(--sm-size)",
     },
   };
 

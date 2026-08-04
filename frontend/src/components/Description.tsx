@@ -22,7 +22,7 @@ export default function Description({
 
   return (
     <TypingInput
-      label="Autres commentaires"
+      label="Commentaires"
       name="description"
       type="textarea"
       value={description}

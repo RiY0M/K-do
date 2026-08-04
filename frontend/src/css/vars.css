@@ -17,14 +17,18 @@
   --md-rounded-radius: 10px;
   --lg-rounded-radius: 20px;
 
-  --sm-size: .075rem;
-
+  --sm-size: .8rem;
+  --md-size: 1rem;
+  --lg-size: 1.3rem;
+  --xl-size: 1.7rem;
+  
   --sm-speed: .25s ease-in-out;
   --md-speed: .5s ease-in-out;
   --lg-speed: 1s ease-in-out;
-
-  --shadow-size: 0 0 var(--sm-size) var(--sm-size);
-  --shadow: var(--shadow-size) var(--shadow-color);
+  
+  --shadow-size: .075rem;
+  --shadow-proportions: 0 0 var(--shadow-size) var(--shadow-size);
+  --shadow: var(--shadow-proportions) var(--shadow-color);
 
   --gradient-angle: 145deg;
 
