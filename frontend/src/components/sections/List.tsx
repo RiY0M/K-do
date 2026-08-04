@@ -1,6 +1,6 @@
-import CheckedList from "../CheckedList";
-import UnCheckedList from "../UnCheckedList";
-import Description from "../Description";
+import CheckedList from "../list/CheckedList";
+import UnCheckedList from "../list/UnCheckedList";
+import Description from "../inputs/Description";
 import { getMyCheckedItems, getMyUncheckedItems } from "../../services/items";
 import { useEffect, useState } from "react";
 import { Item } from "../../interfaces/item";

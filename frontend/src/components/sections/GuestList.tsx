@@ -1,5 +1,5 @@
-import CheckedList from "../CheckedList";
-import UnCheckedList from "../UnCheckedList";
+import CheckedList from "../list/CheckedList";
+import UnCheckedList from "../list/UnCheckedList";
 import { getCheckedItemsByUserId, getUncheckedItemsByUserId } from "../../services/items";
 import { useEffect, useState } from "react";
 import { Item } from "../../interfaces/item";

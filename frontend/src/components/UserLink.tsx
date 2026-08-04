@@ -4,24 +4,20 @@ import { Link } from "react-router-dom";
 
 interface Props {
   user: User;
+  style?: CSS,
 }
 
-export default function TakeListItem({
+export default function UserLink({
   user,
+  style,
 }: Readonly<Props>) {
-
-  const styles: CSS = {
-    link: {
-      fontSize: "var(--sm-size)",
-    },
-  };
 
   return (
     user.isFriend ?
-      <Link style={styles.link} to={`/guest/${user.id}`}>
+      <Link style={style?.link} to={`/guest/${user.id}`}>
         {user.name}
       </Link>
       :
-      <span style={styles.link}>{user.name}</span>
+      <span style={style?.span}>{user.name}</span>
   );
 }

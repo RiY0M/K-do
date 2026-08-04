@@ -27,17 +27,15 @@ export default function IconInlineText({ leftIcon = "", children, rightIcon = ""
     line: {
       flexDirection: "row",
       gap: "var(--sm-space)",
-    },
-    icon: {
-      justifyContent: "end",
+      alignItems: "center",
     },
   }
 
   return (
     <div ref={lineRef} style={styles.line}>
-      {leftIcon && <div style={styles.icon}>{leftIcon}</div>}
+      {leftIcon}
       {children}
-      {rightIcon && <div style={styles.icon}>{rightIcon}</div>}
+      {rightIcon}
     </div>
   );
 }

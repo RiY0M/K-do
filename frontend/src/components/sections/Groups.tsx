@@ -1,38 +1,32 @@
 import { useBehaviourDisplay } from "../../hooks/useBehaviourDisplay";
+import { useCurrentDisplay } from "../../hooks/useCurrentDisplay";
+import { Group } from "../../interfaces/group";
 import FullAccordion from "../accordions/FullAccordion";
-import FullPreviewAccordion from "../accordions/FullPreviewAccordion";
+import GroupBody from "../groups/GroupBody";
 
-function GroupsBody() {
-	return (
-		<>
-			<FullPreviewAccordion
-				label="Famille"
-				preview={<span>Anton<br />Elouan<br />Papa</span>}
-			>
-				<div><span>Anton<br />Elouan<br />Papa<br />Maman<br />test</span></div>
-			</FullPreviewAccordion>
-
-			<FullPreviewAccordion
-				label="Potes"
-				preview={<span>test</span>}
-			>
-				<div>Contenu</div>
-			</FullPreviewAccordion></>
-	);
+interface Props {
+	groups: Group[];
 }
 
-export default function Groups() {
+export default function Groups({
+	groups,
+}: Readonly<Props>) {
 
 	const behaviourDisplay = useBehaviourDisplay();
+	const currentDisplay = useCurrentDisplay();
 	const behaviourLandscape = behaviourDisplay === "landscape";
+	console.log(behaviourDisplay, currentDisplay)
 
 	return (
 		<section>
 			{behaviourLandscape ?
-				<div><h1>Groupes</h1><GroupsBody /></div>
+				<div>
+					<h1>Groupes</h1>
+					{groups.map(group => <GroupBody key={group.id} group={group} />)}
+				</div>
 				:
-				<FullAccordion label={<h3>Groupes</h3>}>
-					<GroupsBody />
+				<FullAccordion label={<h1>Groupes</h1>}>
+					{groups.map(group => <GroupBody key={group.id} group={group} />)}
 				</FullAccordion>
 			}
 		</section>

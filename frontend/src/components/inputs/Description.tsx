@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import TypingInput from "./inputs/TypingInput";
+import TypingInput from "./TypingInput";
 
 interface Props {
   canEdit?: boolean;

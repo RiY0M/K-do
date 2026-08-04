@@ -1,8 +1,8 @@
-import { CSS } from "../services/utils";
+import { CSS } from "../../services/utils";
 import TaggedCheckLine from "./TaggedCheckLine";
-import AddInput from "./inputs/AddInput";
-import { Item } from "../interfaces/item";
-import { createItem } from "../services/items";
+import AddInput from "../inputs/AddInput";
+import { Item } from "../../interfaces/item";
+import { createItem } from "../../services/items";
 import { Dispatch, SetStateAction } from "react";
 
 interface Props {
@@ -36,7 +36,7 @@ export default function UnCheckedList({
         />
       ))}
 
-      <AddInput onClick={handleAddInput} />
+      <AddInput label="Ajouter pour tous" onClick={handleAddInput} />
     </div>
   );
 }

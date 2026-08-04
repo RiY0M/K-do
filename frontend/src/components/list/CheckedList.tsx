@@ -1,7 +1,7 @@
-import { CSS } from "../services/utils";
-import FullAccordion from "./accordions/FullAccordion";
+import { CSS } from "../../services/utils";
+import FullAccordion from "../accordions/FullAccordion";
 import CheckLine from "./CheckLine";
-import { Item } from "../interfaces/item";
+import { Item } from "../../interfaces/item";
 
 interface Props {
   items: Item[];

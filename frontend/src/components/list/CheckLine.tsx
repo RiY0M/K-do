@@ -1,12 +1,12 @@
 import { useRef, useState } from "react";
-import { CSS } from "../services/utils";
-import NoStyleButton from "./buttons/NoStyleButton";
-import XMark from "../assets/svgs/XMark";
-import Checkbox from "./inputs/Checkbox";
-import NoStyleTypingInput from "./inputs/NoStyleTypingInput";
-import LinkIcon from "../assets/svgs/LinkIcon";
-import { Item } from "../interfaces/item";
-import { deleteItem, updateItem } from "../services/items";
+import { CSS } from "../../services/utils";
+import NoStyleButton from "../buttons/NoStyleButton";
+import XMark from "../../assets/svgs/XMark";
+import Checkbox from "../inputs/Checkbox";
+import NoStyleTypingInput from "../inputs/NoStyleTypingInput";
+import LinkIcon from "../../assets/svgs/LinkIcon";
+import { Item } from "../../interfaces/item";
+import { deleteItem, updateItem } from "../../services/items";
 
 interface Props {
   item: Item;
@@ -58,15 +58,13 @@ export default function CheckLine({
   return (
     <div style={styles.div}>
       <Checkbox name={`check-${item?.id}`} checked={check} setChecked={setCheck} />
-      <span style={styles.input}>
-        <NoStyleTypingInput
-          name={`value-${item?.id}`}
-          value={text}
-          setValue={canEdit ? updateText : () => { }}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-        />
-      </span>
+      <NoStyleTypingInput
+        name={`value-${item?.id}`}
+        value={text}
+        setValue={canEdit ? updateText : () => { }}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+      />
 
       {onDelete && canEdit &&
         <NoStyleButton onClick={handleDelete} visibility={isFocused ? "visible" : "hidden"}>

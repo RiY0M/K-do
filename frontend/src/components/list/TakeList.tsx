@@ -1,5 +1,5 @@
-import { CSS } from "../services/utils";
-import { User } from "../interfaces/user";
+import { CSS } from "../../services/utils";
+import { User } from "../../interfaces/user";
 import TakeListItem from "./TakeListItem";
 
 interface Props {

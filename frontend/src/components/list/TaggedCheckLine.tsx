@@ -1,6 +1,6 @@
-import { CSS } from "../services/utils";
-import { Item } from "../interfaces/item";
-import { User } from "../interfaces/user";
+import { CSS } from "../../services/utils";
+import { Item } from "../../interfaces/item";
+import { User } from "../../interfaces/user";
 import TakeList from "./TakeList";
 import CheckLine from "./CheckLine";
 
@@ -24,7 +24,6 @@ export default function TaggedCheckLine({
     },
   };
 
-  // TODO: Use IconInlineText
   return (
     <div style={styles.div}>
       {users.length > 0 &&

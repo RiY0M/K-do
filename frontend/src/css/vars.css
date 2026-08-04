@@ -38,10 +38,11 @@
   --lg-space: 2rem;
   --xl-space: 4rem;
 
-  --mobile-width: 480px;
-  --tablet-width: 768px;
-  --tablet-landscape-width: 1024px;
-  --laptop-width: 1600px;
+  --small-mobile-max-width: 320px;
+  --mobile-max-width: 480px;
+  --tablet-portrait-max-width: 768px;
+  --tablet-landscape-max-width: 1024px;
+  --laptop-max-width: 1600px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -73,14 +74,17 @@
 }
 
 /* Small mobile display */
-@media only screen and (max-width: 319px) {
+/* @media only screen and (max-width: var(--small-mobile-max-width)) { */
+@media only screen and (max-width: 320px) {
   :root {
     --current-display: small-mobile;
     --behaviour-display: portrait;
   }
 }
+
 /* Mobile display */
-@media only screen and (min-width: 320px) and (max-width: 480px) {
+/* @media only screen and (min-width: calc(var(--small-mobile-max-width) + 1px)) and (max-width: var(--mobile-max-width)) { */
+@media only screen and (min-width: 321px) and (max-width: 480px) {
   :root {
     --current-display: mobile;
     --behaviour-display: portrait;
@@ -88,6 +92,7 @@
 }
 
 /* Tablet portrait display */
+/* @media only screen and (min-width: calc(var(--mobile-max-width) + 1px)) and (max-width: var(--tablet-portrait-max-width)) and (orientation: portrait) { */
 @media only screen and (min-width: 481px) and (max-width: 768px) and (orientation: portrait) {
   :root {
     --current-display: tablet-portrait;
@@ -96,6 +101,7 @@
 }
 
 /* Tablet landscape display */
+/* @media only screen and (min-width: calc(var(--tablet-portrait-max-width) + 1px)) and (max-width: var(--tablet-landscape-max-width)) and (orientation: landscape) { */
 @media only screen and (min-width: 769px) and (max-width: 1024px) and (orientation: landscape) {
   :root {
     --current-display: tablet-landscape;
@@ -104,6 +110,7 @@
 }
 
 /* Laptop display */
+/* @media only screen and (min-width: calc(var(--tablet-landscape-max-width) + 1px)) and (max-width: var(--laptop-max-width)) { */
 @media only screen and (min-width: 1025px) and (max-width: 1600px) {
   :root {
     --current-display: laptop;
@@ -112,6 +119,7 @@
 }
 
 /* Desktop display */
+/* @media only screen and (min-width: calc(var(--laptop-max-width) + 1px)) { */
 @media only screen and (min-width: 1601px) {
   :root {
     --current-display: desktop;
