@@ -10,6 +10,7 @@
 }
 
 input, textarea {
+  color: var(--color);
   background-color: var(--input-bg);
   border-radius: var(--sm-rounded-radius);
   width: 100%;

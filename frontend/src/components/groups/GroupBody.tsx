@@ -1,8 +1,10 @@
+import Plus from "../../assets/svgs/Plus";
 import { Group } from "../../interfaces/group";
 import { CSS } from "../../services/utils";
-import FullPreviewAccordion from "../accordions/FullPreviewAccordion";
-import AddInput from "../inputs/AddInput";
+import FullAccordion from "../accordions/FullAccordion";
+import IconInlineText from "../IconInlineText";
 import UserLink from "../UserLink";
+import MultiStateButton from "../buttons/MultiStateButton";
 
 interface Props {
   group: Group;
@@ -12,25 +14,32 @@ export default function GroupBody({
   group,
 }: Readonly<Props>) {
 
-  const handleAdd = () => { }
+  const handleAdd = async () => {
+    navigator.clipboard.writeText("http://localhost/invite/userId");
+  };
 
   const styles: CSS = {
     div: {
       gap: "var(--sm-space)",
-    }
+    },
   };
 
   return (
-    <FullPreviewAccordion
+    <FullAccordion
       label={group.label}
-      preview={""}
+      defaultOpening={true}
     >
       <div style={styles.div}>
-        <AddInput label="Inviter" onClick={handleAdd} />
-        {group.friends.map(friend =>
+        <MultiStateButton onClick={handleAdd} validatedLabel="Copié&nbsp;!">
+          <IconInlineText leftIcon={<Plus />}>
+            Inviter
+          </IconInlineText>
+        </MultiStateButton>
+
+        {group.friends.map((friend) => (
           <UserLink key={friend.id} user={friend} />
-        )}
+        ))}
       </div>
-    </FullPreviewAccordion>
+    </FullAccordion>
   );
 }

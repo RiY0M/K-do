@@ -6,10 +6,16 @@ import { CSS } from "../../services/utils";
 interface Props {
 	label: ReactNode;
 	defaultOpening?: boolean;
+	preview?: boolean;
 	children: ReactNode;
 }
 
-export default function FullAccordion({ label, defaultOpening = false, children }: Readonly<Props>) {
+export default function FullAccordion({
+	label,
+	defaultOpening = false,
+	preview = false,
+	children
+}: Readonly<Props>) {
 
 	const [open, setOpen] = useState(defaultOpening);
 
@@ -26,7 +32,7 @@ export default function FullAccordion({ label, defaultOpening = false, children 
 	return (
 		<div style={styles.div}>
 			<AccordionToggle label={label} open={open} setOpen={setOpen} />
-			<AccordionContent open={open}>{children}</AccordionContent>
+			<AccordionContent open={open} preview={preview}>{children}</AccordionContent>
 		</div>
 	);
 }

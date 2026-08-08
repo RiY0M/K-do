@@ -49,11 +49,12 @@
   :root {
     --color: #ffffffde;
     --important: #f87171;
+    --validate: green;
     --input-bg: #3b3b3b;
     --main: #242424;
     --mainer: #1c1c1c;
     --mainest: #141414;
-    --shadow-color: #ffffff03;
+    --shadow-color: #141414fc;
     --action: #7077ff;
     --action-hover: #3e47f7;
   }
@@ -63,11 +64,12 @@
   :root {
     --color: #213547;
     --important: #f87171;
+    --validate: green;
     --input-bg: #fff;
     --main: #f9f9f9;
     --mainer: #ededed;
     --mainest: #e0e0e0;
-    --shadow-color: #fffffffc;
+    --shadow-color: #e0e0e0fc;
     --action: #1cbafd;
     --action-hover: #747bff;
   }

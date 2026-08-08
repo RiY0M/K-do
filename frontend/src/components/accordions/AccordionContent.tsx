@@ -3,11 +3,12 @@ import { CSS } from "../../services/utils";
 
 interface Props {
 	open: boolean;
+	preview?: boolean;
 	children: ReactNode;
 }
 
-export default function AccordionContent({ open, children }: Readonly<Props>) {
-	const defaultHeight = 0;
+export default function AccordionContent({ open, preview = false, children }: Readonly<Props>) {
+	const defaultHeight = preview ? 15 : 0;
 	const ref = useRef<HTMLDivElement>(null);
 	const [height, setHeight] = useState(defaultHeight);
 
@@ -30,7 +31,7 @@ export default function AccordionContent({ open, children }: Readonly<Props>) {
 		container: {
 			paddingTop: "var(--sm-space)",
 			transition: "max-height var(--md-speed)",
-			overflow: "hidden",
+			overflow: open && !preview ? "visible clip" : "hidden",
 			maxHeight: open ? height : defaultHeight,
 		},
 	};

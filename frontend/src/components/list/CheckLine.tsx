@@ -7,6 +7,7 @@ import NoStyleTypingInput from "../inputs/NoStyleTypingInput";
 import LinkIcon from "../../assets/svgs/LinkIcon";
 import { Item } from "../../interfaces/item";
 import { deleteItem, updateItem } from "../../services/items";
+import IconInlineText from "../IconInlineText";
 
 interface Props {
   item: Item;
@@ -42,21 +43,8 @@ export default function CheckLine({
     console.log("open link modal")
   }
 
-  const styles: CSS = {
-    div: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: "var(--sm-space)",
-    },
-    input: {
-      width: "100%",
-      textDecoration: check ? "line-through" : "initial",
-    },
-  };
-
-  // TODO: Use IconInlineText
   return (
-    <div style={styles.div}>
+    <IconInlineText>
       <Checkbox name={`check-${item?.id}`} checked={check} setChecked={setCheck} />
       <NoStyleTypingInput
         name={`value-${item?.id}`}
@@ -68,12 +56,12 @@ export default function CheckLine({
 
       {onDelete && canEdit &&
         <NoStyleButton onClick={handleDelete} visibility={isFocused ? "visible" : "hidden"}>
-          <div><XMark /></div>
+          <XMark />
         </NoStyleButton>
       }
       <NoStyleButton onClick={handleLink}>
         <div><LinkIcon /></div>
       </NoStyleButton>
-    </div>
+    </IconInlineText>
   );
 }

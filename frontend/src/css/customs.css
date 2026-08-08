@@ -3,7 +3,7 @@
 }
 
 .action {
-  color: initial;
+  color: var(--color);
 }
 
 .important {
