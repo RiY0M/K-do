@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Group } from "../interfaces/group";
 import { getMyGroups } from "../services/groups";
+import { logout } from "../services/auth";
 
 export default function Home() {
 
@@ -28,7 +29,7 @@ export default function Home() {
 
   return (
     <div style={styles.mainDiv}>
-      <Link to="/login">Déconnexion</Link>
+      <Link to="/login" onClick={logout}>Déconnexion</Link>
       <div style={styles.subDiv}>
         <Groups groups={groups} />
         <ListDisplay />

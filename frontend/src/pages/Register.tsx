@@ -1,5 +1,5 @@
 import { useState, FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { register } from "../services/auth";
 import { CSS } from "../services/utils";
 import TypingInput from "../components/inputs/TypingInput";
@@ -11,17 +11,26 @@ export default function Register() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setError(null);
     setLoading(true);
 
     try {
-      await register({
+      const user = await register({
         name: name,
         email: email,
         password: password,
       });
+
+      if (!user) {
+        setError("Impossible de créer le compte");
+        return;
+      }
+
+      navigate("/");
     } catch (err) {
       setError(`${err}`);
     } finally {

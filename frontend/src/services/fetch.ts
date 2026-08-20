@@ -1,11 +1,18 @@
+import { getToken } from "./authStorage";
+
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
 type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 async function handleFetch(endpoint: string, method: Method, object: object = {}) {
     try {
+        const token = getToken();
+
         const res = await fetch(API_URL + endpoint, {
             method: method,
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
             ...object
         });
 

@@ -1,16 +1,16 @@
 import { useState, FormEvent } from "react";
-import { Link, useNavigation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { login } from "../services/auth";
 import { CSS } from "../services/utils";
 import TypingInput from "../components/inputs/TypingInput";
 
 export default function Register() {
-  const [email, setEmail] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // const navigation = useNavigation();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -18,12 +18,17 @@ export default function Register() {
     setLoading(true);
 
     try {
-      await login({
-        name: email,
+      const user = await login({
+        name: name,
         password: password,
       });
 
-      // navigation.navigate("/", "/");
+      if (!user) {
+        setError("Identifiants invalides");
+        return;
+      }
+
+      navigate("/");
     } catch (err) {
       setError(`${err}`);
     } finally {
@@ -53,13 +58,12 @@ export default function Register() {
         <h2>Connexion</h2>
 
         <TypingInput
-          label="E-mail"
-          name="email"
-          type="email"
-          placeholder="k-do@exemple.com"
+          label="Nom"
+          name="name"
+          type="text"
           required
-          value={email}
-          setValue={setEmail}
+          value={name}
+          setValue={setName}
         />
 
         <TypingInput
