@@ -3,22 +3,17 @@ import TaggedCheckLine from "./TaggedCheckLine";
 import AddInput from "../inputs/AddInput";
 import { Item } from "../../interfaces/item";
 import { createItem } from "../../services/items";
-import { Dispatch, SetStateAction } from "react";
 
 interface Props {
   items: Item[];
-  setItems: Dispatch<SetStateAction<Item[]>>
 }
 
 export default function UnCheckedList({
   items,
-  setItems,
 }: Readonly<Props>) {
 
   const handleAddInput = async () => {
-    const newItem = await createItem();
-
-    setItems([...items, newItem]);
+    const newItem = await createItem(1);
   };
 
   const styles: CSS = {

@@ -1,6 +1,9 @@
 import { Group } from "../interfaces/group"
 
 export async function getMyGroups(): Promise<Group[]> {
+    // return await getFetch("/groups", {
+    //     body: JSON.stringify(payload),
+    //   });
     return [
         {
             id: 1,
@@ -13,7 +16,7 @@ export async function getMyGroups(): Promise<Group[]> {
                 { id: 4, name: "Maman", isFriend: true },
                 { id: 5, name: "Moi", isFriend: true },
             ],
-            list: {
+            /*list: {
                 id: 1,
                 description: "",
                 uncheckedItems: [
@@ -50,11 +53,12 @@ export async function getMyGroups(): Promise<Group[]> {
                         position: 6,
                     },
                 ],
-            },
+            },*/
         },
     ];
 }
 
+// TODO : ignore after this comment
 // export async function createGroup(): Promise<Group> {
 //     return {
 //         id: 7,

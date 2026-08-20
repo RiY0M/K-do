@@ -4,7 +4,7 @@ import { List } from "./list";
 export interface Group {
     id: number;
     label: string;
-    friends: User[];
-    list: List;
+    friends?: User[];
+    list?: List;
     position: number;
 }

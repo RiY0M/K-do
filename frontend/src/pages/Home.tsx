@@ -1,4 +1,4 @@
-import List from "../components/sections/List";
+import ListDisplay from "../components/sections/ListDisplay";
 import Groups from "../components/sections/Groups";
 import { CSS } from "../services/utils";
 import { useBehaviourDisplay } from "../hooks/useBehaviourDisplay";
@@ -31,7 +31,7 @@ export default function Home() {
       <Link to="/login">Déconnexion</Link>
       <div style={styles.subDiv}>
         <Groups groups={groups} />
-        <List />
+        <ListDisplay />
       </div>
     </div>
   );

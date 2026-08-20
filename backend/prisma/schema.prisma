@@ -1,5 +1,5 @@
 generator client {
-    provider = "prisma-client-ts"
+    provider = "prisma-client-js"
 }
 
 datasource db {
@@ -96,8 +96,11 @@ model GroupKDo {
 }
 
 model Link {
+    id    String @id @default(uuid())
     kDoId String
     href  String
 
     kDo KDo @relation(fields: [kDoId], references: [id])
+
+    @@map("links")
 }

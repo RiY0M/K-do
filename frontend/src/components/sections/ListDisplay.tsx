@@ -1,25 +1,16 @@
 import CheckedList from "../list/CheckedList";
 import UnCheckedList from "../list/UnCheckedList";
+import Description from "../inputs/Description";
 import { useEffect, useState } from "react";
-import FullAccordion from "../accordions/FullAccordion";
 import { List } from "../../interfaces/list";
-import { getListByFriendId } from "../../services/lists";
+import { getMyListByGroupId } from "../../services/lists";
 
-export default function GuestList() {
+export default function ListDisplay() {
 
 	const [list, setList] = useState<List | null>(null);
 
 	useEffect(() => {
-		getListByFriendId(1).then(setList);
-	}, []);
-
-	const id = 1;
-	const name = "test";
-	const description = "description";
-
-	useEffect(() => {
-		// getUncheckedItemsByUserId(id).then(setUnCheckedItems);
-		// getCheckedItemsByUserId(id).then(setCheckedItems);
+		getMyListByGroupId(1).then(setList);
 	}, []);
 
 	return (
@@ -27,9 +18,9 @@ export default function GuestList() {
 			{!list && <h1>Chargement...</h1>}
 			{list &&
 				<div>
-					<h1>Liste de&nbsp;: {name}</h1>
+					<h1>Liste</h1>
 
-					<FullAccordion label="Description" defaultOpening>{description}</FullAccordion>
+					<Description />
 
 					<UnCheckedList items={list.uncheckedItems} />
 
