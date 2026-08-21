@@ -16,7 +16,9 @@
     "test:cov": "NODE_ENV=test c8 tsx --test src/test/**/*.test.ts",
     "dev": "nodemon",
     "lint": "eslint 'src/**/*.{js,ts}'",
-    "format": "prettier --write \"src/**/*.{ts,js,json,md}\""
+    "format": "prettier --write \"src/**/*.{ts,js,json,md}\"",
+    "db:migrate": "prisma migrate dev",
+    "db:generate": "npx prisma generate"
   },
   "keywords": [],
   "author": "",

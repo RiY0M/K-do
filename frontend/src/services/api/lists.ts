@@ -1,4 +1,4 @@
-import { List } from "../interfaces/list";
+import { List } from "../../interfaces/list";
 
 export async function getMyListByGroupId(groupId: number): Promise<List> {
     // return await getFetch("/list/me/groupId", {

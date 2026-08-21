@@ -1,6 +1,6 @@
 import { useState, FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { login } from "../services/auth";
+import { Link } from "react-router-dom";
+import { loginAndSaveSession } from "../services/authStorage";
 import { CSS } from "../services/utils";
 import TypingInput from "../components/inputs/TypingInput";
 
@@ -10,27 +10,19 @@ export default function Register() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
-
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setError(null);
     setLoading(true);
 
     try {
-      const user = await login({
+      await loginAndSaveSession({
         name: name,
         password: password,
       });
 
-      if (!user) {
-        setError("Identifiants invalides");
-        return;
-      }
-
-      navigate("/");
-    } catch (err) {
-      setError(`${err}`);
+    } catch {
+      setError("Identifiants invalides");
     } finally {
       setLoading(false);
     }
@@ -38,9 +30,6 @@ export default function Register() {
 
   const styles: CSS = {
     form: {
-      display: "flex",
-      flexDirection: "column",
-      gap: "1rem",
       textAlign: "center",
     },
     error: {
@@ -54,37 +43,39 @@ export default function Register() {
 
   return (
     <section>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <h2>Connexion</h2>
+      <form onSubmit={handleSubmit}>
+        <div style={styles.form}>
+          <h2>Connexion</h2>
 
-        <TypingInput
-          label="Nom"
-          name="name"
-          type="text"
-          required
-          value={name}
-          setValue={setName}
-        />
+          <TypingInput
+            label="Nom"
+            name="name"
+            type="text"
+            required
+            value={name}
+            setValue={setName}
+          />
 
-        <TypingInput
-          label="Mot de passe"
-          name="password"
-          type="password"
-          required
-          value={password}
-          setValue={setPassword}
-        />
+          <TypingInput
+            label="Mot de passe"
+            name="password"
+            type="password"
+            required
+            value={password}
+            setValue={setPassword}
+          />
 
-        {error && <p style={styles.error}>{error}</p>}
+          {error && <p style={styles.error}>{error}</p>}
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Chargement..." : "Se connecter"}
-        </button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Chargement..." : "Se connecter"}
+          </button>
 
-        <p style={styles.switch}>
-          Pas de compte ?{" "}
-          <Link to="/register">S'inscrire</Link>
-        </p>
+          <p style={styles.switch}>
+            Pas de compte ?{" "}
+            <Link style={styles.switch} to="/register">S'inscrire</Link>
+          </p>
+        </div>
       </form>
     </section>
   );

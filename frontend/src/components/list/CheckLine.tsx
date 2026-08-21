@@ -6,7 +6,7 @@ import Checkbox from "../inputs/Checkbox";
 import NoStyleTypingInput from "../inputs/NoStyleTypingInput";
 import LinkIcon from "../../assets/svgs/LinkIcon";
 import { Item } from "../../interfaces/item";
-import { deleteItem, updateItem } from "../../services/items";
+import { deleteItem, updateItem } from "../../services/api/items";
 import IconInlineText from "../IconInlineText";
 
 interface Props {

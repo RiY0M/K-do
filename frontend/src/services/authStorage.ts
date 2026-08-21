@@ -1,4 +1,6 @@
+import { AuthPayload } from "../interfaces/AuthPayload";
 import { User } from "../interfaces/user";
+import { login, register } from "./api/auth";
 
 const TOKEN_KEY = "kdo_token";
 const USER_KEY = "kdo_user";
@@ -25,4 +27,21 @@ export function clearSession(): void {
 
 export function isAuthenticated(): boolean {
   return getToken() !== null;
+}
+
+export async function loginAndSaveSession(credentials: AuthPayload, fallbackEndpoint: string = "/") {
+  const user = await login(credentials);
+  saveSession(user);
+  navigation.navigate(fallbackEndpoint);
+}
+
+export async function registerAndSaveSession(credentials: AuthPayload, fallbackEndpoint: string = "/") {
+  const user = await register(credentials);
+  saveSession(user);
+  navigation.navigate(fallbackEndpoint);
+}
+
+export function logout(): void {
+  clearSession();
+  navigation.navigate('/login');
 }

@@ -1,4 +1,4 @@
-import { Item } from "../interfaces/item"
+import { Item } from "../../interfaces/item"
 
 export async function createItem(listId: number): Promise<Item> {
     // return await postFetch("/item/create", {

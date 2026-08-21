@@ -2,7 +2,7 @@ import { CSS } from "../../services/utils";
 import TaggedCheckLine from "./TaggedCheckLine";
 import AddInput from "../inputs/AddInput";
 import { Item } from "../../interfaces/item";
-import { createItem } from "../../services/items";
+import { createItem } from "../../services/api/items";
 
 interface Props {
   items: Item[];

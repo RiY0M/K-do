@@ -3,7 +3,7 @@ import UnCheckedList from "../list/UnCheckedList";
 import Description from "../inputs/Description";
 import { useEffect, useState } from "react";
 import { List } from "../../interfaces/list";
-import { getMyListByGroupId } from "../../services/lists";
+import { getMyListByGroupId } from "../../services/api/lists";
 
 export default function ListDisplay() {
 

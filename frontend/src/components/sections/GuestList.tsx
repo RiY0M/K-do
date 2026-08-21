@@ -3,7 +3,7 @@ import UnCheckedList from "../list/UnCheckedList";
 import { useEffect, useState } from "react";
 import FullAccordion from "../accordions/FullAccordion";
 import { List } from "../../interfaces/list";
-import { getListByFriendId } from "../../services/lists";
+import { getListByFriendId } from "../../services/api/lists";
 
 export default function GuestList() {
 

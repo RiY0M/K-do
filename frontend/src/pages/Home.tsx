@@ -5,8 +5,8 @@ import { useBehaviourDisplay } from "../hooks/useBehaviourDisplay";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Group } from "../interfaces/group";
-import { getMyGroups } from "../services/groups";
-import { logout } from "../services/auth";
+import { getMyGroups } from "../services/api/groups";
+import { logout } from "../services/authStorage";
 
 export default function Home() {
 

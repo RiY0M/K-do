@@ -1,4 +1,4 @@
-import { Group } from "../interfaces/group"
+import { Group } from "../../interfaces/group"
 
 export async function getMyGroups(): Promise<Group[]> {
     // return await getFetch("/groups", {

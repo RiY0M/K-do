@@ -1,4 +1,4 @@
-import { getToken } from "./authStorage";
+import { getToken } from "../authStorage";
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
 type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
