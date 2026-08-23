@@ -19,39 +19,41 @@ model User {
     createdAt  DateTime    @default(now())
     updatedAt  DateTime    @updatedAt
     deletedAt  DateTime?
-    groups     Group[]
-    userGroups UserGroup[]
+    lists      List[]
+    userLists  UserList[]
     kdos       KDo[]
     userKDos   UserKDo[]
 
     @@map("users")
 }
 
-model Group {
+model List {
     id          String  @id @default(uuid())
+    label       String
     description String?
     authorId    String
+    position    Int
 
     createdAt DateTime  @default(now())
     updatedAt DateTime  @updatedAt
     deletedAt DateTime?
 
     user       User        @relation(fields: [authorId], references: [id])
-    userGroups UserGroup[]
-    groupKDos  GroupKDo[]
+    userLists UserList[]
+    listKDos  ListKDo[]
 
-    @@map("groups")
+    @@map("lists")
 }
 
-model UserGroup {
+model UserList {
     id      String @id @default(uuid())
     userId  String
-    groupId String
+    listId String
 
     user  User  @relation(fields: [userId], references: [id])
-    group Group @relation(fields: [groupId], references: [id])
+    list List @relation(fields: [listId], references: [id])
 
-    @@map("users_groups")
+    @@map("users_lists")
 }
 
 model KDo {
@@ -67,7 +69,7 @@ model KDo {
 
     user      User       @relation(fields: [authorId], references: [id])
     userKDos  UserKDo[]
-    groupKDos GroupKDo[]
+    listKDos  ListKDo[]
     links     Link[]
 
     @@map("k_dos")
@@ -75,6 +77,7 @@ model KDo {
 
 model UserKDo {
     id     String @id @default(uuid())
+    hasChecked Boolean @default(true)
     userId String
     kDoId  String
 
@@ -84,15 +87,15 @@ model UserKDo {
     @@map("users_k_dos")
 }
 
-model GroupKDo {
+model ListKDo {
     id      String @id @default(uuid())
-    groupId String
+    listId  String
     kDoId   String
 
-    group Group @relation(fields: [groupId], references: [id])
-    kDo   KDo   @relation(fields: [kDoId], references: [id])
+    list  List @relation(fields: [listId], references: [id])
+    kDo   KDo  @relation(fields: [kDoId], references: [id])
 
-    @@map("groups_k_dos")
+    @@map("lists_k_dos")
 }
 
 model Link {

@@ -1,14 +1,14 @@
 import { useBehaviourDisplay } from "../../hooks/useBehaviourDisplay";
-import { Group } from "../../interfaces/group";
+import { List } from "../../interfaces/list";
 import FullAccordion from "../accordions/FullAccordion";
-import GroupBody from "../groups/GroupBody";
+import ListPreview from "../list/ListPreview";
 
 interface Props {
-	groups: Group[];
+	lists: List[];
 }
 
-export default function Groups({
-	groups,
+export default function ListPreviews({
+	lists,
 }: Readonly<Props>) {
 
 	const behaviourDisplay = useBehaviourDisplay();
@@ -18,12 +18,12 @@ export default function Groups({
 		<section>
 			{behaviourLandscape ?
 				<div>
-					<h1>Groupes</h1>
-					{groups.map(group => <GroupBody key={group.id} group={group} />)}
+					<h1>Listes</h1>
+					{lists.map(list => <ListPreview key={list.id} list={list} />)}
 				</div>
 				:
-				<FullAccordion label={<h1>Groupes</h1>}>
-					{groups.map(group => <GroupBody key={group.id} group={group} />)}
+				<FullAccordion label={<h1>Listes</h1>}>
+					{lists.map(list => <ListPreview key={list.id} list={list} />)}
 				</FullAccordion>
 			}
 		</section>

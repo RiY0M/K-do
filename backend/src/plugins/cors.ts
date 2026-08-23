@@ -4,7 +4,7 @@ import cors from '@fastify/cors';
 
 const corsPlugin: FastifyPluginAsync = async (fastify) => {
     await fastify.register(cors, {
-        origin: true,
+        origin: '*',
     });
 };
 

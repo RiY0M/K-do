@@ -13,9 +13,7 @@ export default function GuestList() {
 		getListByFriendId(1).then(setList);
 	}, []);
 
-	const id = 1;
 	const name = "test";
-	const description = "description";
 
 	useEffect(() => {
 		// getUncheckedItemsByUserId(id).then(setUnCheckedItems);
@@ -29,9 +27,9 @@ export default function GuestList() {
 				<div>
 					<h1>Liste de&nbsp;: {name}</h1>
 
-					<FullAccordion label="Description" defaultOpening>{description}</FullAccordion>
+					<FullAccordion label="Description" defaultOpening>{list.description}</FullAccordion>
 
-					<UnCheckedList items={list.uncheckedItems} />
+					<UnCheckedList items={list.uncheckedItems ?? []} />
 
 					{list.checkedItems &&
 						<><div></div>

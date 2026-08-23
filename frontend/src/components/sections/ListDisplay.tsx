@@ -3,14 +3,14 @@ import UnCheckedList from "../list/UnCheckedList";
 import Description from "../inputs/Description";
 import { useEffect, useState } from "react";
 import { List } from "../../interfaces/list";
-import { getMyListByGroupId } from "../../services/api/lists";
+import { getMyListDetail } from "../../services/api/lists";
 
 export default function ListDisplay() {
 
 	const [list, setList] = useState<List | null>(null);
 
 	useEffect(() => {
-		getMyListByGroupId(1).then(setList);
+		getMyListDetail(1).then(setList);
 	}, []);
 
 	return (
@@ -22,7 +22,7 @@ export default function ListDisplay() {
 
 					<Description />
 
-					<UnCheckedList items={list.uncheckedItems} />
+					<UnCheckedList items={list.uncheckedItems ?? []} />
 
 					{list.checkedItems &&
 						<><div></div>

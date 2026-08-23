@@ -12,35 +12,35 @@ export interface ListDto {
 export class ListService {
     constructor(private prisma: PrismaClient) {}
 
-    async getMyListByGroupId(userId: string, groupId: string): Promise<ListDto> {
-        const group = await this.prisma.group.findFirst({
+    async getMyListByListId(userId: string, listId: string): Promise<ListDto> {
+        const list = await this.prisma.list.findFirst({
             where: {
-                id: groupId,
+                id: listId,
                 deletedAt: null,
-                OR: [{ authorId: userId }, { userGroups: { some: { userId } } }],
+                OR: [{ authorId: userId }, { userLists: { some: { userId } } }],
             },
         });
 
-        if (!group) {
-            throw new ListServiceError('Group not found', 404);
+        if (!list) {
+            throw new ListServiceError('List not found', 404);
         }
 
         const items = await this.prisma.kDo.findMany({
             where: {
                 authorId: userId,
                 deletedAt: null,
-                groupKDos: { some: { groupId } },
+                listKDos: { some: { listId } },
             },
             orderBy: { position: 'asc' },
         });
 
-        return this.buildListDto(groupId, items);
+        return this.buildListDto(listId, items);
     }
 
     async getListByFriendId(userId: string, friendId: string): Promise<ListDto> {
-        const sharedGroupIds = await this.getSharedGroupIds(userId, friendId);
+        const sharedListIds = await this.getSharedListIds(userId, friendId);
 
-        if (sharedGroupIds.length === 0) {
+        if (sharedListIds.length === 0) {
             throw new ListServiceError('Friend not found', 404);
         }
 
@@ -48,7 +48,7 @@ export class ListService {
             where: {
                 authorId: friendId,
                 deletedAt: null,
-                groupKDos: { some: { groupId: { in: sharedGroupIds } } },
+                listKDos: { some: { listId: { in: sharedListIds } } },
             },
             orderBy: { position: 'asc' },
         });
@@ -70,31 +70,31 @@ export class ListService {
         };
     }
 
-    private async getSharedGroupIds(userId: string, otherUserId: string): Promise<string[]> {
-        const myGroups = await this.prisma.group.findMany({
+    private async getSharedListIds(userId: string, otherUserId: string): Promise<string[]> {
+        const myLists = await this.prisma.list.findMany({
             where: {
                 deletedAt: null,
-                OR: [{ authorId: userId }, { userGroups: { some: { userId } } }],
+                OR: [{ authorId: userId }, { userLists: { some: { userId } } }],
             },
             select: { id: true },
         });
 
-        if (myGroups.length === 0) {
+        if (myLists.length === 0) {
             return [];
         }
 
-        const sharedGroups = await this.prisma.group.findMany({
+        const sharedLists = await this.prisma.list.findMany({
             where: {
-                id: { in: myGroups.map((g) => g.id) },
+                id: { in: myLists.map((g) => g.id) },
                 deletedAt: null,
                 OR: [
                     { authorId: otherUserId },
-                    { userGroups: { some: { userId: otherUserId } } },
+                    { userLists: { some: { userId: otherUserId } } },
                 ],
             },
             select: { id: true },
         });
 
-        return sharedGroups.map((g) => g.id);
+        return sharedLists.map((g) => g.id);
     }
 }

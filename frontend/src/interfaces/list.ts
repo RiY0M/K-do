@@ -1,8 +1,12 @@
 import { Item } from "./item";
+import { User } from "./user";
 
 export interface List {
     id: number;
+    label: string;
     description: string;
-    uncheckedItems: Item[];
-    checkedItems: Item[];
+    position: number;
+    uncheckedItems?: Item[];
+    checkedItems?: Item[];
+    friends?: User[];
 }

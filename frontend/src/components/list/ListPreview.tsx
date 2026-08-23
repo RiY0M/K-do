@@ -1,5 +1,5 @@
 import Plus from "../../assets/svgs/Plus";
-import { Group } from "../../interfaces/group";
+import { List } from "../../interfaces/list";
 import { CSS } from "../../services/utils";
 import FullAccordion from "../accordions/FullAccordion";
 import IconInlineText from "../IconInlineText";
@@ -7,11 +7,11 @@ import UserLink from "../UserLink";
 import MultiStateButton from "../buttons/MultiStateButton";
 
 interface Props {
-  group: Group;
+  list: List;
 }
 
-export default function GroupBody({
-  group,
+export default function ListPreview({
+  list,
 }: Readonly<Props>) {
 
   const handleAdd = async () => {
@@ -26,7 +26,7 @@ export default function GroupBody({
 
   return (
     <FullAccordion
-      label={group.label}
+      label={list.label}
       defaultOpening={true}
     >
       <div style={styles.div}>
@@ -36,7 +36,7 @@ export default function GroupBody({
           </IconInlineText>
         </MultiStateButton>
 
-        {group.friends.map((friend) => (
+        {list?.friends && list.friends.map((friend) => (
           <UserLink key={friend.id} user={friend} />
         ))}
       </div>
