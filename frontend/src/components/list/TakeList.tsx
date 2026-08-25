@@ -1,6 +1,6 @@
 import { CSS } from "../../services/utils";
-import { User } from "../../interfaces/user";
-import TakeListItem from "./TakeListItem";
+import { User } from "../../interfaces/User";
+import TakeListKdo from "./TakeListKdo";
 
 interface Props {
   users: User[];
@@ -25,7 +25,7 @@ export default function TakeList({
     <div style={styles.div}>
       Pris par :
       {users.map((user) => (
-        <TakeListItem key={user.id} user={user} />
+        <TakeListKdo key={user.id} user={user} />
       ))}
     </div>
   );

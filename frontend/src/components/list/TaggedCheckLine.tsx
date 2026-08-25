@@ -1,22 +1,26 @@
+import { useState } from "react";
 import { CSS } from "../../services/utils";
-import { Item } from "../../interfaces/item";
-import { User } from "../../interfaces/user";
+import { Kdo } from "../../interfaces/Kdo";
+import { User } from "../../interfaces/User";
 import TakeList from "./TakeList";
-import CheckLine from "./CheckLine";
+import Checkbox from "../inputs/Checkbox";
+import IconInlineText from "../IconInlineText";
+import { checkKdo } from "../../services/api/kdos";
 
 interface Props {
-  item: Item;
-  users?: User[];
-  canEdit?: boolean;
-  onDelete?: (id: number) => {};
+  kdo: Kdo;
 }
 
 export default function TaggedCheckLine({
-  item,
-  users = [],
-  canEdit = true,
-  onDelete,
+  kdo,
 }: Readonly<Props>) {
+  const [check, setCheck] = useState(kdo?.isChecked ?? false);
+
+  const updateCheck = async (checkStatus: boolean) => {
+    setCheck(checkStatus);
+
+    await checkKdo(kdo.id);
+  }
 
   const styles: CSS = {
     div: {
@@ -26,15 +30,17 @@ export default function TaggedCheckLine({
 
   return (
     <div style={styles.div}>
-      {users.length > 0 &&
-        <TakeList users={users} />
+      {kdo.takenBy && kdo.takenBy!.length > 0 &&
+        <TakeList users={kdo.takenBy!} />
       }
 
-      <CheckLine
-        item={item}
-        canEdit={canEdit}
-        onDelete={onDelete}
-      />
+      <IconInlineText>
+        <Checkbox name={`check-${kdo?.id}`} checked={check} setChecked={updateCheck} />
+        {kdo.label}
+        {/* <NoStyleButton onClick={handleLink}>
+          <div><LinkIcon /></div>
+        </NoStyleButton> */}
+      </IconInlineText>
     </div>
   );
 }

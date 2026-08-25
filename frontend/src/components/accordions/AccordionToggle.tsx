@@ -30,10 +30,10 @@ export default function AccordionToggle({ label, open, setOpen }: Readonly<Props
 	return (
 		<NoStyleButton onClick={() => setOpen(!open)}>
 			<IconInlineText>
-				{label}
 				<div style={styles.icon}>
 					<ChevronDown />
 				</div>
+				{label}
 			</IconInlineText>
 		</NoStyleButton>
 	);

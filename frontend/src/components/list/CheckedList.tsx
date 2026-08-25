@@ -1,15 +1,17 @@
 import { CSS } from "../../services/utils";
 import FullAccordion from "../accordions/FullAccordion";
-import CheckLine from "./CheckLine";
-import { Item } from "../../interfaces/item";
+import EditableCheckLine from "./EditableCheckLine";
+import { Kdo } from "../../interfaces/Kdo";
 
 interface Props {
-  items: Item[];
+  kdos: Kdo[];
 }
 
 export default function CheckedList({
-  items
+  kdos
 }: Readonly<Props>) {
+
+  const handleDelete = (id: number) => { }
 
   const styles: CSS = {
     div: {
@@ -17,13 +19,15 @@ export default function CheckedList({
       gap: "var(--md-space)",
     },
   };
+
   return (
     <FullAccordion label="Éléments cochés" defaultOpening={true}>
       <div style={styles.div}>
-        {items.map((item) => (
-          <CheckLine
-            key={item.id}
-            item={item}
+        {kdos.map((kdo) => (
+          <EditableCheckLine
+            key={kdo.id}
+            kdo={kdo}
+            onDelete={handleDelete}
           />
         ))}
       </div>

@@ -1,5 +1,6 @@
 import { MouseEventHandler, ReactNode, useState } from "react";
 import Check from "../../assets/svgs/Check";
+import XMark from "../../assets/svgs/XMark";
 import { CSS } from "../../services/utils";
 import IconInlineText from "../IconInlineText";
 
@@ -14,10 +15,11 @@ interface Props {
 export default function MultiStateButton({
   onClick,
   children,
-  validatedLabel = "Réussi&nbsp;!",
+  validatedLabel = "Réussi !",
 }: Readonly<Props>) {
   const timeoutDuration = 2000;
   const [buttonState, setButtonState] = useState<validStates>("default");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleClick = async (event: any) => {
     setButtonState("loading");
@@ -25,7 +27,8 @@ export default function MultiStateButton({
     try {
       await onClick(event);
       setButtonState("validated");
-    } catch {
+    } catch (error: any) {
+      setErrorMessage(error.message);
       setButtonState("error");
     }
 
@@ -85,8 +88,8 @@ export default function MultiStateButton({
 
         <span style={styles.error}>
           <IconInlineText>
-            <Check />
-            Erreur&nbsp;!
+            <XMark />
+            {errorMessage}
           </IconInlineText>
         </span>
       </div>

@@ -1,12 +1,12 @@
-import { Item } from "./item";
-import { User } from "./user";
+import { Kdo } from "./Kdo";
+import { User } from "./User";
 
 export interface List {
     id: number;
     label: string;
     description: string;
     position: number;
-    uncheckedItems?: Item[];
-    checkedItems?: Item[];
+    uncheckedKdos?: Kdo[];
+    checkedKdos?: Kdo[];
     friends?: User[];
 }

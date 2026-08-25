@@ -21,12 +21,15 @@ input:not([type="checkbox"], [type="radio"]) {
 }
 
 input:is([type="checkbox"], [type="radio"]) {
-  width: initial;
+  width: 1em;
   cursor: pointer;
   accent-color: var(--action);
+  aspect-ratio: 1/1;
 }
 
 textarea {
+  white-space: "pre-wrap";
+  word-break: "break-word";
   padding: var(--sm-space);
 }
 

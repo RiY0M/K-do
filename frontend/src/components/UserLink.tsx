@@ -1,5 +1,5 @@
 import { CSS } from "../services/utils";
-import { User } from "../interfaces/user";
+import { User } from "../interfaces/User";
 import { Link } from "react-router-dom";
 
 interface Props {

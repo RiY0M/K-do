@@ -12,7 +12,7 @@ export default function AddInput({ label, onClick }: Readonly<Props>) {
 
   return (
     <NoStyleButton onClick={onClick}>
-      <IconInlineText leftIcon={<Plus />}>{label}</IconInlineText>
+      <IconInlineText><Plus />{label}</IconInlineText>
     </NoStyleButton>
   );
 }

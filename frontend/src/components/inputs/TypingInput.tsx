@@ -12,7 +12,10 @@ interface Props {
 	disabled?: boolean;
 	pattern?: RegExp;
 	value: string;
+	maxLength?: number;
 	setValue: (value: string) => void;
+	onFocus?: () => void;
+	onBlur?: () => void;
 }
 
 export default function TypingInput({
@@ -24,7 +27,10 @@ export default function TypingInput({
 	disabled = false,
 	pattern = /.*/g,
 	value,
+	maxLength,
 	setValue,
+	onFocus,
+	onBlur,
 }: Readonly<Props>) {
 
 	const styles: CSS = {
@@ -34,6 +40,10 @@ export default function TypingInput({
 		label: {
 			cursor: "text",
 			textAlign: "left",
+		},
+		textarea: {
+			resize: "none",
+			overflow: "hidden",
 		}
 	}
 
@@ -54,7 +64,16 @@ export default function TypingInput({
 					required={required}
 					disabled={disabled}
 					value={value}
-					onChange={(e) => setValue(e.target.value)}
+					style={styles.textarea}
+					onChange={(e) => {
+						setValue(e.target.value);
+						e.target.style.height = "auto";
+						e.target.style.height = `${e.target.scrollHeight}px`;
+					}}
+					onFocus={onFocus}
+					onBlur={onBlur}
+					maxLength={maxLength}
+					rows={4}
 				/>
 			}
 
@@ -69,7 +88,9 @@ export default function TypingInput({
 					// pattern={String(pattern)}
 					value={value}
 					onChange={(e) => setValue(e.target.value)}
-					maxLength={255}
+					onFocus={onFocus}
+					onBlur={onBlur}
+					maxLength={maxLength}
 				/>
 			}
 		</div>

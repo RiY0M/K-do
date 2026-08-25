@@ -1,22 +1,25 @@
 import { useRef, useState } from "react";
 import TypingInput from "./TypingInput";
+import { updateListDescription } from "../../services/api/lists";
 
 interface Props {
-  canEdit?: boolean;
+  id: number;
+  defaultDescription: string;
 }
 
 export default function Description({
-  canEdit = true,
+  id,
+  defaultDescription,
 }: Readonly<Props>) {
-  const [description, setDescription] = useState<string>("");
+  const [description, setDescription] = useState<string>(defaultDescription);
   const timeout = useRef<number>(0);
 
   const updateDescription = (newText: string) => {
     setDescription(newText);
     clearTimeout(timeout.current);
 
-    timeout.current = setTimeout(() => {
-      // updateItem(item.id, { ...item, value: newText });
+    timeout.current = setTimeout(async () => {
+      await updateListDescription(id, newText);
     }, 500);
   }
 
@@ -26,7 +29,7 @@ export default function Description({
       name="description"
       type="textarea"
       value={description}
-      setValue={canEdit ? updateDescription : () => { }}
+      setValue={updateDescription}
     />
   );
 }

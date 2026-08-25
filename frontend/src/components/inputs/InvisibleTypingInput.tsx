@@ -1,17 +1,14 @@
-import { ReactNode } from "react";
 import { CSS } from "../../services/utils";
 
 interface Props {
-	label?: ReactNode;
 	name: string;
-	required?: boolean;
 	value: string;
 	setValue: (value: string) => void;
 	onFocus?: () => void;
 	onBlur?: () => void;
 }
 
-export default function NoStyleTypingInput({
+export default function InvisibleTypingInput({
 	name,
 	value,
 	setValue,
@@ -27,9 +24,6 @@ export default function NoStyleTypingInput({
 			backgroundColor: "transparent",
 			resize: "none",
 			overflow: "hidden",
-			width: "100%",
-			wordBreak: "break-word",
-			whiteSpace: "pre-wrap",
 		}
 	}
 

@@ -1,19 +1,21 @@
 import { CSS } from "../../services/utils";
 import TaggedCheckLine from "./TaggedCheckLine";
 import AddInput from "../inputs/AddInput";
-import { Item } from "../../interfaces/item";
-import { createItem } from "../../services/api/items";
+import { Kdo } from "../../interfaces/Kdo";
+import { createKdo } from "../../services/api/kdos";
 
 interface Props {
-  items: Item[];
+  listId: number;
+  kdos: Kdo[];
 }
 
 export default function UnCheckedList({
-  items,
+  listId,
+  kdos,
 }: Readonly<Props>) {
 
   const handleAddInput = async () => {
-    const newItem = await createItem(1);
+    const newKdo = await createKdo(listId);
   };
 
   const styles: CSS = {
@@ -24,10 +26,10 @@ export default function UnCheckedList({
 
   return (
     <div style={styles.div}>
-      {items.map((item) => (
+      {kdos.map((kdo) => (
         <TaggedCheckLine
-          key={item.id}
-          item={item}
+          key={kdo.id}
+          kdo={kdo}
         />
       ))}
 

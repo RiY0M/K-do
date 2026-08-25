@@ -1,12 +1,12 @@
 import { CSS } from "../../services/utils";
-import { User } from "../../interfaces/user";
+import { User } from "../../interfaces/User";
 import UserLink from "../UserLink";
 
 interface Props {
   user: User;
 }
 
-export default function TakeListItem({
+export default function TakeListKdo({
   user,
 }: Readonly<Props>) {
 

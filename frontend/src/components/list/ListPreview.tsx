@@ -1,5 +1,5 @@
 import Plus from "../../assets/svgs/Plus";
-import { List } from "../../interfaces/list";
+import { List } from "../../interfaces/List";
 import { CSS } from "../../services/utils";
 import FullAccordion from "../accordions/FullAccordion";
 import IconInlineText from "../IconInlineText";
@@ -30,12 +30,6 @@ export default function ListPreview({
       defaultOpening={true}
     >
       <div style={styles.div}>
-        <MultiStateButton onClick={handleAdd} validatedLabel="Copié&nbsp;!">
-          <IconInlineText leftIcon={<Plus />}>
-            Inviter
-          </IconInlineText>
-        </MultiStateButton>
-
         {list?.friends && list.friends.map((friend) => (
           <UserLink key={friend.id} user={friend} />
         ))}

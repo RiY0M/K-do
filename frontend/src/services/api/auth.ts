@@ -1,4 +1,4 @@
-import { User } from "../../interfaces/user";
+import { User } from "../../interfaces/User";
 import { postFetch } from "./fetch";
 import { AuthPayload } from "../../interfaces/AuthPayload";
 

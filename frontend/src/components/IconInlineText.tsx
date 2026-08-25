@@ -2,12 +2,10 @@ import { ReactNode, useLayoutEffect, useRef } from "react";
 import { CSS } from "../services/utils";
 
 interface Props {
-  leftIcon?: ReactNode;
   children: ReactNode;
-  rightIcon?: ReactNode;
 }
 
-export default function IconInlineText({ leftIcon = "", children, rightIcon = "" }: Readonly<Props>) {
+export default function IconInlineText({ children }: Readonly<Props>) {
 
   const lineRef = useRef<HTMLDivElement>(null);
 
@@ -33,9 +31,7 @@ export default function IconInlineText({ leftIcon = "", children, rightIcon = ""
 
   return (
     <div ref={lineRef} style={styles.line}>
-      {leftIcon}
       {children}
-      {rightIcon}
     </div>
   );
 }
