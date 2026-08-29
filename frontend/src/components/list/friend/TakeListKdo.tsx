@@ -1,6 +1,6 @@
-import { CSS } from "../../services/utils";
-import { User } from "../../interfaces/User";
-import UserLink from "../UserLink";
+import { CSS } from "../../../services/utils";
+import { User } from "../../../interfaces/User";
+import UserLink from "../../UserLink";
 
 interface Props {
   user: User;

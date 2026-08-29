@@ -14,7 +14,7 @@ export default function UserLink({
 
   return (
     user.isFriend ?
-      <Link style={style?.link} to={`/guest/${user.id}`}>
+      <Link style={style?.link} to={`/friend/${user.id}`}>
         {user.name}
       </Link>
       :

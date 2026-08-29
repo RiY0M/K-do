@@ -1,5 +1,5 @@
-import { CSS } from "../../services/utils";
-import { User } from "../../interfaces/User";
+import { CSS } from "../../../services/utils";
+import { User } from "../../../interfaces/User";
 import TakeListKdo from "./TakeListKdo";
 
 interface Props {

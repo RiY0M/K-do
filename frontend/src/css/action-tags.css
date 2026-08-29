@@ -3,6 +3,7 @@
   text-decoration: inherit;
   cursor: pointer;
   transition: color var(--sm-speed);
+  width: fit-content;
 }
 
 :is(a, .link, .action):hover {

@@ -5,8 +5,9 @@ import Checkbox from "../inputs/Checkbox";
 import InvisibleTypingInput from "../inputs/InvisibleTypingInput";
 import LinkIcon from "../../assets/svgs/LinkIcon";
 import { Kdo } from "../../interfaces/Kdo";
-import { checkKdo, deleteKdo, updateKdoLabel } from "../../services/api/kdos";
+import { checkMyKdo, deleteKdo, updateKdoLabel } from "../../services/api/kdos";
 import IconInlineText from "../IconInlineText";
+import { CSS } from "../../services/utils";
 
 interface Props {
   kdo: Kdo;
@@ -17,15 +18,15 @@ export default function EditableCheckLine({
   kdo,
   onDelete,
 }: Readonly<Props>) {
-  const [check, setCheck] = useState(kdo?.isChecked ?? false);
+  const [isChecked, setIsChecked] = useState(kdo?.isChecked ?? false);
   const [text, setText] = useState<string>(kdo?.label);
   const [isFocused, setIsFocused] = useState(false);
   const timeout = useRef<number>(0);
 
   const updateCheck = async (checkStatus: boolean) => {
-    setCheck(checkStatus);
+    setIsChecked(checkStatus);
 
-    await checkKdo(kdo.id);
+    await checkMyKdo(kdo.id);
   }
 
   const updateText = (newText: string) => {
@@ -46,9 +47,18 @@ export default function EditableCheckLine({
   //   console.log("open link modal")
   // }
 
+  const styles: CSS = {
+    isChecked: {
+      textDecoration: isChecked ? "line-through" : "",
+    },
+    isFocused: {
+      visibility: isFocused ? "visible" : "hidden"
+    },
+  };
+
   return (
-    <IconInlineText>
-      <Checkbox name={`check-${kdo?.id}`} checked={check} setChecked={updateCheck} />
+    <IconInlineText style={styles.isChecked}>
+      <Checkbox name={`check-${kdo?.id}`} checked={isChecked} setChecked={updateCheck} />
       <InvisibleTypingInput
         name={`kdo-${kdo?.id}`}
         value={text}
@@ -57,7 +67,7 @@ export default function EditableCheckLine({
         onBlur={() => setIsFocused(false)}
       />
 
-      <NoStyleButton onClick={handleDelete} visibility={isFocused ? "visible" : "hidden"}>
+      <NoStyleButton onClick={handleDelete} style={styles.isFocused}>
         <XMark />
       </NoStyleButton>
       {/* <NoStyleButton onClick={handleLink}>

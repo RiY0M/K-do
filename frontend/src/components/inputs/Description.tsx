@@ -30,6 +30,7 @@ export default function Description({
       type="textarea"
       value={description}
       setValue={updateDescription}
+      rows={4}
     />
   );
 }

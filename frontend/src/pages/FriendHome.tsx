@@ -1,10 +1,10 @@
-import GuestList from "../components/sections/GuestList";
+import FriendFullListSection from "../components/sections/FriendFullListSection";
 import { CSS } from "../services/utils";
 import { Link } from "react-router-dom";
 import IconInlineText from "../components/IconInlineText";
 import ArrowLeft from "../assets/svgs/ArrowLeft";
 
-export default function GuestHome() {
+export default function FriendHome() {
 
   const styles: CSS = {
     mainDiv: {
@@ -19,7 +19,7 @@ export default function GuestHome() {
           <ArrowLeft />Accueil
         </IconInlineText>
       </Link>
-      <GuestList />
+      <FriendFullListSection />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import ListDisplay from "../components/sections/ListDisplay";
+import MyFullListSection from "../components/sections/MyFullListSection";
 import ListPreviews from "../components/sections/ListPreviews";
 import { CSS } from "../services/utils";
 import { useBehaviourDisplay } from "../hooks/useBehaviourDisplay";
@@ -10,7 +10,7 @@ import { logout } from "../services/authStorage";
 import IconInlineText from "../components/IconInlineText";
 import ArrowLeft from "../assets/svgs/ArrowLeft";
 
-export default function Home() {
+export default function MyHome() {
 
   const behaviourDisplay = useBehaviourDisplay();
 
@@ -48,7 +48,7 @@ export default function Home() {
       </Link>
       <div style={styles.subDiv}>
         <ListPreviews lists={lists} />
-        {selectedList && <ListDisplay listPreview={selectedList} />}
+        {selectedList && <MyFullListSection listPreview={selectedList} />}
       </div>
     </div>
   );

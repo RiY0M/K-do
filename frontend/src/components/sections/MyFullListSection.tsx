@@ -1,16 +1,16 @@
-import CheckedList from "../list/CheckedList";
-import UnCheckedList from "../list/UnCheckedList";
+import MyCheckedList from "../list/me/MyCheckedList";
+import MyUncheckedList from "../list/me/MyUncheckedList";
 import Description from "../inputs/Description";
 import { useEffect, useState } from "react";
 import { List } from "../../interfaces/List";
 import { getMyListDetail } from "../../services/api/lists";
-import { CSS, listDisplayIdealWidth } from "../../services/utils";
+import { CSS, listSectionActualWidth } from "../../services/utils";
 
 interface Props {
 	listPreview: List;
 }
 
-export default function ListDisplay({
+export default function MyFullListSection({
 	listPreview,
 }: Readonly<Props>) {
 
@@ -22,7 +22,7 @@ export default function ListDisplay({
 
 	const styles: CSS = {
 		section: {
-			width: `min(${listDisplayIdealWidth}px, 100%)`,
+			width: listSectionActualWidth,
 		},
 	};
 
@@ -31,15 +31,15 @@ export default function ListDisplay({
 			{!list && <h1>Chargement...</h1>}
 			{list &&
 				<div>
-					<h1>{list.label ? list.label : "Liste"}</h1>
+					<h1>Liste</h1>
 
 					<Description id={list.id} defaultDescription={list.description} />
 
-					<UnCheckedList kdos={list.uncheckedKdos ?? []} listId={list.id} />
+					<MyUncheckedList kdos={list.uncheckedKdos ?? []} listId={list.id} />
 
 					{list.checkedKdos &&
 						<><div></div>
-							<CheckedList kdos={list.checkedKdos} />
+							<MyCheckedList kdos={list.checkedKdos} />
 						</>
 					}
 				</div>

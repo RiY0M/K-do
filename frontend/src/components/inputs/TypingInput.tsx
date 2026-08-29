@@ -13,6 +13,7 @@ interface Props {
 	pattern?: RegExp;
 	value: string;
 	maxLength?: number;
+	rows?: number;
 	setValue: (value: string) => void;
 	onFocus?: () => void;
 	onBlur?: () => void;
@@ -28,6 +29,7 @@ export default function TypingInput({
 	pattern = /.*/g,
 	value,
 	maxLength,
+	rows = 1,
 	setValue,
 	onFocus,
 	onBlur,
@@ -73,7 +75,7 @@ export default function TypingInput({
 					onFocus={onFocus}
 					onBlur={onBlur}
 					maxLength={maxLength}
-					rows={4}
+					rows={rows}
 				/>
 			}
 

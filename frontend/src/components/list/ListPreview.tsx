@@ -1,10 +1,7 @@
-import Plus from "../../assets/svgs/Plus";
 import { List } from "../../interfaces/List";
 import { CSS } from "../../services/utils";
 import FullAccordion from "../accordions/FullAccordion";
-import IconInlineText from "../IconInlineText";
 import UserLink from "../UserLink";
-import MultiStateButton from "../buttons/MultiStateButton";
 
 interface Props {
   list: List;
@@ -13,10 +10,6 @@ interface Props {
 export default function ListPreview({
   list,
 }: Readonly<Props>) {
-
-  const handleAdd = async () => {
-    navigator.clipboard.writeText("http://localhost/invite/userId");
-  };
 
   const styles: CSS = {
     div: {

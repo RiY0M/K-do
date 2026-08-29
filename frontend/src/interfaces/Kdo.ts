@@ -5,5 +5,6 @@ export interface Kdo {
     label: string;
     isChecked?: boolean;
     position: number;
+    authorId?: string;
     takenBy?: User[];
 }

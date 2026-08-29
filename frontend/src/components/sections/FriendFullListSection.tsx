@@ -1,13 +1,13 @@
-import CheckedList from "../list/CheckedList";
-import UnCheckedList from "../list/UnCheckedList";
 import { useEffect, useState } from "react";
+import MyCheckedList from "../list/me/MyCheckedList";
+import FriendUncheckedList from "../list/friend/FriendUncheckedList";
 import FullAccordion from "../accordions/FullAccordion";
 import { List } from "../../interfaces/List";
 import { getListByFriendId } from "../../services/api/lists";
 import { useParams } from "react-router-dom";
 import { getUsername } from "../../services/api/users";
 
-export default function GuestList() {
+export default function FriendFullListSection() {
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [list, setList] = useState<List | null>(null);
@@ -31,11 +31,11 @@ export default function GuestList() {
 
 					<FullAccordion label="Description" defaultOpening>{list.description}</FullAccordion>
 
-					<UnCheckedList kdos={list.uncheckedKdos ?? []} listId={list.id} />
+					<FriendUncheckedList kdos={list.uncheckedKdos ?? []} />
 
 					{list.checkedKdos &&
 						<><div></div>
-							<CheckedList kdos={list.checkedKdos} />
+							<MyCheckedList kdos={list.checkedKdos} />
 						</>
 					}
 				</div>

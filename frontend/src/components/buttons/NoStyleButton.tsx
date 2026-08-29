@@ -1,13 +1,13 @@
-import { MouseEventHandler, ReactNode } from "react";
+import { CSSProperties, MouseEventHandler, ReactNode } from "react";
 import { CSS } from "../../services/utils";
 
 interface Props {
   children: ReactNode;
   onClick: MouseEventHandler<HTMLButtonElement>;
-  visibility?: string;
+  style?: CSSProperties;
 }
 
-export default function NoStyleButton({ children, onClick, visibility = "visible" }: Readonly<Props>) {
+export default function NoStyleButton({ children, onClick, style }: Readonly<Props>) {
 
   const styles: CSS = {
     button: {
@@ -16,7 +16,7 @@ export default function NoStyleButton({ children, onClick, visibility = "visible
       boxShadow: "none",
       border: "none",
       textAlign: "left",
-      visibility: visibility
+      ...style
     },
   }
 

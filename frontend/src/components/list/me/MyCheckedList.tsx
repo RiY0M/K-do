@@ -1,22 +1,23 @@
-import { CSS } from "../../services/utils";
-import FullAccordion from "../accordions/FullAccordion";
-import EditableCheckLine from "./EditableCheckLine";
-import { Kdo } from "../../interfaces/Kdo";
+import { CSS } from "../../../services/utils";
+import FullAccordion from "../../accordions/FullAccordion";
+import EditableCheckLine from "../EditableCheckLine";
+import { Kdo } from "../../../interfaces/Kdo";
 
 interface Props {
   kdos: Kdo[];
 }
 
-export default function CheckedList({
+export default function MyCheckedList({
   kdos
 }: Readonly<Props>) {
 
-  const handleDelete = (id: number) => { }
+  const handleDelete = (id: number) => {
+    // TODO : handle list update
+  }
 
   const styles: CSS = {
     div: {
       marginTop: "var(--sm-space)",
-      gap: "var(--md-space)",
     },
   };
 

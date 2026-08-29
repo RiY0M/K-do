@@ -1,13 +1,13 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
+import MyHome from "./pages/MyHome";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
-import GuestHome from "./pages/GuestHome";
+import FriendHome from "./pages/FriendHome";
 import Invite from "./pages/Invite";
 import Forbidden from "./pages/Forbidden";
 import { isAuthenticated } from "./services/authStorage";
-import { CSS, listDisplayIdealWidth } from "./services/utils";
+import { CSS, groupSectionIdealWidth, listSectionActualWidth, listSectionIdealWidth } from "./services/utils";
 import { useBehaviourDisplay } from "./hooks/useBehaviourDisplay";
 
 export default function App() {
@@ -17,7 +17,7 @@ export default function App() {
 
   const styles: CSS = {
     app: {
-      width: isLandscape ? `min(${listDisplayIdealWidth + 200}px, 100%)` : `min(${listDisplayIdealWidth}px, 100%)`,
+      width: isLandscape ? `min(calc(${listSectionIdealWidth + groupSectionIdealWidth}px + var(--md-space)), 100%)` : listSectionActualWidth,
     }
   }
   return (
@@ -25,12 +25,12 @@ export default function App() {
       <Routes>
         {!isLoggedIn && <>
           <Route path="/" element={<Forbidden />} />
-          <Route path="/guest/:userId" element={<Forbidden />} />
+          <Route path="/friend/:userId" element={<Forbidden />} />
           <Route path="/invite/:userId" element={<Forbidden />} />
         </>}
         {isLoggedIn && <>
-          <Route path="/" element={<Home />} />
-          <Route path="/guest/:userId" element={<GuestHome />} />
+          <Route path="/" element={<MyHome />} />
+          <Route path="/friend/:userId" element={<FriendHome />} />
           <Route path="/invite/:userId" element={<Invite />} />
         </>}
         <Route path="/login/:url?" element={<Login />} />

@@ -1,6 +1,6 @@
 import { ReactNode, MouseEventHandler } from "react";
 import { Link } from "react-router-dom";
-import { CSS } from "../../services/utils";
+import { CSS, formSectionActualWidth } from "../../services/utils";
 import MultiStateButton from "../../components/buttons/MultiStateButton";
 
 interface Props {
@@ -40,10 +40,14 @@ export default function FormSection({
     switch: {
       fontSize: "var(--sm-size)",
     },
+    section: {
+      margin: "auto",
+      width: formSectionActualWidth,
+    },
   };
 
   return (
-    <section>
+    <section style={styles.section}>
       <form onSubmit={handleSubmit}>
         <div style={styles.form}>
           <h2>{title}</h2>
