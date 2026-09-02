@@ -26,7 +26,7 @@ export default function FriendCheckLine({
   const updateCheck = async (checkStatus: boolean) => {
     setIsChecked(checkStatus);
 
-    await checkFriendKdo(kdo.id);
+    await checkFriendKdo(kdo.id, checkStatus);
   }
 
   const styles: CSS = {

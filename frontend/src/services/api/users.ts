@@ -1,9 +1,11 @@
 import { getFetch, postFetch } from "./fetch";
 
-export async function getUsername(userId: string) {
-    return await getFetch(`/users/getUsername/${userId}`);
+const baseEndpoint = "/user";
+
+export async function getUsername(userId: string): Promise<string> {
+    return await getFetch(`${baseEndpoint}/getUsername/${userId}`);
 }
 
 export async function acceptInvite(userId: string) {
-    return await postFetch(`/users/acceptInvite/${userId}`);
+    return await postFetch(`${baseEndpoint}/acceptInvite/${userId}`);
 }

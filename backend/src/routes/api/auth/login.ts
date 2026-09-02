@@ -3,9 +3,9 @@ import { z } from 'zod';
 import {
     LoginUserRequestDto,
     LoginUserRequestDtoType,
-} from '../../dtos/LoginUserRequestDto';
-import { AuthService } from '../../services/AuthService';
-import { AuthServiceError } from '../../errors/AuthServiceError';
+} from '../../../dtos/LoginUserRequestDto';
+import { AuthService } from '../../../services/AuthService';
+import { AuthServiceError } from '../../../errors/AuthServiceError';
 
 const loginRoute: FastifyPluginAsync = async (fastify) => {
     const authService = new AuthService(fastify.prisma);

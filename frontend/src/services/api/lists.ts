@@ -1,7 +1,10 @@
 import { List } from "../../interfaces/List";
+import { getFetch, postFetch, putFetch } from "./fetch";
+
+const baseEndpoint = "/list";
 
 export async function getMyListDetail(listId: number): Promise<List> {
-    // return await getFetch(`/list/me/${listId}`);
+    return await getFetch(`${baseEndpoint}/me/${listId}`);
     return {
         id: 1,
         label: "",
@@ -45,7 +48,7 @@ export async function getMyListDetail(listId: number): Promise<List> {
 }
 
 export async function getListByFriendId(friendId: string): Promise<List> {
-    // return await getFetch(`/list/friend/${friendId}`);
+    return await getFetch(`${baseEndpoint}/friend/${friendId}`);
     return {
         id: 1,
         label: "Tous",
@@ -89,7 +92,7 @@ export async function getListByFriendId(friendId: string): Promise<List> {
 }
 
 export async function getMyLists(): Promise<List[]> {
-    // return await getFetch("/api/lists");
+    return await getFetch(`${baseEndpoint}/lists`);
     return [
         {
             id: 1,
@@ -108,24 +111,15 @@ export async function getMyLists(): Promise<List[]> {
 }
 
 export async function createList(label: string): Promise<List> {
-    return {
-        id: 7,
-        label: label,
-        description: "",
-        position: 1,
-    };
+    return postFetch(`${baseEndpoint}/create`, {
+        body: JSON.stringify({ label: label }),
+    });
 }
 
 export async function updateListDescription(id: number, description: string): Promise<List> {
-    // return await putFetch(`/list/updateDescription/${id}`, {
-    //     body: JSON.stringify({ description: description }),
-    // });
-    return {
-        id: 7,
-        label: "",
-        description: description,
-        position: 1,
-    };
+    return await putFetch(`${baseEndpoint}/updateDescription/${id}`, {
+        body: JSON.stringify({ description: description }),
+    });
 }
         
 // TODO : ignore after this comment

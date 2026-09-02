@@ -26,7 +26,7 @@ export default function EditableCheckLine({
   const updateCheck = async (checkStatus: boolean) => {
     setIsChecked(checkStatus);
 
-    await checkMyKdo(kdo.id);
+    await checkMyKdo(kdo.id, checkStatus);
   }
 
   const updateText = (newText: string) => {

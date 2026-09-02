@@ -1,36 +1,40 @@
 import type { FastifyPluginAsync, FastifySchema } from 'fastify';
 import { z } from 'zod';
+import { makeIdParamsDto } from '../../../dtos/IdParamsDto';
+import { UpdateKdoLabelRequestDto, UpdateKdoLabelRequestDtoType } from '../../../dtos/UpdateKdoLabelRequestDto';
+import { KdoResponseDto } from '../../../dtos/KdoResponseDto';
 import { ItemService } from '../../../services/ItemService';
 import { ItemServiceError } from '../../../errors/ItemServiceError';
-import { makeIdParamsDto } from '../../../dtos/IdParamsDto';
 
-const deleteItemRoute: FastifyPluginAsync = async (fastify) => {
+const ParamsDto = makeIdParamsDto('id');
+
+// Backs updateKdoLabel() in frontend/src/services/api/kdos.ts.
+const updateKdoLabelRoute: FastifyPluginAsync = async (fastify) => {
     const itemService = new ItemService(fastify.prisma);
 
     const schema: FastifySchema = {
-        summary: 'Delete an item',
-        description: 'Deletes an item owned by the authenticated user.',
-        tags: ['items'],
-        security: [{ bearerAuth: [] }],
-        params: makeIdParamsDto('id'),
+        summary: 'Rename one of my items',
+        tags: ['kdo'],
+        params: ParamsDto,
+        body: UpdateKdoLabelRequestDto,
         response: {
-            200: z.boolean(),
-            401: z.object({ error: z.string() }),
+            200: KdoResponseDto,
             403: z.object({ error: z.string() }),
             404: z.object({ error: z.string() }),
         },
     };
 
-    fastify.delete<{ Params: { id: string } }>(
-        '/:id',
+    fastify.patch<{ Params: { id: string }; Body: UpdateKdoLabelRequestDtoType }>(
+        '/updateLabel/:id',
         { schema, preHandler: fastify.authenticate },
         async (request, reply) => {
             const userId = request.user.sub;
             const { id } = request.params;
+            const { label } = request.body;
 
             try {
-                const deleted = await itemService.deleteItem(userId, id);
-                return reply.code(200).send(deleted);
+                const kdo = await itemService.updateItem(userId, id, label);
+                reply.send(kdo);
             } catch (err) {
                 if (err instanceof ItemServiceError) {
                     return reply.code(err.statusCode).send({ error: err.message });
@@ -41,4 +45,4 @@ const deleteItemRoute: FastifyPluginAsync = async (fastify) => {
     );
 };
 
-export default deleteItemRoute;
+export default updateKdoLabelRoute;

@@ -3,9 +3,9 @@ import { z } from 'zod';
 import {
     RegisterUserRequestDto,
     RegisterUserRequestDtoType,
-} from '../../dtos/RegisterUserRequestDto';
-import { AuthService } from '../../services/AuthService';
-import { AuthServiceError } from '../../errors/AuthServiceError';
+} from '../../../dtos/RegisterUserRequestDto';
+import { AuthService } from '../../../services/AuthService';
+import { AuthServiceError } from '../../../errors/AuthServiceError';
 
 const registerRoute: FastifyPluginAsync = async (fastify) => {
     const authService = new AuthService(fastify.prisma);

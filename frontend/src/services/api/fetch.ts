@@ -1,6 +1,6 @@
 import { getToken } from "../authStorage";
 
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
+const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000/api";
 type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 async function handleFetch(endpoint: string, method: Method, object: object = {}, defaultErrorMessage = "Erreur inconnue") {

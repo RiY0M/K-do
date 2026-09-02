@@ -1,38 +1,37 @@
 import type { FastifyPluginAsync, FastifySchema } from 'fastify';
 import { z } from 'zod';
+import { makeIdParamsDto } from '../../../dtos/IdParamsDto';
 import { ItemService } from '../../../services/ItemService';
 import { ItemServiceError } from '../../../errors/ItemServiceError';
-import { ItemResponseDto } from '../../../dtos/ItemResponseDto';
-import { makeIdParamsDto } from '../../../dtos/IdParamsDto';
 
-const checkItemRoute: FastifyPluginAsync = async (fastify) => {
+const ParamsDto = makeIdParamsDto('id');
+
+// Backs deleteKdo() in frontend/src/services/api/kdos.ts. Soft delete only
+// (sets deletedAt) - matches deleteItem in ItemService.
+const deleteKdoRoute: FastifyPluginAsync = async (fastify) => {
     const itemService = new ItemService(fastify.prisma);
 
     const schema: FastifySchema = {
-        summary: 'Toggle an item as checked',
-        description:
-            'Toggles the checked state of an item owned by the authenticated user.',
-        tags: ['items'],
-        security: [{ bearerAuth: [] }],
-        params: makeIdParamsDto('id'),
+        summary: 'Delete one of my items',
+        tags: ['kdo'],
+        params: ParamsDto,
         response: {
-            200: ItemResponseDto,
-            401: z.object({ error: z.string() }),
+            200: z.boolean(),
             403: z.object({ error: z.string() }),
             404: z.object({ error: z.string() }),
         },
     };
 
-    fastify.patch<{ Params: { id: string } }>(
-        '/:id/check',
+    fastify.delete<{ Params: { id: string } }>(
+        '/:id',
         { schema, preHandler: fastify.authenticate },
         async (request, reply) => {
             const userId = request.user.sub;
             const { id } = request.params;
 
             try {
-                const item = await itemService.checkItem(userId, id);
-                return reply.code(200).send(item);
+                const result = await itemService.deleteItem(userId, id);
+                reply.send(result);
             } catch (err) {
                 if (err instanceof ItemServiceError) {
                     return reply.code(err.statusCode).send({ error: err.message });
@@ -43,4 +42,4 @@ const checkItemRoute: FastifyPluginAsync = async (fastify) => {
     );
 };
 
-export default checkItemRoute;
+export default deleteKdoRoute;
