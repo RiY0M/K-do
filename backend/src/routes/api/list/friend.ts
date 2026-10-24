@@ -11,15 +11,15 @@ const getFriendListRoute: FastifyPluginAsync = async (fastify) => {
     const listService = new ListService(fastify.prisma);
 
     const schema: FastifySchema = {
-        summary: "Get a friend's list, from a list shared with them",
+        summary: "Get a friend's list",
         description:
-            "Returns the friend's own wishlist items (no authorId, so the frontend renders them as reservable) merged with any surprise ideas the caller added to the same shared list (authorId kept, so the frontend renders them as editable). See ListService.getListByFriendId for the full explanation.",
+            "Returns the friend's own wishes (no authorId, so the frontend renders them as reservable) followed by the surprise ideas added for them (authorId kept on the caller's own ones, so the frontend renders them as editable). Only available to the user's friends. See ListService.getListByFriendId for the full explanation.",
         tags: ['list'],
         params: ParamsDto,
         response: {
             200: ListDetailResponseDto,
             400: z.object({ error: z.string() }),
-            404: z.object({ error: z.string() }),
+            403: z.object({ error: z.string() }),
         },
     };
 

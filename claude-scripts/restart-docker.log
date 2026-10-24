@@ -1,0 +1,135 @@
+=== START 22/10/2026 20:42:56,28 
+=== down (containers only, volumes kept) 
+ Container fastify-backend Stopping 
+ Container react-frontend Stopping 
+ Container fastify-backend Stopped 
+ Container fastify-backend Removing 
+ Container fastify-backend Removed 
+ Container mailpit Stopping 
+ Container postgres-db Stopping 
+ Container postgres-db Stopped 
+ Container postgres-db Removing 
+ Container postgres-db Removed 
+ Container mailpit Stopped 
+ Container mailpit Removing 
+ Container mailpit Removed 
+ Container react-frontend Stopped 
+ Container react-frontend Removing 
+ Container react-frontend Removed 
+ Network kdo_default Removing 
+ Network kdo_default Removed 
+=== up 
+ Image kdo-backend Building 
+ Image kdo-frontend Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 977B 0.0s done
+#1 DONE 0.0s
+
+#2 [backend internal] load build definition from Dockerfile
+#2 transferring dockerfile: 509B 0.0s done
+#2 DONE 0.0s
+
+#3 [frontend internal] load build definition from Dockerfile
+#3 transferring dockerfile: 238B 0.0s done
+#3 DONE 0.0s
+
+#4 [frontend internal] load metadata for docker.io/library/node:22-alpine
+#4 DONE 0.8s
+
+#5 [frontend internal] load .dockerignore
+#5 transferring context: 99B done
+#5 DONE 0.0s
+
+#6 [backend internal] load .dockerignore
+#6 transferring context: 90B done
+#6 DONE 0.0s
+
+#7 [frontend internal] load build context
+#7 transferring context: 4.76kB 0.0s done
+#7 DONE 0.0s
+
+#8 [frontend 1/7] FROM docker.io/library/node:22-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
+#8 resolve docker.io/library/node:22-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914 0.0s done
+#8 DONE 0.0s
+
+#9 [frontend 4/5] RUN npm install
+#9 CACHED
+
+#10 [frontend 3/5] COPY package.json package-lock.json* ./
+#10 CACHED
+
+#11 [frontend 5/5] COPY . .
+#11 CACHED
+
+#12 [backend internal] load build context
+#12 transferring context: 5.33kB 0.0s done
+#12 DONE 0.0s
+
+#13 [backend 3/7] RUN apk add --no-cache openssl
+#13 CACHED
+
+#14 [backend 2/7] WORKDIR /app
+#14 CACHED
+
+#15 [backend 5/7] RUN npm install
+#15 CACHED
+
+#16 [backend 6/7] COPY . .
+#16 CACHED
+
+#17 [backend 4/7] COPY package.json package-lock.json* ./
+#17 CACHED
+
+#18 [backend 7/7] RUN npx prisma generate
+#18 CACHED
+
+#19 [backend] exporting to image
+#19 exporting layers
+#19 ...
+
+#20 [frontend] exporting to image
+#20 exporting layers done
+#20 exporting manifest sha256:d84e4be3b2e06fd0afa4aebe259280c39a6cb688c210f9a176cf173028c8b7f4 done
+#20 exporting config sha256:9bf21e87da334963e6162fafdcbf76c9c8c8ba490506b23ebfa811aadc828978 done
+#20 exporting attestation manifest sha256:8d3ef1e0d322c4a93b256c13095153aa26f37417ab36b20a7c5fa1b922829650 0.0s done
+#20 exporting manifest list sha256:f48ad86c9d8430e408c7016f5a4a75888b3ed6c5534f5310a298f0e4ba465700 0.0s done
+#20 naming to docker.io/library/kdo-frontend:latest done
+#20 unpacking to docker.io/library/kdo-frontend:latest 0.0s done
+#20 DONE 0.1s
+
+#19 [backend] exporting to image
+#19 exporting layers done
+#19 exporting manifest sha256:21cb8bceab89e6b3d542f7de4bdfd1ef6348a64aa14384bd1da48a6a40a02c4f done
+#19 exporting config sha256:2adf7974efbc4a4ffa33a3c2b03ed4a53e4be8c85498996de48d8a4409c9aa65 done
+#19 exporting attestation manifest sha256:851c5ef00b764c9847fdeb451dc5792470688855e96d4225481f619954ec6f63 0.0s done
+#19 exporting manifest list sha256:e4da8b0e32689f0d5e78b5871d3978f595fd0186936757541e2846858e7c7517 0.0s done
+#19 naming to docker.io/library/kdo-backend:latest done
+#19 unpacking to docker.io/library/kdo-backend:latest done
+#19 DONE 0.1s
+
+#21 [frontend] resolving provenance for metadata file
+#21 DONE 0.0s
+
+#22 [backend] resolving provenance for metadata file
+#22 DONE 0.0s
+ Image kdo-backend Built 
+ Image kdo-frontend Built 
+ Network kdo_default Creating 
+ Network kdo_default Creating 
+ Network kdo_default Created 
+ Network kdo_default Created 
+ Container mailpit Creating 
+ Container react-frontend Creating 
+ Container postgres-db Creating 
+ Container mailpit Created 
+ Container postgres-db Created 
+ Container fastify-backend Creating 
+ Container react-frontend Created 
+ Container fastify-backend Created 
+ Container mailpit Starting 
+ Container postgres-db Starting 
+ Container react-frontend Starting 
+ Container mailpit Started 
+ Container react-frontend Started 
+Error response from daemon: failed to set up container networking: driver failed programming external connectivity on endpoint postgres-db (812e0904110f7e26a2b4f0e3c483287617e87bbdc11fd27d9c1adaf2550a8623): Bind for 0.0.0.0:5432 failed: port is already allocated
+=== waiting for the API 

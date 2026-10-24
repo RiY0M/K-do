@@ -1,4 +1,4 @@
-import { MouseEventHandler, ReactNode, useState } from "react";
+import { MouseEvent, ReactNode, useEffect, useRef, useState } from "react";
 import Check from "../../assets/svgs/Check";
 import XMark from "../../assets/svgs/XMark";
 import { CSS } from "../../services/utils";
@@ -7,7 +7,7 @@ import IconInlineText from "../IconInlineText";
 type validStates = "default" | "loading" | "validated" | "error";
 
 interface Props {
-  onClick: MouseEventHandler<HTMLButtonElement>;
+  onClick: (event: MouseEvent<HTMLButtonElement>) => unknown;
   children: ReactNode;
   validatedLabel?: string;
 }
@@ -20,19 +20,23 @@ export default function MultiStateButton({
   const timeoutDuration = 2000;
   const [buttonState, setButtonState] = useState<validStates>("default");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const timeout = useRef<number | undefined>(undefined);
 
-  const handleClick = async (event: any) => {
+  useEffect(() => () => window.clearTimeout(timeout.current), []);
+
+  const handleClick = async (event: MouseEvent<HTMLButtonElement>) => {
     setButtonState("loading");
+    window.clearTimeout(timeout.current);
 
     try {
       await onClick(event);
       setButtonState("validated");
-    } catch (error: any) {
-      setErrorMessage(error.message);
+    } catch (error: unknown) {
+      setErrorMessage(error instanceof Error ? error.message : "Erreur inconnue");
       setButtonState("error");
     }
 
-    setTimeout(() => {
+    timeout.current = window.setTimeout(() => {
       setButtonState("default");
     }, timeoutDuration);
   };

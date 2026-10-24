@@ -21,8 +21,15 @@ model User {
     deletedAt  DateTime?
     lists      List[]
     userLists  UserList[]
-    kdos       KDo[]
+    kdos       KDo[]       @relation("KDoAuthor")
+    // Surprise gift ideas other people added for this user (never shown to them)
+    receivedKdos KDo[]     @relation("KDoRecipient")
     userKDos   UserKDo[]
+
+    sentFriendships     Friendship[] @relation("FriendshipRequester")
+    receivedFriendships Friendship[] @relation("FriendshipAddressee")
+    invitations         Invitation[]
+    passwordResetTokens PasswordResetToken[]
 
     @@map("users")
 }
@@ -38,9 +45,10 @@ model List {
     updatedAt DateTime  @updatedAt
     deletedAt DateTime?
 
-    user       User        @relation(fields: [authorId], references: [id])
-    userLists UserList[]
-    listKDos  ListKDo[]
+    user        User         @relation(fields: [authorId], references: [id])
+    userLists   UserList[]
+    listKDos    ListKDo[]
+    invitations Invitation[]
 
     @@map("lists")
 }
@@ -53,21 +61,26 @@ model UserList {
     user  User  @relation(fields: [userId], references: [id])
     list List @relation(fields: [listId], references: [id])
 
+    @@unique([userId, listId])
     @@map("users_lists")
 }
 
 model KDo {
-    id        String  @id @default(uuid())
-    label     String
-    authorId  String
-    isChecked Boolean @default(false) // Is checked by author, not by other poeple
-    position  Int
+    id          String  @id @default(uuid())
+    label       String
+    authorId    String
+    // Set when the author added this idea as a surprise for a friend (see
+    // ItemService.createSurpriseItem). Null for the author's own wishes.
+    recipientId String?
+    isChecked   Boolean @default(false) // Is checked by author, not by other poeple
+    position    Int
 
     createdAt DateTime  @default(now())
     updatedAt DateTime  @updatedAt
     deletedAt DateTime?
 
-    user      User       @relation(fields: [authorId], references: [id])
+    user      User       @relation("KDoAuthor", fields: [authorId], references: [id])
+    recipient User?      @relation("KDoRecipient", fields: [recipientId], references: [id])
     userKDos  UserKDo[]
     listKDos  ListKDo[]
     links     Link[]
@@ -84,6 +97,7 @@ model UserKDo {
     user User @relation(fields: [userId], references: [id])
     kDo  KDo  @relation(fields: [kDoId], references: [id])
 
+    @@unique([userId, kDoId])
     @@map("users_k_dos")
 }
 
@@ -106,4 +120,61 @@ model Link {
     kDo KDo @relation(fields: [kDoId], references: [id])
 
     @@map("links")
+}
+
+enum FriendshipStatus {
+    PENDING
+    ACCEPTED
+}
+
+// A friend request (PENDING) or an established friendship (ACCEPTED).
+// There is at most one row per pair of users, whatever the direction - see
+// FriendService.
+model Friendship {
+    id          String           @id @default(uuid())
+    requesterId String
+    addresseeId String
+    status      FriendshipStatus @default(PENDING)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    requester User @relation("FriendshipRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+    addressee User @relation("FriendshipAddressee", fields: [addresseeId], references: [id], onDelete: Cascade)
+
+    @@unique([requesterId, addresseeId])
+    @@map("friendships")
+}
+
+// Shareable invitation link (/invite/:id) to join one of the inviter's lists.
+// Accepting it makes both users friends - see InvitationService.
+model Invitation {
+    id        String   @id @default(uuid())
+    inviterId String
+    listId    String
+    expiresAt DateTime
+
+    createdAt DateTime  @default(now())
+    deletedAt DateTime?
+
+    inviter User @relation(fields: [inviterId], references: [id], onDelete: Cascade)
+    list    List @relation(fields: [listId], references: [id], onDelete: Cascade)
+
+    @@map("invitations")
+}
+
+// "Forgot password" link sent by e-mail (see PasswordResetService). Only a
+// hash of the token is stored, so a database leak doesn't give working links.
+model PasswordResetToken {
+    id        String    @id @default(uuid())
+    userId    String
+    tokenHash String    @unique
+    expiresAt DateTime
+    usedAt    DateTime?
+
+    createdAt DateTime @default(now())
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@map("password_reset_tokens")
 }

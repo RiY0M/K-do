@@ -1,11 +1,8 @@
-import { getFetch, postFetch } from "./fetch";
+import { getFetch } from "./fetch";
 
 const baseEndpoint = "/user";
 
 export async function getUsername(userId: string): Promise<string> {
-    return await getFetch(`${baseEndpoint}/getUsername/${userId}`);
-}
-
-export async function acceptInvite(userId: string) {
-    return await postFetch(`${baseEndpoint}/acceptInvite/${userId}`);
+    const { name } = await getFetch<{ name: string }>(`${baseEndpoint}/getUsername/${userId}`);
+    return name;
 }

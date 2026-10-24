@@ -1,25 +1,34 @@
 import EditableCheckLine from "../EditableCheckLine";
 import AddInput from "../../inputs/AddInput";
-import { Kdo } from "../../../interfaces/Kdo";
+import { Kdo, KdoUpdate } from "../../../interfaces/Kdo";
 import { createMyKdo } from "../../../services/api/kdos";
 
 interface Props {
-  listId: number;
+  listId: string;
   kdos: Kdo[];
+  newKdoId?: string | null;
+  onAdd: (kdo: Kdo) => void;
+  onUpdate: (kdo: KdoUpdate) => void;
+  onDelete: (id: string) => void;
 }
 
 export default function MyUncheckedList({
   listId,
   kdos,
+  newKdoId,
+  onAdd,
+  onUpdate,
+  onDelete,
 }: Readonly<Props>) {
 
   const handleAddInput = async () => {
-    const newKdo = await createMyKdo(listId);
+    try {
+      const newKdo = await createMyKdo(listId);
+      onAdd(newKdo);
+    } catch (error) {
+      console.error(error);
+    }
   };
-
-  const handleDelete = (id: number) => {
-    // TODO : handle list update
-  }
 
   return (
     <div>
@@ -27,7 +36,9 @@ export default function MyUncheckedList({
         <EditableCheckLine
           key={kdo.id}
           kdo={kdo}
-          onDelete={handleDelete}
+          autoFocus={kdo.id === newKdoId}
+          onUpdate={onUpdate}
+          onDelete={onDelete}
         />
       ))}
 

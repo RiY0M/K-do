@@ -8,13 +8,29 @@ services:
       - ./backend:/app
       - /app/node_modules
     ports:
-      - "3000:3000"
+      - "${BACKEND_PORT:-3000}:${BACKEND_PORT:-3000}"
     environment:
       NODE_ENV: development
       DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
       JWT_SECRET: ${JWT_SECRET}
+      PORT: ${BACKEND_PORT:-3000}
+      # Password reset e-mails: caught by Mailpit in development
+      # (http://localhost:8025). Set SMTP_* in .env to use a real server.
+      SMTP_HOST: ${SMTP_HOST:-mailpit}
+      SMTP_PORT: ${SMTP_PORT:-1025}
+      SMTP_SECURE: ${SMTP_SECURE:-false}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      MAIL_FROM: ${MAIL_FROM:-K-do <no-reply@k-do.local>}
+      # Base URL of the links sent by e-mail
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:5173}
+    # Waits until Postgres accepts connections (not just until its container
+    # has started) before running the migrations
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
 
   frontend:
     build:
@@ -28,6 +44,8 @@ services:
       - "5173:5173"
     environment:
       NODE_ENV: development
+      # Where the browser reaches the API (follows BACKEND_PORT)
+      VITE_API_URL: http://localhost:${BACKEND_PORT:-3000}/api
 
   db:
     container_name: postgres-db
@@ -37,3 +55,29 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+    # Exposed on your computer for database tools (pgAdmin...) or for running
+    # the backend outside Docker. 5433 by default because 5432 is often already
+    # taken by another Postgres (other projects); change it with DB_HOST_PORT
+    # in .env. Not to be confused with DB_PORT, the port *inside* Docker used
+    # by the backend (always 5432).
+    ports:
+      - "127.0.0.1:${DB_HOST_PORT:-5433}:5432"
+    # Keeps the data when the container is recreated
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  # Catches the e-mails sent in development: http://localhost:8025
+  mailpit:
+    container_name: mailpit
+    image: axllent/mailpit
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
+volumes:
+  pgdata:

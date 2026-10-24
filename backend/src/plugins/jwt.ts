@@ -16,7 +16,9 @@ const jwtPlugin: FastifyPluginAsync = async (fastify) => {
             try {
                 await request.jwtVerify();
             } catch {
-                reply.code(401).send({ error: 'Unauthorized' });
+                // Returning the reply stops the request here: without it the
+                // route handler still ran with no `request.user`.
+                return reply.code(401).send({ error: 'Unauthorized' });
             }
         }
     );

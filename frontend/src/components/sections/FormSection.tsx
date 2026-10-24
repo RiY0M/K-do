@@ -1,4 +1,4 @@
-import { ReactNode, MouseEventHandler } from "react";
+import { ReactNode, MouseEvent } from "react";
 import { Link } from "react-router-dom";
 import { CSS, formSectionActualWidth } from "../../services/utils";
 import MultiStateButton from "../../components/buttons/MultiStateButton";
@@ -6,16 +6,18 @@ import MultiStateButton from "../../components/buttons/MultiStateButton";
 interface Props {
   title: string;
   buttonLabel: string;
+  validatedLabel?: string;
   redirectMessage: string;
   redirectLinkMessage: string;
   redirectUri: string;
-  onSubmit: MouseEventHandler<HTMLButtonElement>;
+  onSubmit: () => Promise<void>;
   children: ReactNode;
 }
 
 export default function FormSection({
   title,
   buttonLabel,
+  validatedLabel,
   redirectMessage,
   redirectLinkMessage,
   redirectUri,
@@ -23,10 +25,17 @@ export default function FormSection({
   children,
 }: Readonly<Props>) {
 
-  const handleSubmit = async (event: any) => {
+  // Also triggered by the Enter key (implicit submission clicks the button)
+  const handleSubmit = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    await onSubmit(event);
+    // preventDefault skips the browser's checks (required fields...)
+    const form = event.currentTarget.form;
+    if (form && !form.reportValidity()) {
+      throw new Error("Formulaire incomplet");
+    }
+
+    await onSubmit();
   };
 
   const styles: CSS = {
@@ -48,7 +57,7 @@ export default function FormSection({
 
   return (
     <section style={styles.section}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(event) => event.preventDefault()}>
         <div style={styles.form}>
           <h2>{title}</h2>
 
@@ -56,7 +65,7 @@ export default function FormSection({
 
           <div></div>
 
-          <MultiStateButton onClick={handleSubmit}>
+          <MultiStateButton onClick={handleSubmit} validatedLabel={validatedLabel}>
             {buttonLabel}
           </MultiStateButton>
 

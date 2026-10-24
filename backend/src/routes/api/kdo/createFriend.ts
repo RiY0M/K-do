@@ -5,26 +5,19 @@ import { KdoResponseDto } from '../../../dtos/KdoResponseDto';
 import { ItemService } from '../../../services/ItemService';
 import { ItemServiceError } from '../../../errors/ItemServiceError';
 
-/**
- * Backs createFriendKdo() in frontend/src/services/api/kdos.ts.
- *
- * TODO: that frontend function currently takes no arguments and sends no
- * body, so it can't reach this route successfully as-is - see
- * CreateFriendKdoRequestDto.ts and ItemService.createSurpriseItem for the
- * full explanation. It needs to be updated to accept/send `{ listId }`.
- */
+// Backs createFriendKdo(friendId) in frontend/src/services/api/kdos.ts.
 const createFriendKdoRoute: FastifyPluginAsync = async (fastify) => {
     const itemService = new ItemService(fastify.prisma);
 
     const schema: FastifySchema = {
-        summary: "Add a surprise gift idea to a list shared with a friend",
+        summary: 'Add a surprise gift idea for a friend',
         description:
-            "Creates a KDo authored by the authenticated user on a list they share with someone else, so it appears on that person's page without revealing who suggested it.",
+            "Creates a blank KDo authored by the authenticated user for one of their friends. It shows up on that friend's page for everyone but the friend themself.",
         tags: ['kdo'],
         body: CreateFriendKdoRequestDto,
         response: {
             201: KdoResponseDto,
-            404: z.object({ error: z.string() }),
+            403: z.object({ error: z.string() }),
         },
     };
 
@@ -33,10 +26,10 @@ const createFriendKdoRoute: FastifyPluginAsync = async (fastify) => {
         { schema, preHandler: fastify.authenticate },
         async (request, reply) => {
             const userId = request.user.sub;
-            const { listId } = request.body;
+            const { friendId } = request.body;
 
             try {
-                const kdo = await itemService.createSurpriseItem(userId, listId);
+                const kdo = await itemService.createSurpriseItem(userId, friendId);
                 reply.code(201).send(kdo);
             } catch (err) {
                 if (err instanceof ItemServiceError) {

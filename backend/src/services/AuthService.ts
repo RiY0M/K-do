@@ -1,31 +1,26 @@
-import { PrismaClient, User } from '@prisma/client';
+import { Prisma, PrismaClient, User } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { AuthServiceError } from '../errors/AuthServiceError';
+import { DEFAULT_LIST_LABEL } from './ListService';
 
 export class AuthService {
     constructor(private prisma: PrismaClient) {}
 
     async registerUser(name: string, password: string, email?: string): Promise<User> {
-        const existingUsername = await this.prisma.user.findMany({
-            where: {
-                username: {
-                    contains: name
-                }
-            },
+        // Exact matches only: `contains` used to reject "ann" as soon as an
+        // "anna" existed, and the e-mail check was comparing against the name.
+        const existingUsername = await this.prisma.user.findUnique({
+            where: { username: name },
         });
-        if (existingUsername.length > 0) {
+        if (existingUsername) {
             throw new AuthServiceError('Username already taken', 409);
         }
 
         if (email) {
-            const existingEmail = await this.prisma.user.findMany({
-                where: {
-                    email: {
-                        contains: name
-                    }
-                },
+            const existingEmail = await this.prisma.user.findUnique({
+                where: { email },
             });
-            if (existingEmail.length > 0) {
+            if (existingEmail) {
                 throw new AuthServiceError('Email already used', 409);
             }
         }
@@ -33,14 +28,25 @@ export class AuthService {
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(password, saltRounds);
 
-        return this.prisma.user.create({
-            data: {
-                username: name,
-                email: email ?? null,
-                passwordHash,
-                lastSave: new Date(),
-            },
-        });
+        try {
+            return await this.prisma.user.create({
+                data: {
+                    username: name,
+                    email: email ?? null,
+                    passwordHash,
+                    lastSave: new Date(),
+                    // Every user gets their default list right away (see
+                    // ListService.ensureDefaultList).
+                    lists: { create: { label: DEFAULT_LIST_LABEL, position: 1 } },
+                },
+            });
+        } catch (err) {
+            // Two registrations racing for the same username/e-mail
+            if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
+                throw new AuthServiceError('Username or email already used', 409);
+            }
+            throw err;
+        }
     }
 
     async loginUser(name: string, password: string): Promise<User> {

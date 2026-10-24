@@ -26,22 +26,24 @@ export function clearSession(): void {
 }
 
 export function isAuthenticated(): boolean {
-  return getToken() !== null;
+  return getToken() !== null && getCurrentUser() !== null;
 }
 
-export async function loginAndSaveSession(credentials: AuthPayload, fallbackEndpoint: string = "/") {
+// Full page loads (rather than the Navigation API, which isn't available in
+// every browser) so that App re-reads the session and shows the right routes.
+export async function loginAndSaveSession(credentials: AuthPayload, redirectUrl: string = "/") {
   const user = await login(credentials);
   saveSession(user);
-  navigation.navigate(decodeURIComponent(fallbackEndpoint));
+  window.location.assign(redirectUrl);
 }
 
-export async function registerAndSaveSession(credentials: AuthPayload, fallbackEndpoint: string = "/") {
+export async function registerAndSaveSession(credentials: AuthPayload, redirectUrl: string = "/") {
   const user = await register(credentials);
   saveSession(user);
-  navigation.navigate(decodeURIComponent(fallbackEndpoint));
+  window.location.assign(redirectUrl);
 }
 
 export function logout(): void {
-  navigation.navigate('/login');
   clearSession();
+  window.location.assign("/login");
 }

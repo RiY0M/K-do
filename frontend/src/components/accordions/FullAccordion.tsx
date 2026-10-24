@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import AccordionToggle from "./AccordionToggle";
 import AccordionContent from "./AccordionContent";
 import { CSS } from "../../services/utils";
@@ -18,10 +18,14 @@ export default function FullAccordion({
 }: Readonly<Props>) {
 
 	const [open, setOpen] = useState(defaultOpening);
+	const [previousDefaultOpening, setPreviousDefaultOpening] = useState(defaultOpening);
 
-	useEffect(() => {
+	// Follows defaultOpening when it changes (adjusted during render rather
+	// than in an effect, see https://react.dev/learn/you-might-not-need-an-effect)
+	if (defaultOpening !== previousDefaultOpening) {
+		setPreviousDefaultOpening(defaultOpening);
 		setOpen(defaultOpening);
-	}, [defaultOpening]);
+	}
 
 	const styles: CSS = {
 		div: {

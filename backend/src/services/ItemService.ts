@@ -1,17 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import { ItemServiceError } from '../errors/ItemServiceError';
 import { KdoDto, toKdoDto } from './itemMapper';
+import { areFriends, getFriendIds } from './friendshipQueries';
 
 /**
  * Handles individual KDo (gift idea) mutations. Backs the routes under
- * /api/kdo/* - see backend/src/routes/kdo.
- *
- * NOTE: this file previously referenced a `Group` model / `groupId` field
- * that no longer exists in prisma/schema.prisma (it's `List` / `listId`
- * now) - it looks like a rename happened at some point and this service was
- * never updated to match, which would have failed to compile against the
- * current generated Prisma client. Everything below has been rewritten
- * against the actual current schema.
+ * /api/kdo/*.
  */
 export class ItemService {
     constructor(private prisma: PrismaClient) {}
@@ -23,11 +17,12 @@ export class ItemService {
      * EditableCheckLine.tsx), so `value` is optional / blank by default.
      */
     async createItem(userId: string, listId: string, value = ''): Promise<KdoDto> {
-        await this.assertListAccess(userId, listId);
+        await this.assertOwnedList(userId, listId);
 
         const lastItem = await this.prisma.kDo.findFirst({
             where: {
                 authorId: userId,
+                recipientId: null,
                 deletedAt: null,
                 listKDos: { some: { listId } },
             },
@@ -45,25 +40,36 @@ export class ItemService {
 
         await this.touchLastSave(userId);
 
-        return toKdoDto(kDo);
+        return { ...toKdoDto(kDo), authorId: kDo.authorId };
     }
 
     /**
-     * Backs POST /kdo/friend/create (createFriendKdo in
-     * frontend/src/services/api/kdos.ts).
-     *
-     * TODO / known limitation: there is no column on `k_dos` that says "this
-     * is a surprise idea I (the author) added while browsing someone else's
-     * wishlist" as opposed to "this is genuinely my own wishlist item" - the
-     * schema can't tell the two apart. ListService.getListByFriendId works
-     * around this by merging in the caller's own items on the shared list
-     * when building a friend's page, but if the same caller looks at their
-     * OWN list afterwards, this item will show up there too, mixed in with
-     * their real wishlist. A cleaner fix would add something like a
-     * `recipientId` column to `k_dos` to record who the idea is actually for.
+     * Backs POST /kdo/friend/create: adds a "surprise" gift idea for a friend
+     * (KDo.recipientId). It shows up on that friend's page for everyone but
+     * them, and never on the author's own list.
      */
-    async createSurpriseItem(userId: string, listId: string, value = ''): Promise<KdoDto> {
-        return this.createItem(userId, listId, value);
+    async createSurpriseItem(userId: string, friendId: string, value = ''): Promise<KdoDto> {
+        if (!(await areFriends(this.prisma, userId, friendId))) {
+            throw new ItemServiceError('You are not friends with this user', 403);
+        }
+
+        const lastItem = await this.prisma.kDo.findFirst({
+            where: { recipientId: friendId, deletedAt: null },
+            orderBy: { position: 'desc' },
+        });
+
+        const kDo = await this.prisma.kDo.create({
+            data: {
+                label: value,
+                authorId: userId,
+                recipientId: friendId,
+                position: (lastItem?.position ?? 0) + 1,
+            },
+        });
+
+        await this.touchLastSave(userId);
+
+        return { ...toKdoDto(kDo), authorId: kDo.authorId };
     }
 
     async updateItem(userId: string, itemId: string, value: string): Promise<KdoDto> {
@@ -76,15 +82,14 @@ export class ItemService {
 
         await this.touchLastSave(userId);
 
-        return toKdoDto(kDo);
+        return { ...toKdoDto(kDo), authorId: kDo.authorId };
     }
 
     /**
      * Sets (not toggles) the item author's own "done/planned" flag
      * (KDo.isChecked - "Is checked by author, not by other people", per the
      * schema comment). Matches checkMyKdo(id, isChecked) in
-     * frontend/src/services/api/kdos.ts, which now sends the desired state
-     * explicitly rather than relying on the server to flip it.
+     * frontend/src/services/api/kdos.ts.
      */
     async checkItem(userId: string, itemId: string, isChecked: boolean): Promise<KdoDto> {
         await this.assertOwnedItem(userId, itemId);
@@ -96,17 +101,14 @@ export class ItemService {
 
         await this.touchLastSave(userId);
 
-        return toKdoDto(kDo);
+        return { ...toKdoDto(kDo), authorId: kDo.authorId };
     }
 
     /**
      * Sets (not toggles) whether the caller has reserved/taken one of a
      * friend's gift ideas (UserKDo). Deliberately separate from `isChecked`
-     * above: the whole point is that the item's own author must never see
-     * who has claimed it, or it would spoil the surprise. See
-     * prisma/migrations/20260829120000_move_haschecked_to_user_k_dos - the
-     * previously-applied migration actually put `hasChecked` on the wrong
-     * table for this to work; that migration fixes it.
+     * above: the item's recipient must never see who has claimed it, or it
+     * would spoil the surprise.
      */
     async setTaken(userId: string, itemId: string, isChecked: boolean): Promise<KdoDto> {
         const item = await this.assertAccessibleItem(userId, itemId);
@@ -115,19 +117,17 @@ export class ItemService {
             throw new ItemServiceError('You cannot reserve your own item', 403);
         }
 
-        const existing = await this.prisma.userKDo.findFirst({
-            where: { userId, kDoId: itemId },
-        });
-
-        if (isChecked && !existing) {
-            await this.prisma.userKDo.create({
-                data: { userId, kDoId: itemId, hasChecked: true },
+        if (isChecked) {
+            await this.prisma.userKDo.upsert({
+                where: { userId_kDoId: { userId, kDoId: itemId } },
+                create: { userId, kDoId: itemId, hasChecked: true },
+                update: { hasChecked: true },
             });
-        } else if (!isChecked && existing) {
-            await this.prisma.userKDo.delete({ where: { id: existing.id } });
+        } else {
+            await this.prisma.userKDo.deleteMany({ where: { userId, kDoId: itemId } });
         }
 
-        const takenBy = await this.getTakenBy(itemId);
+        const takenBy = await this.getTakenBy(userId, itemId);
 
         return { ...toKdoDto(item), takenBy };
     }
@@ -145,16 +145,20 @@ export class ItemService {
         return true;
     }
 
-    async getTakenBy(itemId: string) {
-        const userKDos = await this.prisma.userKDo.findMany({
-            where: { kDoId: itemId, hasChecked: true },
-            include: { user: true },
-        });
+    /** Who reserved this item, as seen by `viewerId` (isFriend is relative to them). */
+    async getTakenBy(viewerId: string, itemId: string) {
+        const [userKDos, friendIds] = await Promise.all([
+            this.prisma.userKDo.findMany({
+                where: { kDoId: itemId, hasChecked: true },
+                include: { user: true },
+            }),
+            getFriendIds(this.prisma, viewerId),
+        ]);
 
         return userKDos.map((userKDo) => ({
             id: userKDo.user.id,
             name: userKDo.user.username,
-            isFriend: true,
+            isFriend: friendIds.has(userKDo.user.id),
         }));
     }
 
@@ -174,19 +178,20 @@ export class ItemService {
         return item;
     }
 
-    /** Any non-deleted item on a list the caller is a member (or author) of. */
+    /**
+     * An item the caller is allowed to see on a friend's page:
+     * - a wish of a friend, on one of that friend's lists the caller is a
+     *   member of;
+     * - a surprise idea for one of the caller's friends (never for the caller
+     *   themself).
+     */
     private async assertAccessibleItem(userId: string, itemId: string) {
         const item = await this.prisma.kDo.findFirst({
-            where: {
-                id: itemId,
-                deletedAt: null,
+            where: { id: itemId, deletedAt: null },
+            include: {
                 listKDos: {
-                    some: {
-                        list: {
-                            deletedAt: null,
-                            OR: [{ authorId: userId }, { userLists: { some: { userId } } }],
-                        },
-                    },
+                    where: { list: { deletedAt: null, userLists: { some: { userId } } } },
+                    select: { id: true },
                 },
             },
         });
@@ -195,16 +200,25 @@ export class ItemService {
             throw new ItemServiceError('Item not found', 404);
         }
 
-        return item;
+        const { listKDos, ...kDo } = item;
+
+        if (kDo.recipientId) {
+            if (kDo.recipientId !== userId && (await areFriends(this.prisma, userId, kDo.recipientId))) {
+                return kDo;
+            }
+        } else if (
+            kDo.authorId === userId ||
+            (listKDos.length > 0 && (await areFriends(this.prisma, userId, kDo.authorId)))
+        ) {
+            return kDo;
+        }
+
+        throw new ItemServiceError('Item not found', 404);
     }
 
-    private async assertListAccess(userId: string, listId: string): Promise<void> {
+    private async assertOwnedList(userId: string, listId: string): Promise<void> {
         const list = await this.prisma.list.findFirst({
-            where: {
-                id: listId,
-                deletedAt: null,
-                OR: [{ authorId: userId }, { userLists: { some: { userId } } }],
-            },
+            where: { id: listId, authorId: userId, deletedAt: null },
         });
 
         if (!list) {

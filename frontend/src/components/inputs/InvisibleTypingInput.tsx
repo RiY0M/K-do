@@ -1,9 +1,11 @@
+import { useLayoutEffect, useRef } from "react";
 import { CSS } from "../../services/utils";
 
 interface Props {
 	name: string;
 	value: string;
 	setValue: (value: string) => void;
+	autoFocus?: boolean;
 	onFocus?: () => void;
 	onBlur?: () => void;
 }
@@ -12,9 +14,20 @@ export default function InvisibleTypingInput({
 	name,
 	value,
 	setValue,
+	autoFocus = false,
 	onFocus,
 	onBlur,
 }: Readonly<Props>) {
+	const ref = useRef<HTMLTextAreaElement>(null);
+
+	// Fits the height to the text, also on first render (long labels)
+	useLayoutEffect(() => {
+		const textarea = ref.current;
+		if (!textarea) return;
+
+		textarea.style.height = "auto";
+		textarea.style.height = `${textarea.scrollHeight}px`;
+	}, [value]);
 
 	const styles: CSS = {
 		input: {
@@ -29,15 +42,13 @@ export default function InvisibleTypingInput({
 
 	return (
 		<textarea
+			ref={ref}
 			style={styles.input}
 			id={name}
 			name={name}
 			value={value}
-			onChange={(e) => {
-				setValue(e.target.value);
-				e.target.style.height = "auto";
-				e.target.style.height = `${e.target.scrollHeight}px`;
-			}}
+			onChange={(e) => setValue(e.target.value)}
+			autoFocus={autoFocus}
 			onFocus={onFocus}
 			onBlur={onBlur}
 			maxLength={255}

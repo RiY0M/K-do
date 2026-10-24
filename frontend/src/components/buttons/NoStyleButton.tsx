@@ -4,10 +4,12 @@ import { CSS } from "../../services/utils";
 interface Props {
   children: ReactNode;
   onClick: MouseEventHandler<HTMLButtonElement>;
+  onMouseDown?: MouseEventHandler<HTMLButtonElement>;
   style?: CSSProperties;
+  title?: string;
 }
 
-export default function NoStyleButton({ children, onClick, style }: Readonly<Props>) {
+export default function NoStyleButton({ children, onClick, onMouseDown, style, title }: Readonly<Props>) {
 
   const styles: CSS = {
     button: {
@@ -21,6 +23,16 @@ export default function NoStyleButton({ children, onClick, style }: Readonly<Pro
   }
 
   return (
-    <button style={styles.button} className="action" onClick={onClick}>{children}</button>
+    <button
+      type="button"
+      style={styles.button}
+      className="action"
+      onClick={onClick}
+      onMouseDown={onMouseDown}
+      title={title}
+      aria-label={title}
+    >
+      {children}
+    </button>
   );
 }

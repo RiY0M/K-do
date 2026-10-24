@@ -1,14 +1,18 @@
 import { CSS } from "../../../services/utils";
 import FullAccordion from "../../accordions/FullAccordion";
-import { Kdo } from "../../../interfaces/Kdo";
+import { Kdo, KdoUpdate } from "../../../interfaces/Kdo";
 import ListKdos from "../ListKdos";
 
 interface Props {
   kdos: Kdo[];
+  onUpdate: (kdo: KdoUpdate) => void;
+  onDelete: (id: string) => void;
 }
 
 export default function FriendCheckedList({
-  kdos
+  kdos,
+  onUpdate,
+  onDelete,
 }: Readonly<Props>) {
 
   const styles: CSS = {
@@ -20,7 +24,7 @@ export default function FriendCheckedList({
   return (
     <FullAccordion label="Éléments cochés" defaultOpening={true}>
       <div style={styles.div}>
-        <ListKdos kdos={kdos} />
+        <ListKdos kdos={kdos} onUpdate={onUpdate} onDelete={onDelete} />
       </div>
     </FullAccordion>
   );

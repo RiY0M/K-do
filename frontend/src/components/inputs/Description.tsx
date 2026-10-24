@@ -3,7 +3,7 @@ import TypingInput from "./TypingInput";
 import { updateListDescription } from "../../services/api/lists";
 
 interface Props {
-  id: number;
+  id: string;
   defaultDescription: string;
 }
 
@@ -12,14 +12,14 @@ export default function Description({
   defaultDescription,
 }: Readonly<Props>) {
   const [description, setDescription] = useState<string>(defaultDescription);
-  const timeout = useRef<number>(0);
+  const timeout = useRef<number | undefined>(undefined);
 
   const updateDescription = (newText: string) => {
     setDescription(newText);
-    clearTimeout(timeout.current);
+    window.clearTimeout(timeout.current);
 
-    timeout.current = setTimeout(async () => {
-      await updateListDescription(id, newText);
+    timeout.current = window.setTimeout(() => {
+      updateListDescription(id, newText).catch(console.error);
     }, 500);
   }
 
@@ -30,6 +30,7 @@ export default function Description({
       type="textarea"
       value={description}
       setValue={updateDescription}
+      maxLength={2000}
       rows={4}
     />
   );

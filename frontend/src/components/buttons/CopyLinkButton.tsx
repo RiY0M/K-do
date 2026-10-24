@@ -1,17 +1,27 @@
 import Plus from "../../assets/svgs/Plus";
 import IconInlineText from "../IconInlineText";
 import MultiStateButton from "../buttons/MultiStateButton";
+import { createInvitation, getInvitationLink } from "../../services/api/invitations";
 
 interface Props {
-  userId: string;
+  listId: string;
 }
 
+// Copies an invitation link (/invite/:id) to the given list. Whoever opens
+// it and accepts becomes your friend.
 export default function CopyLinkButton({
-  userId,
+  listId,
 }: Readonly<Props>) {
 
   const handleAdd = async () => {
-    navigator.clipboard.writeText(`${window.location.origin}/invite/${userId}`);
+    const link = getInvitationLink(await createInvitation(listId));
+
+    // The clipboard API only exists on https:// or localhost
+    if (navigator.clipboard) {
+      await navigator.clipboard.writeText(link);
+    } else {
+      window.prompt("Copiez ce lien d'invitation :", link);
+    }
   };
 
   return (

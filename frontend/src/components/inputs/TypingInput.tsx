@@ -8,8 +8,11 @@ interface Props {
 	name: string;
 	type?: inputType;
 	placeholder?: string;
+	// Small text under the field
+	hint?: string;
 	required?: boolean;
 	disabled?: boolean;
+	// Not applied for now (see the commented `pattern` attribute below)
 	pattern?: RegExp;
 	value: string;
 	maxLength?: number;
@@ -24,9 +27,9 @@ export default function TypingInput({
 	name,
 	type = "text",
 	placeholder = "",
+	hint,
 	required = false,
 	disabled = false,
-	pattern = /.*/g,
 	value,
 	maxLength,
 	rows = 1,
@@ -42,6 +45,11 @@ export default function TypingInput({
 		label: {
 			cursor: "text",
 			textAlign: "left",
+		},
+		hint: {
+			fontSize: "var(--sm-size)",
+			textAlign: "left",
+			opacity: 0.8,
 		},
 		textarea: {
 			resize: "none",
@@ -95,6 +103,8 @@ export default function TypingInput({
 					maxLength={maxLength}
 				/>
 			}
+
+			{hint && <span style={styles.hint}>{hint}</span>}
 		</div>
 	);
 }

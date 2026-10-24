@@ -1,32 +1,42 @@
-import { useState } from "react";
 import { CSS } from "../../../services/utils";
-import { Kdo } from "../../../interfaces/Kdo";
+import { Kdo, KdoUpdate } from "../../../interfaces/Kdo";
 import TakeList from "./TakeList";
 import Checkbox from "../../inputs/Checkbox";
 import IconInlineText from "../../IconInlineText";
 import { checkFriendKdo } from "../../../services/api/kdos";
-import { User } from "../../../interfaces/User";
 import { getCurrentUser } from "../../../services/authStorage";
 
 interface Props {
   kdo: Kdo;
+  onUpdate: (kdo: KdoUpdate) => void;
 }
 
 export default function FriendCheckLine({
   kdo,
+  onUpdate,
 }: Readonly<Props>) {
   const user = getCurrentUser();
-
-  const [isChecked, setIsChecked] = useState(
-    kdo?.takenBy && kdo.takenBy.filter(
-      (friend: User) => friend.id == user!.id
-    ).length > 0
-  );
+  const takenBy = kdo.takenBy ?? [];
+  const isChecked = takenBy.some((friend) => friend.id === user?.id);
 
   const updateCheck = async (checkStatus: boolean) => {
-    setIsChecked(checkStatus);
+    if (!user) return;
 
-    await checkFriendKdo(kdo.id, checkStatus);
+    // Updated right away, then replaced by what the server says
+    onUpdate({
+      id: kdo.id,
+      takenBy: checkStatus
+        ? [...takenBy, { id: user.id, name: user.name, isFriend: false }]
+        : takenBy.filter((friend) => friend.id !== user.id),
+    });
+
+    try {
+      const updatedKdo = await checkFriendKdo(kdo.id, checkStatus);
+      onUpdate({ id: kdo.id, takenBy: updatedKdo.takenBy ?? [] });
+    } catch (error) {
+      console.error(error);
+      onUpdate({ id: kdo.id, takenBy: takenBy });
+    }
   }
 
   const styles: CSS = {
@@ -40,12 +50,12 @@ export default function FriendCheckLine({
 
   return (
     <div style={styles.div}>
-      {kdo.takenBy && kdo.takenBy!.length > 0 &&
-        <TakeList users={kdo.takenBy!} />
+      {takenBy.length > 0 &&
+        <TakeList users={takenBy} />
       }
 
       <IconInlineText style={styles.isChecked}>
-        <Checkbox name={`check-${kdo?.id}`} checked={isChecked} setChecked={updateCheck} />
+        <Checkbox name={`check-${kdo.id}`} checked={isChecked} setChecked={updateCheck} />
         {kdo.label}
         {/* <NoStyleButton onClick={handleLink}>
           <div><LinkIcon /></div>

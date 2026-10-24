@@ -4,7 +4,7 @@ import '@fastify/jwt';
 declare module 'fastify' {
     interface FastifyInstance {
         prisma: PrismaClient;
-        authenticate: (request: FastifyRequest, reply: FastifyReply) => Promise<void>;
+        authenticate: (request: FastifyRequest, reply: FastifyReply) => Promise<FastifyReply | void>;
     }
 }
 

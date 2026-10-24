@@ -2,7 +2,7 @@ import { Kdo } from "./Kdo";
 import { User } from "./User";
 
 export interface List {
-    id: number;
+    id: string;
     label: string;
     description: string;
     position: number;

@@ -5,8 +5,11 @@ import { z } from 'zod';
 // frontend sends `{ label }` (see frontend/src/services/api/kdos.ts
 // updateKdoLabel), so this DTO matches that instead of reusing/renaming the
 // old one.
+//
+// An empty label is allowed: items are created blank and the frontend saves
+// the label while the user types, including when they erase everything.
 export const UpdateKdoLabelRequestDto = z.object({
-    label: z.string().min(1).max(255),
+    label: z.string().max(255),
 });
 
 export type UpdateKdoLabelRequestDtoType = z.infer<typeof UpdateKdoLabelRequestDto>;

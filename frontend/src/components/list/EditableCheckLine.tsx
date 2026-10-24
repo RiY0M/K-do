@@ -3,44 +3,58 @@ import NoStyleButton from "../buttons/NoStyleButton";
 import XMark from "../../assets/svgs/XMark";
 import Checkbox from "../inputs/Checkbox";
 import InvisibleTypingInput from "../inputs/InvisibleTypingInput";
-import LinkIcon from "../../assets/svgs/LinkIcon";
-import { Kdo } from "../../interfaces/Kdo";
+import { Kdo, KdoUpdate } from "../../interfaces/Kdo";
 import { checkMyKdo, deleteKdo, updateKdoLabel } from "../../services/api/kdos";
 import IconInlineText from "../IconInlineText";
 import { CSS } from "../../services/utils";
 
 interface Props {
   kdo: Kdo;
-  onDelete: (id: number) => void;
+  autoFocus?: boolean;
+  onUpdate: (kdo: KdoUpdate) => void;
+  onDelete: (id: string) => void;
 }
 
 export default function EditableCheckLine({
   kdo,
+  autoFocus = false,
+  onUpdate,
   onDelete,
 }: Readonly<Props>) {
-  const [isChecked, setIsChecked] = useState(kdo?.isChecked ?? false);
-  const [text, setText] = useState<string>(kdo?.label);
-  const [isFocused, setIsFocused] = useState(false);
-  const timeout = useRef<number>(0);
+  const [isFocused, setIsFocused] = useState(autoFocus);
+  const timeout = useRef<number | undefined>(undefined);
+  const isChecked = kdo.isChecked ?? false;
 
   const updateCheck = async (checkStatus: boolean) => {
-    setIsChecked(checkStatus);
+    // Updated right away, the line moves to the checked/unchecked part
+    onUpdate({ id: kdo.id, isChecked: checkStatus });
 
-    await checkMyKdo(kdo.id, checkStatus);
+    try {
+      await checkMyKdo(kdo.id, checkStatus);
+    } catch (error) {
+      console.error(error);
+      onUpdate({ id: kdo.id, isChecked: !checkStatus });
+    }
   }
 
   const updateText = (newText: string) => {
-    setText(newText);
-    clearTimeout(timeout.current);
+    onUpdate({ id: kdo.id, label: newText });
+    window.clearTimeout(timeout.current);
 
-    timeout.current = setTimeout(() => {
-      updateKdoLabel(kdo.id, newText);
+    // Not cleared on unmount: the label must still be saved if the line
+    // moves to the other part of the list in the meantime
+    timeout.current = window.setTimeout(() => {
+      updateKdoLabel(kdo.id, newText).catch(console.error);
     }, 500);
   }
 
   const handleDelete = async () => {
-    await deleteKdo(kdo.id);
-    onDelete!(kdo.id);
+    try {
+      await deleteKdo(kdo.id);
+      onDelete(kdo.id);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   // const handleLink = () => {
@@ -58,16 +72,19 @@ export default function EditableCheckLine({
 
   return (
     <IconInlineText style={styles.isChecked}>
-      <Checkbox name={`check-${kdo?.id}`} checked={isChecked} setChecked={updateCheck} />
+      <Checkbox name={`check-${kdo.id}`} checked={isChecked} setChecked={updateCheck} />
       <InvisibleTypingInput
-        name={`kdo-${kdo?.id}`}
-        value={text}
+        name={`kdo-${kdo.id}`}
+        value={kdo.label}
         setValue={updateText}
+        autoFocus={autoFocus}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />
 
-      <NoStyleButton onClick={handleDelete} style={styles.isFocused}>
+      {/* onMouseDown: keeps the focus on the input, otherwise the button
+          disappears (blur) before the click is registered */}
+      <NoStyleButton onClick={handleDelete} onMouseDown={(e) => e.preventDefault()} style={styles.isFocused} title="Supprimer">
         <XMark />
       </NoStyleButton>
       {/* <NoStyleButton onClick={handleLink}>

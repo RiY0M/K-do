@@ -1,19 +1,19 @@
 import { CSS } from "../../../services/utils";
 import FullAccordion from "../../accordions/FullAccordion";
 import EditableCheckLine from "../EditableCheckLine";
-import { Kdo } from "../../../interfaces/Kdo";
+import { Kdo, KdoUpdate } from "../../../interfaces/Kdo";
 
 interface Props {
   kdos: Kdo[];
+  onUpdate: (kdo: KdoUpdate) => void;
+  onDelete: (id: string) => void;
 }
 
 export default function MyCheckedList({
-  kdos
+  kdos,
+  onUpdate,
+  onDelete,
 }: Readonly<Props>) {
-
-  const handleDelete = (id: number) => {
-    // TODO : handle list update
-  }
 
   const styles: CSS = {
     div: {
@@ -28,7 +28,8 @@ export default function MyCheckedList({
           <EditableCheckLine
             key={kdo.id}
             kdo={kdo}
-            onDelete={handleDelete}
+            onUpdate={onUpdate}
+            onDelete={onDelete}
           />
         ))}
       </div>

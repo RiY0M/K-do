@@ -1,12 +1,10 @@
 import { z } from 'zod';
 import { KdoResponseDto, UserSummaryDto } from './KdoResponseDto';
 
-// GET /api/lists and POST /api/lists - mirrors frontend/src/interfaces/List.ts
-// (minus uncheckedKdos/checkedKdos, which only come back from the detail
-// endpoints below).
-//
-// TODO: see the id-type TODO in KdoResponseDto.ts - the same string-vs-number
-// mismatch applies to List.id on the frontend.
+// GET /list/lists and POST /list/create - mirrors
+// frontend/src/interfaces/List.ts (minus uncheckedKdos/checkedKdos, which only
+// come back from the detail endpoints below). `friends` are the list's
+// members.
 export const ListSummaryResponseDto = z.object({
     id: z.string().uuid(),
     label: z.string(),

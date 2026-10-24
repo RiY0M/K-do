@@ -1,7 +1,7 @@
 {
   "name": "fastify-backend",
   "version": "1.0.0",
-  "main": "app.ts",
+  "main": "src/server.ts",
   "type": "module",
   "directories": {
     "test": "test"
@@ -10,21 +10,22 @@
     "node": ">=22"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc --noEmit && esbuild src/server.ts --bundle --platform=node --format=esm --target=node22 --packages=external --outfile=dist/server.js",
     "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit",
     "test": "NODE_ENV=test tsx --test src/test/**/*.test.ts",
     "test:cov": "NODE_ENV=test c8 tsx --test src/test/**/*.test.ts",
     "dev": "nodemon",
-    "lint": "eslint 'src/**/*.{js,ts}'",
+    "lint": "eslint src",
     "format": "prettier --write \"src/**/*.{ts,js,json,md}\"",
     "db:migrate": "prisma migrate dev",
-    "db:generate": "npx prisma generate"
+    "db:deploy": "prisma migrate deploy",
+    "db:generate": "prisma generate"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@fastify/autoload": "^6.0.0",
     "@fastify/cors": "^11.3.0",
     "@fastify/jwt": "^10.0.0",
     "@fastify/sensible": "^6.0.0",
@@ -34,9 +35,9 @@
     "bcrypt": "^6.0.0",
     "dotenv": "^17.2.1",
     "fastify": "^5.0.0",
-    "fastify-cli": "^7.4.0",
     "fastify-plugin": "^5.0.0",
     "fastify-type-provider-zod": "^6.1.0",
+    "nodemailer": "^10.1.7",
     "prisma": "^6.15.0",
     "zod": "^4.1.5"
   },

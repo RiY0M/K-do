@@ -1,11 +1,12 @@
 import MyFullListSection from "../components/sections/MyFullListSection";
 import ListPreviews from "../components/sections/ListPreviews";
+import FriendsSection from "../components/sections/FriendsSection";
 import { CSS } from "../services/utils";
 import { useBehaviourDisplay } from "../hooks/useBehaviourDisplay";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { List } from "../interfaces/List";
-import { createList, getMyLists } from "../services/api/lists";
+import { getMyLists } from "../services/api/lists";
 import { logout } from "../services/authStorage";
 import IconInlineText from "../components/IconInlineText";
 import ArrowLeft from "../assets/svgs/ArrowLeft";
@@ -15,18 +16,20 @@ export default function MyHome() {
   const behaviourDisplay = useBehaviourDisplay();
 
   const [lists, setLists] = useState<List[]>([]);
-  const [selectedList, setSelectedList] = useState<List | null>(null);
+  // The backend always returns at least the default list ("Tous")
+  const selectedList = lists[0] ?? null;
+
+  // Also called when friends change, to refresh the members of the lists
+  const refreshLists = useCallback(async () => {
+    try {
+      setLists(await getMyLists());
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
 
   useEffect(() => {
-    getMyLists().then(async (myLists) => {
-      setLists(myLists);
-
-      let currentList = myLists[0];
-      if (!currentList) {
-        currentList = await createList("Tous");
-      }
-      setSelectedList(currentList);
-    });
+    getMyLists().then(setLists).catch(console.error);
   }, []);
 
   const styles: CSS = {
@@ -47,7 +50,10 @@ export default function MyHome() {
         </IconInlineText>
       </Link>
       <div style={styles.subDiv}>
-        <ListPreviews lists={lists} />
+        <FriendsSection onFriendsChange={refreshLists} />
+        {/* <div>
+          <ListPreviews lists={lists} />
+        </div> */}
         {selectedList && <MyFullListSection listPreview={selectedList} />}
       </div>
     </div>

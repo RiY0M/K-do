@@ -1,31 +1,19 @@
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import AutoLoad from '@fastify/autoload';
 import type { FastifyPluginAsync } from 'fastify';
+import corsPlugin from './plugins/cors';
+import jwtPlugin from './plugins/jwt';
+import prismaPlugin from './plugins/prisma';
 import mainRoutes from './routes';
 
 export const options = {};
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Plugins are registered explicitly (like the routes) instead of through
+// @fastify/autoload: autoload looked for a `plugins` folder next to the
+// running file, which doesn't exist once the app is bundled into
+// dist/server.js for production, so the server started without prisma/jwt.
 const app: FastifyPluginAsync = async (fastify, opts) => {
-    try {
-        await fastify.register(AutoLoad, {
-            dir: path.join(__dirname, 'plugins'),
-            options: { ...opts },
-        });
-    } catch (err) {
-        console.error('Impossible de charger les plugins:', err);
-    }
-
-    // try {
-    //   await fastify.register(AutoLoad, {
-    //     dir: path.join(__dirname, 'routes'),
-    //     options: { ...opts },
-    //   });
-    // } catch (err) {
-    //   console.error('Impossible de charger les routes:', err);
-    // }
+    await fastify.register(corsPlugin, opts);
+    await fastify.register(jwtPlugin, opts);
+    await fastify.register(prismaPlugin, opts);
 
     await fastify.register(mainRoutes, opts);
 };

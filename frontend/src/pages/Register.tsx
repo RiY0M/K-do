@@ -1,6 +1,6 @@
-import { useState, FormEvent } from "react";
+import { useState } from "react";
 import { registerAndSaveSession } from "../services/authStorage";
-import { getOptionalUrl } from "../services/utils";
+import { toUrlParam, useOptionalUrl } from "../services/utils";
 import TypingInput from "../components/inputs/TypingInput";
 import FormSection from "../components/sections/FormSection";
 
@@ -9,16 +9,15 @@ export default function Register() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const url = getOptionalUrl();
+  // Page to go back to once registered (e.g. an invitation)
+  const url = useOptionalUrl();
 
-  const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-
+  const handleSubmit = async () => {
     await registerAndSaveSession({
       name: name,
       email: email,
       password: password,
-    }, url ? url : "/");
+    }, url || "/");
   };
 
   return (
@@ -27,7 +26,7 @@ export default function Register() {
       buttonLabel="S'inscrire"
       redirectMessage="Déjà inscrit ?"
       redirectLinkMessage="Se connecter"
-      redirectUri={`/login/${url}`}
+      redirectUri={`/login${toUrlParam(url)}`}
       onSubmit={handleSubmit}
     >
       <TypingInput
@@ -35,6 +34,7 @@ export default function Register() {
         name="name"
         type="text"
         required
+        maxLength={32}
         value={name}
         setValue={setName}
       />
@@ -44,6 +44,7 @@ export default function Register() {
         name="email"
         type="email"
         placeholder="k-do@exemple.com"
+        hint="Facultatif, mais nécessaire pour récupérer votre mot de passe"
         value={email}
         setValue={setEmail}
       />
