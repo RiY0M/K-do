@@ -30,6 +30,7 @@ model User {
     receivedFriendships Friendship[] @relation("FriendshipAddressee")
     invitations         Invitation[]
     passwordResetTokens PasswordResetToken[]
+    links               Link[]
 
     @@map("users")
 }
@@ -113,12 +114,17 @@ model ListKDo {
 }
 
 model Link {
-    id    String @id @default(uuid())
-    kDoId String
-    href  String
+    id       String @id @default(uuid())
+    href     String
+    authorId String
+    kDoId    String
 
-    kDo KDo @relation(fields: [kDoId], references: [id])
+    createdAt DateTime @default(now())
 
+    user User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    kDo  KDo  @relation(fields: [kDoId], references: [id], onDelete: Cascade)
+
+    @@index([kDoId])
     @@map("links")
 }
 

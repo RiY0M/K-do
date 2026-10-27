@@ -5,6 +5,10 @@ import Checkbox from "../../inputs/Checkbox";
 import IconInlineText from "../../IconInlineText";
 import { checkFriendKdo } from "../../../services/api/kdos";
 import { getCurrentUser } from "../../../services/authStorage";
+import { useState } from "react";
+import NoStyleButton from "../../buttons/NoStyleButton";
+import LinkIcon from "../../../assets/svgs/LinkIcon";
+import LinksModal from "../../modals/LinksModal";
 
 interface Props {
   kdo: Kdo;
@@ -18,6 +22,8 @@ export default function FriendCheckLine({
   const user = getCurrentUser();
   const takenBy = kdo.takenBy ?? [];
   const isChecked = takenBy.some((friend) => friend.id === user?.id);
+  const [isLinksOpen, setIsLinksOpen] = useState(false);
+  const linkCount = kdo.links?.length ?? 0;
 
   const updateCheck = async (checkStatus: boolean) => {
     if (!user) return;
@@ -43,6 +49,9 @@ export default function FriendCheckLine({
     div: {
       gap: "var(--xs-space)",
     },
+    span: {
+      flex: 1,
+    },
     isChecked: {
       textDecoration: isChecked ? "line-through" : "",
     }
@@ -56,10 +65,22 @@ export default function FriendCheckLine({
 
       <IconInlineText style={styles.isChecked}>
         <Checkbox name={`check-${kdo.id}`} checked={isChecked} setChecked={updateCheck} />
-        {kdo.label}
-        {/* <NoStyleButton onClick={handleLink}>
-          <div><LinkIcon /></div>
-        </NoStyleButton> */}
+        <span style={styles.span}>{kdo.label}</span>
+
+        {linkCount > 0 &&
+          <>
+            <NoStyleButton onClick={() => setIsLinksOpen(true)} title={`Liens (${linkCount})`}>
+              <LinkIcon />
+            </NoStyleButton>
+
+            <LinksModal
+              kdo={kdo}
+              editable={false}
+              open={isLinksOpen}
+              onClose={() => setIsLinksOpen(false)}
+            />
+          </>
+        }
       </IconInlineText>
     </div>
   );

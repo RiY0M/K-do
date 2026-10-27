@@ -16,6 +16,7 @@ import MultiStateButton from "../buttons/MultiStateButton";
 import FriendLine from "../friend/FriendLine";
 import FriendRequestLine from "../friend/FriendRequestLine";
 import TypingInput from "../inputs/TypingInput";
+import ConfirmModal from "../modals/ConfirmModal";
 
 interface Props {
 	// Called when friends are added or removed (list members change too)
@@ -32,6 +33,7 @@ export default function FriendsSection({
 	const [friends, setFriends] = useState<User[]>([]);
 	const [requests, setRequests] = useState<FriendRequests>({ received: [], sent: [] });
 	const [name, setName] = useState<string>("");
+	const [friendToRemove, setFriendToRemove] = useState<User | null>(null);
 
 	const loadFriends = useCallback(async () => {
 		const [newFriends, newRequests] = await Promise.all([getFriends(), getFriendRequests()]);
@@ -83,18 +85,16 @@ export default function FriendsSection({
 		}
 	};
 
-	const handleRemove = async (friend: User) => {
-		if (!window.confirm(`Retirer ${friend.name} de vos amis ? Vous ne verrez plus vos listes respectives.`)) {
-			return;
-		}
+	// Removal waits for the confirmation modal
+	const handleRemove = (friend: User) => setFriendToRemove(friend);
 
-		try {
-			await removeFriend(friend.id);
-			await loadFriends();
-			onFriendsChange?.();
-		} catch (error) {
-			console.error(error);
-		}
+	const confirmRemove = async () => {
+		if (!friendToRemove) return;
+
+		// Errors are shown on the confirm button
+		await removeFriend(friendToRemove.id);
+		await loadFriends();
+		onFriendsChange?.();
 	};
 
 	const styles: CSS = {
@@ -173,6 +173,21 @@ export default function FriendsSection({
 					</div>
 				</FullAccordion>
 			</div>
+
+			{friendToRemove &&
+				<ConfirmModal
+					open
+					title="Retirer cet ami ?"
+					confirmLabel="Retirer"
+					onConfirm={confirmRemove}
+					onClose={() => setFriendToRemove(null)}
+				>
+					<p>
+						Retirer <strong>{friendToRemove.name}</strong> de vos amis&nbsp;? Vous ne verrez plus vos listes
+						respectives et vos réservations sur ses cadeaux seront annulées.
+					</p>
+				</ConfirmModal>
+			}
 		</section>
 	);
 }

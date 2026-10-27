@@ -28,3 +28,13 @@ section {
   padding: var(--md-space);
   box-shadow: var(--shadow);
 }
+
+dialog {
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color);
+  width: min(400px, calc(100% - 2 * var(--md-space)));
+  overflow: visible;
+  margin: auto;
+}

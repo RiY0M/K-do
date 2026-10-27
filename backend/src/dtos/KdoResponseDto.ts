@@ -10,6 +10,14 @@ export const UserSummaryDto = z.object({
 
 export type UserSummaryDtoType = z.infer<typeof UserSummaryDto>;
 
+// Mirrors frontend/src/interfaces/Link.ts.
+export const LinkResponseDto = z.object({
+    id: z.uuid(),
+    href: z.string(),
+});
+
+export type LinkResponseDtoType = z.infer<typeof LinkResponseDto>;
+
 // Mirrors frontend/src/interfaces/Kdo.ts.
 export const KdoResponseDto = z.object({
     id: z.string().uuid(),
@@ -27,6 +35,9 @@ export const KdoResponseDto = z.object({
     // reserved/taken this gift idea so far (UserKDo). Never sent to the
     // person the gift is for - that's the whole point, it stays a surprise.
     takenBy: z.array(UserSummaryDto).optional(),
+    // Links attached by the item's author (where to buy it...). Sent with
+    // lists; may be omitted from the responses of the /kdo mutations.
+    links: z.array(LinkResponseDto).optional(),
 });
 
 export type KdoResponseDtoType = z.infer<typeof KdoResponseDto>;

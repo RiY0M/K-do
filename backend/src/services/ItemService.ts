@@ -1,7 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { ItemServiceError } from '../errors/ItemServiceError';
-import { KdoDto, toKdoDto } from './itemMapper';
+import { KdoDto, LinkDto, toKdoDto, toLinkDto } from './itemMapper';
 import { areFriends, getFriendIds } from './friendshipQueries';
+
+// Maximum number of links on one item
+export const MAX_LINKS_PER_ITEM = 20;
 
 /**
  * Handles individual KDo (gift idea) mutations. Backs the routes under
@@ -140,6 +143,46 @@ export class ItemService {
             data: { deletedAt: new Date() },
         });
 
+        await this.touchLastSave(userId);
+
+        return true;
+    }
+
+    /**
+     * Attaches a link to one of the caller's own items. Friends can see and
+     * open the links, only the author can add or remove them.
+     */
+    async addLink(userId: string, itemId: string, href: string): Promise<LinkDto> {
+        await this.assertOwnedItem(userId, itemId);
+
+        const count = await this.prisma.link.count({ where: { kDoId: itemId } });
+        if (count >= MAX_LINKS_PER_ITEM) {
+            throw new ItemServiceError('Too many links on this item', 400);
+        }
+
+        const link = await this.prisma.link.create({
+            data: { href, kDoId: itemId, authorId: userId },
+        });
+
+        await this.touchLastSave(userId);
+
+        return toLinkDto(link);
+    }
+
+    async deleteLink(userId: string, linkId: string): Promise<boolean> {
+        const link = await this.prisma.link.findFirst({
+            where: { id: linkId, kDo: { deletedAt: null } },
+        });
+
+        if (!link) {
+            throw new ItemServiceError('Link not found', 404);
+        }
+
+        if (link.authorId !== userId) {
+            throw new ItemServiceError('You do not own this link', 403);
+        }
+
+        await this.prisma.link.delete({ where: { id: linkId } });
         await this.touchLastSave(userId);
 
         return true;

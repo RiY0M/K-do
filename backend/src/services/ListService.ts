@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { ListServiceError } from '../errors/ListServiceError';
-import { KdoDto, toKdoDto } from './itemMapper';
+import { KdoDto, kdoLinksInclude, toKdoDto } from './itemMapper';
 import { areFriends, getFriendIds } from './friendshipQueries';
 
 export interface UserSummary {
@@ -155,6 +155,7 @@ export class ListService {
                 listKDos: { some: { listId } },
             },
             orderBy: { position: 'asc' },
+            include: kdoLinksInclude,
         });
 
         return this.buildListDetail(
@@ -205,11 +206,13 @@ export class ListService {
                 listKDos: { some: { listId: { in: sharedListIds } } },
             },
             orderBy: { position: 'asc' },
+            include: kdoLinksInclude,
         });
 
         const surpriseItems = await this.prisma.kDo.findMany({
             where: { recipientId: friendId, deletedAt: null },
             orderBy: [{ position: 'asc' }, { createdAt: 'asc' }],
+            include: kdoLinksInclude,
         });
 
         const friendIds = await getFriendIds(this.prisma, userId);

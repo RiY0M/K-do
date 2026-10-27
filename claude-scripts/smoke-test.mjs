@@ -88,6 +88,9 @@ check('bob is a member of alice list', aliceLists.data[0].friends.some((f) => f.
 const bobLists = await call('GET', '/list/lists', bob.token);
 check('bob lists = only his own', bobLists.data.length === 1 && bobLists.data[0].friends.some((f) => f.id === alice.id), bobLists);
 
+const username = await call('GET', `/user/getUsername/${alice.id}`, bob.token);
+check('getUsername returns JSON { name }', username.status === 200 && username.data?.name === alice.name, username);
+
 // Bob views alice's list and reserves an item
 const aliceSeenByBob = await call('GET', `/list/friend/${alice.id}`, bob.token);
 check('bob sees alice items', aliceSeenByBob.status === 200 && aliceSeenByBob.data.uncheckedKdos.length === 1 && aliceSeenByBob.data.checkedKdos.length === 1, aliceSeenByBob);
@@ -112,6 +115,21 @@ const withSurprise = await call('GET', `/list/friend/${alice.id}`, bob.token);
 check('surprise idea on alice page for bob (editable)', withSurprise.data.uncheckedKdos.some((k) => k.id === surprise.data.id && k.authorId === bob.id), withSurprise);
 check('alice cannot reserve the surprise for herself', (await call('PATCH', `/kdo/friend/check/${surprise.data.id}`, alice.token, { isChecked: true })).status === 404);
 check('carol cannot create a surprise for alice', (await call('POST', '/kdo/friend/create', carol.token, { friendId: alice.id })).status === 403);
+
+// Links on a Kdo (only its author manages them)
+const link = await call('POST', `/kdo/link/${item.data.id}`, alice.token, { href: 'https://www.example.com/velo' });
+check('alice adds a link to her item', link.status === 201 && link.data.href === 'https://www.example.com/velo', link);
+check('non-http link refused', (await call('POST', `/kdo/link/${item.data.id}`, alice.token, { href: 'javascript:alert(1)' })).status === 400);
+check('bob cannot add a link to alice item', (await call('POST', `/kdo/link/${item.data.id}`, bob.token, { href: 'https://example.com' })).status === 403);
+const aliceWithLinks = await call('GET', `/list/me/${aliceList.id}`, alice.token);
+check('alice sees the link on her list', aliceWithLinks.data.uncheckedKdos.find((k) => k.id === item.data.id)?.links?.length === 1, aliceWithLinks);
+const bobSeesLinks = await call('GET', `/list/friend/${alice.id}`, bob.token);
+check('bob sees the link on alice page', bobSeesLinks.data.uncheckedKdos.find((k) => k.id === item.data.id)?.links?.[0]?.href === 'https://www.example.com/velo', bobSeesLinks);
+check('item without link has an empty list', bobSeesLinks.data.checkedKdos.find((k) => k.id === item2.data.id)?.links?.length === 0, bobSeesLinks);
+check('bob cannot delete alice link', (await call('DELETE', `/kdo/link/${link.data.id}`, bob.token)).status === 403);
+const link2 = await call('POST', `/kdo/link/${item.data.id}`, alice.token, { href: 'https://example.org/autre' });
+check('alice deletes a link', (await call('DELETE', `/kdo/link/${link2.data.id}`, alice.token)).status === 200);
+check('deleted link is gone', (await call('GET', `/list/me/${aliceList.id}`, alice.token)).data.uncheckedKdos.find((k) => k.id === item.data.id)?.links?.length === 1);
 
 // Friend requests by name
 check('request to unknown user -> 404', (await call('POST', '/friend/request', carol.token, { name: `nobody_${suffix}` })).status === 404);

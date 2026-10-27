@@ -7,9 +7,9 @@ export const listSectionIdealWidth = "350px";
 export const groupSectionIdealWidth = "250px";
 export const formSectionIdealWidth = "250px";
 
-export const listSectionActualWidth = `min(${listSectionIdealWidth}, 100%)`;
-export const groupSectionActualWidth = `min(${groupSectionIdealWidth}, 100%)`;
-export const formSectionActualWidth = `min(${formSectionIdealWidth}, 100%)`;
+export const listSectionActualWidth = `min(${listSectionIdealWidth}, 100%, auto)`;
+export const groupSectionActualWidth = `min(${groupSectionIdealWidth}, 100%, auto)`;
+export const formSectionActualWidth = `min(${formSectionIdealWidth}, 100%, auto)`;
 
 /**
  * Page to come back to after logging in, from the optional `:url` route param

@@ -1,3 +1,7 @@
+#root {
+  width: 100%;
+}
+
 #app {
   margin: auto;
 }
@@ -8,4 +12,8 @@
 
 .important {
   color: var(--important);
+}
+
+dialog::backdrop {
+  background-color: rgb(0 0 0 / 50%);
 }

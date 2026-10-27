@@ -1,4 +1,5 @@
 import { Kdo } from "../../interfaces/Kdo"
+import { Link } from "../../interfaces/Link";
 import { deleteFetch, patchFetch, postFetch } from "./fetch";
 
 const baseEndpoint = "/kdo";
@@ -34,4 +35,15 @@ export async function checkFriendKdo(id: string, isChecked: boolean): Promise<Kd
 
 export async function deleteKdo(id: string): Promise<boolean> {
     return await deleteFetch(`${baseEndpoint}/${id}`);
+}
+
+// Only the author of the Kdo can add or remove its links
+export async function addKdoLink(kdoId: string, href: string): Promise<Link> {
+    return await postFetch(`${baseEndpoint}/link/${kdoId}`, {
+        body: JSON.stringify({ href: href }),
+    });
+}
+
+export async function deleteKdoLink(linkId: string): Promise<boolean> {
+    return await deleteFetch(`${baseEndpoint}/link/${linkId}`);
 }
