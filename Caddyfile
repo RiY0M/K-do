@@ -1,0 +1,21 @@
+# HTTPS certificate obtained and renewed automatically (Let's Encrypt)
+# for the domain set in .env (DOMAIN). The domain must point to the server.
+{$DOMAIN} {
+    encode zstd gzip
+
+    header {
+        Strict-Transport-Security "max-age=31536000"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        -Server
+    }
+
+    reverse_proxy frontend:80
+}
+
+# Uncomment to redirect www.<domain> to <domain> (the www DNS record must
+# also point to the server, otherwise Caddy can't get its certificate)
+# www.{$DOMAIN} {
+#     redir https://{$DOMAIN}{uri} permanent
+# }

@@ -75,6 +75,8 @@ export class PasswordResetService {
             }),
         ]);
 
+        // Always set in production (checked in config.ts); the default is
+        // Vite's development server
         const frontendUrl = (process.env.FRONTEND_URL ?? 'http://localhost:5173').replace(/\/$/, '');
         const link = `${frontendUrl}/reset-password/${token}`;
 

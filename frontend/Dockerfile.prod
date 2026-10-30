@@ -9,6 +9,11 @@ COPY tsconfig.json vite.config.ts vite-env.d.ts index.html ./
 COPY src ./src
 COPY public ./public
 
+# Address of the API, built into the JavaScript. "/api" = same domain as
+# the site: nginx forwards it to the backend (see nginx.conf)
+ARG VITE_API_URL=/api
+ENV VITE_API_URL=$VITE_API_URL
+
 RUN npm run build
 
 # ---------- Production ----------

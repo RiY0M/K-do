@@ -1,6 +1,8 @@
 import { clearSession, getToken } from "../authStorage";
 
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000/api";
+// Same domain as the site by default (production: nginx forwards /api to the
+// backend). In development, compose.yml sets VITE_API_URL to the backend's port.
+const API_URL = import.meta.env.VITE_API_URL || "/api";
 type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 // French versions of the error messages sent by the backend

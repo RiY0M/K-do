@@ -12,8 +12,9 @@ export interface Mail {
  * SMTP_HOST, SMTP_PORT (587 by default), SMTP_SECURE ("true" for port 465),
  * SMTP_USER / SMTP_PASSWORD (optional) and MAIL_FROM.
  *
- * In development, compose.yml points it at Mailpit (http://localhost:8025),
- * which catches every e-mail. Without SMTP_HOST, e-mails are only logged.
+ * In development, compose.yml points it at Mailpit (web interface on port
+ * 8025), which catches every e-mail. In production, MAIL_FROM is required
+ * (checked in config.ts). Without SMTP_HOST, e-mails are only logged.
  */
 export class MailService {
     private transporter: Transporter | null;
