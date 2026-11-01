@@ -9,7 +9,8 @@ services:
   db:
     image: postgres:16
     restart: always
-    port: 5432
+    ports:
+      - 5432
     environment:
       POSTGRES_USER: ${DB_USER:?DB_USER is required}
       POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
