@@ -15,7 +15,6 @@ export default function Header({ forceHomeRedirect = false }: Readonly<Props>) {
 
   const styles: CSS = {
     header: {
-      fontSize: "var(--sm-size)",
       fontStyle: "italic",
     },
   }
