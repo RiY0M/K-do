@@ -3,6 +3,8 @@ import FriendCheckLine from "./friend/FriendCheckLine";
 import EditableCheckLine from "./EditableCheckLine";
 
 interface Props {
+  // Id of the user whose list this is
+  listAuthorId: string;
   kdos: Kdo[];
   newKdoId?: string | null;
   onUpdate: (kdo: KdoUpdate) => void;
@@ -12,6 +14,7 @@ interface Props {
 // Kdos of a friend's list: mine (surprise ideas I added) are editable, the
 // others can be reserved
 export default function ListKdos({
+  listAuthorId,
   kdos,
   newKdoId,
   onUpdate,
@@ -23,6 +26,7 @@ export default function ListKdos({
       <EditableCheckLine
         key={kdo.id}
         kdo={kdo}
+        listAuthorId={listAuthorId}
         autoFocus={kdo.id === newKdoId}
         onUpdate={onUpdate}
         onDelete={onDelete}
@@ -31,6 +35,7 @@ export default function ListKdos({
       <FriendCheckLine
         key={kdo.id}
         kdo={kdo}
+        listAuthorId={listAuthorId}
         onUpdate={onUpdate}
       />
   ));

@@ -4,12 +4,14 @@ import { Kdo, KdoUpdate } from "../../../interfaces/Kdo";
 import ListKdos from "../ListKdos";
 
 interface Props {
+  listAuthorId: string;
   kdos: Kdo[];
   onUpdate: (kdo: KdoUpdate) => void;
   onDelete: (id: string) => void;
 }
 
 export default function FriendCheckedList({
+  listAuthorId,
   kdos,
   onUpdate,
   onDelete,
@@ -24,7 +26,7 @@ export default function FriendCheckedList({
   return (
     <FullAccordion label="Éléments cochés" defaultOpening={true}>
       <div style={styles.div}>
-        <ListKdos kdos={kdos} onUpdate={onUpdate} onDelete={onDelete} />
+        <ListKdos listAuthorId={listAuthorId} kdos={kdos} onUpdate={onUpdate} onDelete={onDelete} />
       </div>
     </FullAccordion>
   );

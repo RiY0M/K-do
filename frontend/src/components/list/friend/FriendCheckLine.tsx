@@ -9,14 +9,17 @@ import { useState } from "react";
 import NoStyleButton from "../../buttons/NoStyleButton";
 import LinkIcon from "../../../assets/svgs/LinkIcon";
 import LinksModal from "../../modals/LinksModal";
+import VolontaryKdo from "./VoluntaryKdo";
 
 interface Props {
   kdo: Kdo;
+  listAuthorId: string;
   onUpdate: (kdo: KdoUpdate) => void;
 }
 
 export default function FriendCheckLine({
   kdo,
+  listAuthorId,
   onUpdate,
 }: Readonly<Props>) {
   const user = getCurrentUser();
@@ -59,6 +62,9 @@ export default function FriendCheckLine({
 
   return (
     <div style={styles.div}>
+      {kdo.author && kdo.author.id !== listAuthorId &&
+        <VolontaryKdo user={kdo.author!} />
+      }
       {takenBy.length > 0 &&
         <TakeList users={takenBy} />
       }

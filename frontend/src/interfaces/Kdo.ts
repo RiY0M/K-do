@@ -8,6 +8,9 @@ export interface Kdo {
     position: number;
     authorId?: string;
     takenBy?: User[];
+    // Who created it: sent on every item of a friend's list, never on mine
+    // (authorId only means "editable by me")
+    author?: User;
     links?: Link[];
 }
 

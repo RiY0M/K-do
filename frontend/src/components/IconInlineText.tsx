@@ -18,9 +18,12 @@ export default function IconInlineText({ children, style, className = "" }: Read
     const firstChild = line.children[0] as HTMLElement;
     if (!firstChild) return;
 
+    // Copies the first child's size/weight onto the line (e.g. a title),
+    // unless the caller set them through `style`: writing to the DOM here
+    // would otherwise override them after every render
     const styles = getComputedStyle(firstChild);
-    line.style.fontSize = styles.fontSize;
-    line.style.fontWeight = styles.fontWeight;
+    if (style?.fontSize === undefined) line.style.fontSize = styles.fontSize;
+    if (style?.fontWeight === undefined) line.style.fontWeight = styles.fontWeight;
   });
 
   const styles: CSS = {

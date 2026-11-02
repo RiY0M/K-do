@@ -9,9 +9,11 @@ import IconInlineText from "../IconInlineText";
 import LinkIcon from "../../assets/svgs/LinkIcon";
 import LinksModal from "../modals/LinksModal";
 import { CSS } from "../../services/utils";
+import VolontaryKdo from "./friend/VoluntaryKdo";
 
 interface Props {
   kdo: Kdo;
+  listAuthorId?: string;
   autoFocus?: boolean;
   onUpdate: (kdo: KdoUpdate) => void;
   onDelete: (id: string) => void;
@@ -19,6 +21,7 @@ interface Props {
 
 export default function EditableCheckLine({
   kdo,
+  listAuthorId = "",
   autoFocus = false,
   onUpdate,
   onDelete,
@@ -63,6 +66,9 @@ export default function EditableCheckLine({
 
 
   const styles: CSS = {
+    div: {
+      gap: "var(--xs-space)",
+    },
     isChecked: {
       textDecoration: isChecked ? "line-through" : "",
     },
@@ -76,39 +82,44 @@ export default function EditableCheckLine({
   };
 
   return (
-    <IconInlineText style={styles.isChecked}>
-      <Checkbox name={`check-${kdo.id}`} checked={isChecked} setChecked={updateCheck} />
-      <InvisibleTypingInput
-        name={`kdo-${kdo.id}`}
-        value={kdo.label}
-        setValue={updateText}
-        autoFocus={autoFocus}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-      />
+    <div style={styles.div}>
+      {kdo.author && kdo.author.id !== listAuthorId &&
+        <VolontaryKdo user={kdo.author!} />
+      }
+      <IconInlineText style={styles.isChecked}>
+        <Checkbox name={`check-${kdo.id}`} checked={isChecked} setChecked={updateCheck} />
+        <InvisibleTypingInput
+          name={`kdo-${kdo.id}`}
+          value={kdo.label}
+          setValue={updateText}
+          autoFocus={autoFocus}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+        />
 
-      <NoStyleButton
-        onClick={() => setIsLinksOpen(true)}
-        onMouseDown={(e) => e.preventDefault()}
-        style={styles.linkButton}
-        title={linkCount > 0 ? `Liens (${linkCount})` : "Ajouter un lien"}
-      >
-        <LinkIcon />
-      </NoStyleButton>
+        <NoStyleButton
+          onClick={() => setIsLinksOpen(true)}
+          onMouseDown={(e) => e.preventDefault()}
+          style={styles.linkButton}
+          title={linkCount > 0 ? `Liens (${linkCount})` : "Ajouter un lien"}
+        >
+          <LinkIcon />
+        </NoStyleButton>
 
-      {/* onMouseDown: keeps the focus on the input, otherwise the button
-          disappears (blur) before the click is registered */}
-      <NoStyleButton onClick={handleDelete} onMouseDown={(e) => e.preventDefault()} style={styles.isFocused} title="Supprimer">
-        <XMark />
-      </NoStyleButton>
+        {/* onMouseDown: keeps the focus on the input, otherwise the button
+            disappears (blur) before the click is registered */}
+        <NoStyleButton onClick={handleDelete} onMouseDown={(e) => e.preventDefault()} style={styles.isFocused} title="Supprimer">
+          <XMark />
+        </NoStyleButton>
 
-      <LinksModal
-        kdo={kdo}
-        editable
-        open={isLinksOpen}
-        onClose={() => setIsLinksOpen(false)}
-        onUpdate={onUpdate}
-      />
-    </IconInlineText>
+        <LinksModal
+          kdo={kdo}
+          editable
+          open={isLinksOpen}
+          onClose={() => setIsLinksOpen(false)}
+          onUpdate={onUpdate}
+        />
+      </IconInlineText>
+    </div>
   );
 }

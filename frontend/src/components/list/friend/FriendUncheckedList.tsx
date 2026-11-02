@@ -32,7 +32,7 @@ export default function FriendUncheckedList({
 
   return (
     <div>
-      <ListKdos kdos={kdos} newKdoId={newKdoId} onUpdate={onUpdate} onDelete={onDelete} />
+      <ListKdos listAuthorId={friendId} kdos={kdos} newKdoId={newKdoId} onUpdate={onUpdate} onDelete={onDelete} />
 
       <AddInput label="Ajouter un cadeau libre" onClick={handleAddInput} />
     </div>

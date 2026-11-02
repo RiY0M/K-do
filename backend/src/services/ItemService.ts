@@ -68,11 +68,19 @@ export class ItemService {
                 recipientId: friendId,
                 position: (lastItem?.position ?? 0) + 1,
             },
+            include: { user: true },
         });
 
         await this.touchLastSave(userId);
 
-        return { ...toKdoDto(kDo), authorId: kDo.authorId };
+        return {
+            ...toKdoDto(kDo),
+            authorId: kDo.authorId,
+            // Same as in ListService.getListByFriendId, so the new line is
+            // flagged as a surprise idea right away. I'm not my own friend:
+            // isFriend false keeps my name from linking to /friend/<me>.
+            author: { id: kDo.user.id, name: kDo.user.username, isFriend: false },
+        };
     }
 
     async updateItem(userId: string, itemId: string, value: string): Promise<KdoDto> {

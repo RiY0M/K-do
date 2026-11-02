@@ -35,6 +35,12 @@ export const KdoResponseDto = z.object({
     // reserved/taken this gift idea so far (UserKDo). Never sent to the
     // person the gift is for - that's the whole point, it stays a surprise.
     takenBy: z.array(UserSummaryDto).optional(),
+    // Who created the item. Sent on every item of a friend's list (and on
+    // POST /kdo/friend/create), so the frontend can flag surprise ideas,
+    // i.e. items whose author isn't the list's owner (see VoluntaryKdo.tsx).
+    // Never sent on my own list. Kept separate from authorId, which means
+    // "editable by me".
+    author: UserSummaryDto.optional(),
     // Links attached by the item's author (where to buy it...). Sent with
     // lists; may be omitted from the responses of the /kdo mutations.
     links: z.array(LinkResponseDto).optional(),

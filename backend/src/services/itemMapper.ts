@@ -14,6 +14,7 @@ export interface KdoDto {
     // KdoResponseDto.ts for what each means.
     authorId?: string;
     takenBy?: { id: string; name: string; isFriend: boolean }[];
+    author?: { id: string; name: string; isFriend: boolean };
     links?: LinkDto[];
 }
 

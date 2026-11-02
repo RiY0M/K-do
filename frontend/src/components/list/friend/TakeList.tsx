@@ -1,6 +1,6 @@
 import { CSS } from "../../../services/utils";
 import { User } from "../../../interfaces/User";
-import TakeListKdo from "./TakeListKdo";
+import UserLinkSm from "../../UserLinkSm";
 
 interface Props {
   users: User[];
@@ -16,16 +16,13 @@ export default function TakeList({
       gap: "var(--sm-space)",
       fontSize: "var(--sm-size)",
     },
-    link: {
-      fontSize: "var(--sm-size)",
-    },
   };
 
   return (
     <div style={styles.div}>
       Pris par :
       {users.map((user) => (
-        <TakeListKdo key={user.id} user={user} />
+        <UserLinkSm key={user.id} user={user} />
       ))}
     </div>
   );

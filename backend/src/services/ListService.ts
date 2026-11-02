@@ -173,6 +173,9 @@ export class ListService {
      *   their authorId so the frontend renders them as editable
      *   EditableCheckLine rows; other people's are reservable like the rest.
      *
+     * Every item carries its `author` (mine included), so the frontend can
+     * flag surprise ideas, i.e. items whose author isn't the list's owner.
+     *
      * The friend never sees any of this: their own page only shows their own
      * wishes, without takenBy and without surprise ideas.
      */
@@ -206,13 +209,13 @@ export class ListService {
                 listKDos: { some: { listId: { in: sharedListIds } } },
             },
             orderBy: { position: 'asc' },
-            include: kdoLinksInclude,
+            include: { ...kdoLinksInclude, user: true },
         });
 
         const surpriseItems = await this.prisma.kDo.findMany({
             where: { recipientId: friendId, deletedAt: null },
             orderBy: [{ position: 'asc' }, { createdAt: 'asc' }],
-            include: kdoLinksInclude,
+            include: { ...kdoLinksInclude, user: true },
         });
 
         const friendIds = await getFriendIds(this.prisma, userId);
@@ -222,11 +225,17 @@ export class ListService {
             friendIds
         );
 
-        const allItems: KdoDto[] = [...friendItems, ...surpriseItems].map((item) =>
-            item.authorId === userId
-                ? { ...toKdoDto(item), authorId: item.authorId }
-                : { ...toKdoDto(item), takenBy: takenBy.get(item.id) ?? [] }
-        );
+        const allItems: KdoDto[] = [...friendItems, ...surpriseItems].map((item) => {
+            const author = {
+                id: item.user.id,
+                name: item.user.username,
+                isFriend: friendIds.has(item.user.id),
+            };
+
+            return item.authorId === userId
+                ? { ...toKdoDto(item), authorId: item.authorId, author }
+                : { ...toKdoDto(item), takenBy: takenBy.get(item.id) ?? [], author };
+        });
 
         return this.buildListDetail(listMeta, allItems);
     }

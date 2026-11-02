@@ -70,7 +70,7 @@ export default function FriendFullListSection() {
 
 					{checkedKdos.length > 0 &&
 						<><div></div>
-							<FriendCheckedList kdos={checkedKdos} onUpdate={updateKdo} onDelete={removeKdo} />
+							<FriendCheckedList listAuthorId={userId} kdos={checkedKdos} onUpdate={updateKdo} onDelete={removeKdo} />
 						</>
 					}
 				</div>
