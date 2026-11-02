@@ -62,16 +62,16 @@
 
 @media (prefers-color-scheme: light) {
   :root {
-    --color: #213547;
-    --important: #f87171;
-    --validate: green;
-    --input-bg: #fff;
-    --main: #f9f9f9;
-    --mainer: #ededed;
-    --mainest: #e0e0e0;
-    --shadow-color: #e0e0e0fc;
-    --action: #1cbafd;
-    --action-hover: #747bff;
+    --color: #1e2a38;
+    --important: #c0392b;
+    --validate: #2e7d32;
+    --input-bg: #ffffff;
+    --main: #f6f7f9;
+    --mainer: #fcfcfd;
+    --mainest: #f0f2f4;
+    --shadow-color: #ccd2d9b3;
+    --action: #3572c2;
+    --action-hover: #1b4377;
   }
 }
 
