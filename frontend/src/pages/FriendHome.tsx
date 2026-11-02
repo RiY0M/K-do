@@ -5,7 +5,7 @@ export default function FriendHome() {
 
   return (
     <div>
-      <Header />
+      <Header forceHomeRedirect />
       <FriendFullListSection />
     </div>
   );

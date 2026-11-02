@@ -53,7 +53,7 @@ export default function FriendFullListSection() {
 				<div>
 					<h1>Liste de&nbsp;: {username}</h1>
 
-					{list.description &&
+					{list.description.trim() &&
 						<FullAccordion label="Description" defaultOpening>
 							<p style={styles.description}>{list.description}</p>
 						</FullAccordion>
