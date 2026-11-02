@@ -162,7 +162,7 @@ export default function FriendsSection({
 					</FullAccordion>
 				}
 
-				<FullAccordion label={`Mes amis (${friends.length})`} defaultOpening={true}>
+				<FullAccordion label={`Mes amis (${friends.length})`} defaultOpening={isLandscape}>
 					<div style={styles.list}>
 						{friends.map((friend) => (
 							<FriendLine key={friend.id} friend={friend} onRemove={handleRemove} />

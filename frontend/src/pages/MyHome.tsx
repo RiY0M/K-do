@@ -1,15 +1,10 @@
 import MyFullListSection from "../components/sections/MyFullListSection";
-import ListPreviews from "../components/sections/ListPreviews";
 import FriendsSection from "../components/sections/FriendsSection";
 import { CSS } from "../services/utils";
 import { useBehaviourDisplay } from "../hooks/useBehaviourDisplay";
-import { Link } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import { List } from "../interfaces/List";
 import { getMyLists } from "../services/api/lists";
-import { logout } from "../services/authStorage";
-import IconInlineText from "../components/IconInlineText";
-import ArrowLeft from "../assets/svgs/ArrowLeft";
 import Header from "../components/navigation/Header";
 
 export default function MyHome() {
@@ -34,16 +29,13 @@ export default function MyHome() {
   }, []);
 
   const styles: CSS = {
-    mainDiv: {
-      // flexDirection: behaviourDisplay === "landscape" ? "column" : "column-reverse",
-    },
     subDiv: {
       flexDirection: behaviourDisplay === "landscape" ? "row" : "column-reverse",
     },
   };
 
   return (
-    <div style={styles.mainDiv}>
+    <>
       <Header />
       <div style={styles.subDiv}>
         <FriendsSection onFriendsChange={refreshLists} />
@@ -52,6 +44,6 @@ export default function MyHome() {
         </div> */}
         {selectedList && <MyFullListSection listPreview={selectedList} />}
       </div>
-    </div>
+    </>
   );
 }

@@ -3,6 +3,7 @@ import { CSS } from "../../services/utils";
 import { Link } from "react-router-dom";
 import IconInlineText from "../IconInlineText";
 import ArrowLeft from "../../assets/svgs/ArrowLeft";
+import NoStyleButton from "../buttons/NoStyleButton";
 
 interface Props {
   forceHomeRedirect?: boolean;
@@ -22,11 +23,11 @@ export default function Header({ forceHomeRedirect = false }: Readonly<Props>) {
   return (
     <header style={styles.header}>
       {isLoggedIn && !forceHomeRedirect ?
-        <Link to="/login" onClick={logout}>
-          <IconInlineText>
+        <NoStyleButton onClick={logout}>
+          <IconInlineText style={styles.header} className="link">
             <ArrowLeft />Déconnexion
           </IconInlineText>
-        </Link>
+        </NoStyleButton>
         :
         <Link to="/">
           <IconInlineText>

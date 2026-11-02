@@ -23,7 +23,7 @@ export default function AccordionToggle({ label, open, setOpen }: Readonly<Props
 		},
 		icon: {
 			transition: "transform var(--md-speed)",
-			transform: open ? "rotate(180deg)" : "rotate(0deg)",
+			transform: open ? "rotate(0deg)" : "rotate(180deg)",
 		},
 	}
 

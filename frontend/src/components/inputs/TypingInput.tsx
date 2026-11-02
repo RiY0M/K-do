@@ -1,5 +1,8 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { CSS } from "../../services/utils";
+import NoStyleButton from "../buttons/NoStyleButton";
+import Eye from "../../assets/svgs/Eye";
+import EyeSlash from "../../assets/svgs/EyeSlash";
 
 type inputType = "text" | "link" | "email" | "number" | "password" | "textarea" | "search";
 
@@ -8,11 +11,9 @@ interface Props {
 	name: string;
 	type?: inputType;
 	placeholder?: string;
-	// Small text under the field
 	hint?: string;
 	required?: boolean;
 	disabled?: boolean;
-	// Not applied for now (see the commented `pattern` attribute below)
 	pattern?: RegExp;
 	value: string;
 	maxLength?: number;
@@ -27,6 +28,7 @@ export default function TypingInput({
 	name,
 	type = "text",
 	placeholder = "",
+	pattern = /^.*$/g,
 	hint,
 	required = false,
 	disabled = false,
@@ -37,6 +39,11 @@ export default function TypingInput({
 	onFocus,
 	onBlur,
 }: Readonly<Props>) {
+
+	const [showPassword, setShowPassword] = useState<boolean>(false);
+	const isPassword = type === "password";
+	const iconSize = "1.4em";
+	const iconSpace = "var(--sm-space)";
 
 	const styles: CSS = {
 		div: {
@@ -54,7 +61,21 @@ export default function TypingInput({
 		textarea: {
 			resize: "none",
 			overflow: "hidden",
-		}
+		},
+		inputWrapper: {
+			position: "relative",
+		},
+		passwordInput: {
+			// Leaves room for the show/hide button
+			paddingRight: `calc(${iconSpace} * 2 + ${iconSize})`,
+		},
+		toggleButton: {
+			position: "absolute",
+			right: iconSpace,
+			top: "50%",
+			transform: "translateY(-50%)",
+			display: "flex",
+		},
 	}
 
 	return (
@@ -88,20 +109,34 @@ export default function TypingInput({
 			}
 
 			{type !== "textarea" &&
-				<input
-					id={name}
-					name={name}
-					type={type}
-					placeholder={placeholder}
-					required={required}
-					disabled={disabled}
-					// pattern={String(pattern)}
-					value={value}
-					onChange={(e) => setValue(e.target.value)}
-					onFocus={onFocus}
-					onBlur={onBlur}
-					maxLength={maxLength}
-				/>
+				<div style={styles.inputWrapper}>
+					<input
+						id={name}
+						name={name}
+						type={isPassword && showPassword ? "text" : type}
+						placeholder={placeholder}
+						required={required}
+						disabled={disabled}
+						pattern={pattern.source}
+						value={value}
+						style={isPassword ? styles.passwordInput : undefined}
+						onChange={(e) => setValue(e.target.value)}
+						onFocus={onFocus}
+						onBlur={onBlur}
+						maxLength={maxLength}
+					/>
+
+					{isPassword &&
+						<NoStyleButton
+							style={styles.toggleButton}
+							title={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+							onMouseDown={(e) => e.preventDefault()}
+							onClick={() => setShowPassword(!showPassword)}
+						>
+							{showPassword ? <EyeSlash size={iconSize} /> : <Eye size={iconSize} />}
+						</NoStyleButton>
+					}
+				</div>
 			}
 
 			{hint && <span style={styles.hint}>{hint}</span>}

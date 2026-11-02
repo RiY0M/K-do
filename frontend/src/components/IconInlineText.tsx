@@ -4,9 +4,10 @@ import { CSS } from "../services/utils";
 interface Props {
   children: ReactNode;
   style?: CSSProperties;
+  className?: string;
 }
 
-export default function IconInlineText({ children, style }: Readonly<Props>) {
+export default function IconInlineText({ children, style, className = "" }: Readonly<Props>) {
 
   const lineRef = useRef<HTMLDivElement>(null);
 
@@ -32,7 +33,7 @@ export default function IconInlineText({ children, style }: Readonly<Props>) {
   }
 
   return (
-    <div ref={lineRef} style={styles.line}>
+    <div ref={lineRef} style={styles.line} className={className}>
       {children}
     </div>
   );
