@@ -1,6 +1,9 @@
 {
   "name": "fastify-backend",
   "version": "1.0.0",
+  "author": {
+    "name": "R!Y0M"
+  },
   "main": "src/server.ts",
   "type": "module",
   "directories": {
@@ -12,7 +15,7 @@
   "scripts": {
     "build": "tsc --noEmit && esbuild src/server.ts --bundle --platform=node --format=esm --target=node22 --packages=external --outfile=dist/server.js",
     "start": "node dist/server.js",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmitnpm fund",
     "test": "NODE_ENV=test tsx --test src/test/**/*.test.ts",
     "test:cov": "NODE_ENV=test c8 tsx --test src/test/**/*.test.ts",
     "dev": "nodemon",
@@ -23,7 +26,6 @@
     "db:generate": "prisma generate"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "@fastify/cors": "^11.3.0",

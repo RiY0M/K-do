@@ -4,6 +4,12 @@
 
 #app {
   margin: auto;
+  min-height: 100vh;
+}
+
+#main {
+  margin: auto;
+  padding: var(--sm-space);
 }
 
 .action {

@@ -13,7 +13,6 @@ export default function PageSection({
 
   const styles: CSS = {
     section: {
-      transform: "scale(1.5)",
       display: "flex",
       flexDirection: "column",
       gap: "var(--xl-space)",

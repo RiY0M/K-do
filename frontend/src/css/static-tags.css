@@ -29,6 +29,10 @@ section {
   box-shadow: var(--shadow);
 }
 
+header, footer {
+  padding: var(--sm-space);
+}
+
 dialog {
   padding: 0;
   border: none;

@@ -10,6 +10,7 @@ import { getMyLists } from "../services/api/lists";
 import { logout } from "../services/authStorage";
 import IconInlineText from "../components/IconInlineText";
 import ArrowLeft from "../assets/svgs/ArrowLeft";
+import Header from "../components/navigation/Header";
 
 export default function MyHome() {
 
@@ -34,8 +35,7 @@ export default function MyHome() {
 
   const styles: CSS = {
     mainDiv: {
-      padding: "var(--sm-space)",
-      flexDirection: behaviourDisplay === "landscape" ? "column" : "column-reverse",
+      // flexDirection: behaviourDisplay === "landscape" ? "column" : "column-reverse",
     },
     subDiv: {
       flexDirection: behaviourDisplay === "landscape" ? "row" : "column-reverse",
@@ -44,11 +44,7 @@ export default function MyHome() {
 
   return (
     <div style={styles.mainDiv}>
-      <Link to="/login" onClick={logout}>
-        <IconInlineText>
-          <ArrowLeft />Déconnexion
-        </IconInlineText>
-      </Link>
+      <Header />
       <div style={styles.subDiv}>
         <FriendsSection onFriendsChange={refreshLists} />
         {/* <div>

@@ -8,9 +8,11 @@ import Invite from "./pages/Invite";
 import Forbidden from "./pages/Forbidden";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import Tos from "./pages/Tos";
 import { isAuthenticated } from "./services/authStorage";
 import { CSS, groupSectionIdealWidth, listSectionActualWidth, listSectionIdealWidth } from "./services/utils";
 import { useBehaviourDisplay } from "./hooks/useBehaviourDisplay";
+import Footer from "./components/navigation/Footer";
 
 export default function App() {
   const isLoggedIn = isAuthenticated();
@@ -23,25 +25,29 @@ export default function App() {
     }
   }
   return (
-    <div id="app" style={styles.app}>
-      <Routes>
-        {!isLoggedIn && <>
-          <Route path="/" element={<Forbidden />} />
-          <Route path="/friend/:userId" element={<Forbidden />} />
-          <Route path="/invite/:invitationId" element={<Forbidden />} />
-        </>}
-        {isLoggedIn && <>
-          <Route path="/" element={<MyHome />} />
-          <Route path="/friend/:userId" element={<FriendHome />} />
-          <Route path="/invite/:invitationId" element={<Invite />} />
-        </>}
-        <Route path="/login/:url?" element={<Login />} />
-        <Route path="/register/:url?" element={<Register />} />
-        <Route path="/forbidden/:url?" element={<Forbidden />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </div>
+    <>
+      <div id="main" style={styles.app}>
+        <Routes>
+          {!isLoggedIn && <>
+            <Route path="/" element={<Forbidden />} />
+            <Route path="/friend/:userId" element={<Forbidden />} />
+            <Route path="/invite/:invitationId" element={<Forbidden />} />
+          </>}
+          {isLoggedIn && <>
+            <Route path="/" element={<MyHome />} />
+            <Route path="/friend/:userId" element={<FriendHome />} />
+            <Route path="/invite/:invitationId" element={<Invite />} />
+          </>}
+          <Route path="/login/:url?" element={<Login />} />
+          <Route path="/register/:url?" element={<Register />} />
+          <Route path="/forbidden/:url?" element={<Forbidden />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/tos" element={<Tos />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
+      <Footer />
+    </>
   );
 }
