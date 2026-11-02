@@ -1,6 +1,6 @@
 import Header from "../components/navigation/Header";
 
-export default function ResetPassword() {
+export default function Tos() {
   return (
     <div>
       <Header forceHomeRedirect />
@@ -21,9 +21,6 @@ export default function ResetPassword() {
           <h1>E-mail et mdp</h1>
           J'ai eu des galères avec le système d'e-mail donc oubliez pas votre mdp par pitié
         </div>
-      </section>
-      <section>
-        Je sais le mode clair est pas fou mais le mode sombre est meilleur je vais essayer de voir si je peux pas le rendre plus beau
       </section>
     </div>
   );
