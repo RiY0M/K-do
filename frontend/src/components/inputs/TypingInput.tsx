@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useLayoutEffect, useRef, useState } from "react";
 import { CSS } from "../../services/utils";
 import NoStyleButton from "../buttons/NoStyleButton";
 import Eye from "../../assets/svgs/Eye";
@@ -41,6 +41,16 @@ export default function TypingInput({
 }: Readonly<Props>) {
 
 	const [showPassword, setShowPassword] = useState<boolean>(false);
+	const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+	useLayoutEffect(() => {
+		const textarea = textareaRef.current;
+		if (!textarea) return;
+
+		textarea.style.height = "auto";
+		const borders = textarea.offsetHeight - textarea.clientHeight;
+		textarea.style.height = `${textarea.scrollHeight + borders}px`;
+	}, [value, type]);
 	const isPassword = type === "password";
 	const iconSize = "1.4em";
 	const iconSpace = "var(--sm-space)";
@@ -94,13 +104,10 @@ export default function TypingInput({
 					placeholder={placeholder}
 					required={required}
 					disabled={disabled}
+					ref={textareaRef}
 					value={value}
 					style={styles.textarea}
-					onChange={(e) => {
-						setValue(e.target.value);
-						e.target.style.height = "auto";
-						e.target.style.height = `${e.target.scrollHeight}px`;
-					}}
+					onChange={(e) => setValue(e.target.value)}
 					onFocus={onFocus}
 					onBlur={onBlur}
 					maxLength={maxLength}
