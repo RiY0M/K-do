@@ -7,6 +7,7 @@ import updateLabelRoute from './updateLabel';
 import deleteRoute from './delete';
 import addLinkRoute from './addLink';
 import deleteLinkRoute from './deleteLink';
+import reorderRoute from './reorder';
 
 const kdoRoutes: FastifyPluginAsync = async (fastify) => {
     await fastify.register(createMyRoute);
@@ -17,6 +18,7 @@ const kdoRoutes: FastifyPluginAsync = async (fastify) => {
     await fastify.register(deleteRoute);
     await fastify.register(addLinkRoute);
     await fastify.register(deleteLinkRoute);
+    await fastify.register(reorderRoute);
 };
 
 export default kdoRoutes;

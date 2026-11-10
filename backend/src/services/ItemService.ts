@@ -83,6 +83,49 @@ export class ItemService {
         };
     }
 
+    /**
+     * Saves the order of the caller's own items on one of their lists (drag
+     * & drop in MyFullListSection): positions become 1..n in the given order.
+     * Items of the list that `orderedIds` leaves out (e.g. created from
+     * another tab in the meantime) keep their relative order after them.
+     */
+    async reorderItems(userId: string, listId: string, orderedIds: string[]): Promise<boolean> {
+        await this.assertOwnedList(userId, listId);
+
+        if (new Set(orderedIds).size !== orderedIds.length) {
+            throw new ItemServiceError('The same item is listed twice', 400);
+        }
+
+        const items = await this.prisma.kDo.findMany({
+            where: {
+                authorId: userId,
+                recipientId: null,
+                deletedAt: null,
+                listKDos: { some: { listId } },
+            },
+            orderBy: [{ position: 'asc' }, { createdAt: 'asc' }],
+            select: { id: true },
+        });
+
+        const itemIds = new Set(items.map((item) => item.id));
+        if (orderedIds.some((id) => !itemIds.has(id))) {
+            throw new ItemServiceError('Item not found', 404);
+        }
+
+        const ordered = new Set(orderedIds);
+        const finalIds = [...orderedIds, ...items.map((item) => item.id).filter((id) => !ordered.has(id))];
+
+        await this.prisma.$transaction(
+            finalIds.map((id, index) =>
+                this.prisma.kDo.update({ where: { id }, data: { position: index + 1 } })
+            )
+        );
+
+        await this.touchLastSave(userId);
+
+        return true;
+    }
+
     async updateItem(userId: string, itemId: string, value: string): Promise<KdoDto> {
         await this.assertOwnedItem(userId, itemId);
 

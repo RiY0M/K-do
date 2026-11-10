@@ -1,6 +1,7 @@
 import fp from 'fastify-plugin';
 import type { FastifyPluginAsync } from 'fastify';
 import cors from '@fastify/cors';
+import { REFRESHED_TOKEN_HEADER } from './jwt';
 
 /**
  * Origins allowed to call the API from a browser.
@@ -26,6 +27,8 @@ const corsPlugin: FastifyPluginAsync = async (fastify) => {
     await fastify.register(cors, {
         origin: allowedOrigins(),
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+        // Otherwise a page on another origin (Vite in dev) can't read it
+        exposedHeaders: [REFRESHED_TOKEN_HEADER],
     });
 };
 

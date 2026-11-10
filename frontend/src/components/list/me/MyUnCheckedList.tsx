@@ -1,4 +1,5 @@
 import EditableCheckLine from "../EditableCheckLine";
+import SortableKdos from "../SortableKdos";
 import AddInput from "../../inputs/AddInput";
 import { Kdo, KdoUpdate } from "../../../interfaces/Kdo";
 import { createMyKdo } from "../../../services/api/kdos";
@@ -10,6 +11,7 @@ interface Props {
   onAdd: (kdo: Kdo) => void;
   onUpdate: (kdo: KdoUpdate) => void;
   onDelete: (id: string) => void;
+  onReorder: (orderedIds: string[]) => void;
 }
 
 export default function MyUncheckedList({
@@ -19,6 +21,7 @@ export default function MyUncheckedList({
   onAdd,
   onUpdate,
   onDelete,
+  onReorder,
 }: Readonly<Props>) {
 
   const handleAddInput = async () => {
@@ -32,15 +35,19 @@ export default function MyUncheckedList({
 
   return (
     <div>
-      {kdos.map((kdo) => (
-        <EditableCheckLine
-          key={kdo.id}
-          kdo={kdo}
-          autoFocus={kdo.id === newKdoId}
-          onUpdate={onUpdate}
-          onDelete={onDelete}
-        />
-      ))}
+      <SortableKdos
+        kdos={kdos}
+        onReorder={onReorder}
+        renderKdo={(kdo, dragHandle) => (
+          <EditableCheckLine
+            kdo={kdo}
+            dragHandle={dragHandle}
+            autoFocus={kdo.id === newKdoId}
+            onUpdate={onUpdate}
+            onDelete={onDelete}
+          />
+        )}
+      />
 
       <AddInput label="Ajouter pour tous" onClick={handleAddInput} />
     </div>

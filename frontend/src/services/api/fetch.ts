@@ -1,4 +1,4 @@
-import { clearSession, getToken } from "../authStorage";
+import { clearSession, getToken, refreshToken } from "../authStorage";
 
 // Same domain as the site by default (production: nginx forwards /api to the
 // backend). In development, compose.yml sets VITE_API_URL to the backend's port.
@@ -30,6 +30,9 @@ const errorMessages: Record<string, string> = {
     "Please wait a minute before asking for another email": "Patientez une minute avant de redemander un e-mail",
     "Invalid or already used reset link": "Ce lien est invalide ou a déjà été utilisé",
     "This reset link has expired": "Ce lien a expiré, demandez-en un nouveau",
+    "Wrong current password": "Mot de passe actuel incorrect",
+    "Invalid or already used link": "Ce lien est invalide ou a déjà été utilisé",
+    "This link has expired": "Ce lien a expiré (plus de 7 jours)",
 };
 
 async function getErrorMessage(res: Response, defaultErrorMessage: string): Promise<string> {
@@ -56,6 +59,12 @@ async function handleFetch<T>(endpoint: string, method: Method, object: RequestI
         },
         ...object
     });
+
+    // Every authenticated request renews the session (one month from now)
+    const refreshedToken = res.headers.get("x-refreshed-token");
+    if (token && refreshedToken) {
+        refreshToken(token, refreshedToken);
+    }
 
     // Expired or invalid session: log in again, then come back here
     if (res.status === 401 && token && !endpoint.startsWith("/auth")) {

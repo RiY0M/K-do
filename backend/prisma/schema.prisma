@@ -15,6 +15,9 @@ model User {
     picture      Bytes?
     description  String?
     lastSave     DateTime
+    // Part of every session token (JWT "ver"): incrementing it logs out
+    // every device at once (password changed, account change reverted...)
+    tokenVersion Int      @default(0)
 
     createdAt  DateTime    @default(now())
     updatedAt  DateTime    @updatedAt
@@ -30,6 +33,7 @@ model User {
     receivedFriendships Friendship[] @relation("FriendshipAddressee")
     invitations         Invitation[]
     passwordResetTokens PasswordResetToken[]
+    accountChanges      AccountChange[]
     links               Link[]
 
     @@map("users")
@@ -183,4 +187,25 @@ model PasswordResetToken {
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@map("password_reset_tokens")
+}
+
+// E-mail or password change, kept 7 days so it can be undone from the e-mail
+// sent to the previous address (in case the account was stolen). Only a
+// SHA-256 hash of the link's token is stored, like PasswordResetToken.
+model AccountChange {
+    id                   String    @id @default(uuid())
+    userId               String
+    tokenHash            String    @unique
+    // Values before the change; null = not changed
+    previousEmail        String?
+    previousPasswordHash String?
+    expiresAt            DateTime
+    // Reverted, or cancelled by the revert of an earlier change
+    usedAt               DateTime?
+
+    createdAt DateTime @default(now())
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@map("account_changes")
 }

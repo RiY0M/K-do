@@ -1,5 +1,15 @@
 import { createTransport, type Transporter } from 'nodemailer';
 
+// Base URL of the frontend, for links in e-mails. Always set in production
+// (checked in config.ts); the default is Vite's development server.
+export function frontendUrl(): string {
+    return (process.env.FRONTEND_URL ?? 'http://localhost:5173').replace(/\/$/, '');
+}
+
+export function escapeHtml(value: string): string {
+    return value.replace(/[&<>"']/g, (char) => `&#${char.charCodeAt(0)};`);
+}
+
 export interface Mail {
     to: string;
     subject: string;

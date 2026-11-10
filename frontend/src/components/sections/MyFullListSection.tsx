@@ -6,6 +6,7 @@ import { List } from "../../interfaces/List";
 import { getMyListDetail } from "../../services/api/lists";
 import { CSS, listSectionActualWidth } from "../../services/utils";
 import { useKdos } from "../../hooks/useKdos";
+import { reorderMyKdos } from "../../services/api/kdos";
 
 interface Props {
 	listPreview: List;
@@ -17,7 +18,7 @@ export default function MyFullListSection({
 
 	const [list, setList] = useState<List | null>(null);
 	const [hasError, setHasError] = useState<boolean>(false);
-	const { setKdos, uncheckedKdos, checkedKdos, newKdoId, addKdo, updateKdo, removeKdo } = useKdos();
+	const { setKdos, uncheckedKdos, checkedKdos, newKdoId, addKdo, updateKdo, removeKdo, reorderKdos } = useKdos();
 
 	useEffect(() => {
 		let ignore = false;
@@ -34,6 +35,19 @@ export default function MyFullListSection({
 
 		return () => { ignore = true; };
 	}, [listPreview.id, setKdos]);
+
+	// Moved right away, rolled back if the server refuses
+	const handleReorder = async (orderedIds: string[]) => {
+		if (!list) return;
+		const { previous, orderedIds: allIds } = reorderKdos(orderedIds);
+
+		try {
+			await reorderMyKdos(list.id, allIds);
+		} catch (error) {
+			console.error(error);
+			setKdos(previous);
+		}
+	};
 
 	const styles: CSS = {
 		section: {
@@ -58,11 +72,12 @@ export default function MyFullListSection({
 						onAdd={addKdo}
 						onUpdate={updateKdo}
 						onDelete={removeKdo}
+						onReorder={handleReorder}
 					/>
 
 					{checkedKdos.length > 0 &&
 						<><div></div>
-							<MyCheckedList kdos={checkedKdos} onUpdate={updateKdo} onDelete={removeKdo} />
+							<MyCheckedList kdos={checkedKdos} onUpdate={updateKdo} onDelete={removeKdo} onReorder={handleReorder} />
 						</>
 					}
 				</div>

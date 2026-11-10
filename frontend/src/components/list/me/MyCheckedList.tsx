@@ -1,18 +1,21 @@
 import { CSS } from "../../../services/utils";
 import FullAccordion from "../../accordions/FullAccordion";
 import EditableCheckLine from "../EditableCheckLine";
+import SortableKdos from "../SortableKdos";
 import { Kdo, KdoUpdate } from "../../../interfaces/Kdo";
 
 interface Props {
   kdos: Kdo[];
   onUpdate: (kdo: KdoUpdate) => void;
   onDelete: (id: string) => void;
+  onReorder: (orderedIds: string[]) => void;
 }
 
 export default function MyCheckedList({
   kdos,
   onUpdate,
   onDelete,
+  onReorder,
 }: Readonly<Props>) {
 
   const styles: CSS = {
@@ -24,14 +27,18 @@ export default function MyCheckedList({
   return (
     <FullAccordion label="Éléments cochés" defaultOpening={true}>
       <div style={styles.div}>
-        {kdos.map((kdo) => (
-          <EditableCheckLine
-            key={kdo.id}
-            kdo={kdo}
-            onUpdate={onUpdate}
-            onDelete={onDelete}
-          />
-        ))}
+        <SortableKdos
+          kdos={kdos}
+          onReorder={onReorder}
+          renderKdo={(kdo, dragHandle) => (
+            <EditableCheckLine
+              kdo={kdo}
+              dragHandle={dragHandle}
+              onUpdate={onUpdate}
+              onDelete={onDelete}
+            />
+          )}
+        />
       </div>
     </FullAccordion>
   );

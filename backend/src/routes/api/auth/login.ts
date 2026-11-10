@@ -39,7 +39,7 @@ const loginRoute: FastifyPluginAsync = async (fastify) => {
 
             try {
                 const user = await authService.loginUser(name, password);
-                const token = fastify.jwt.sign({ sub: user.id }, { expiresIn: '7d' });
+                const token = fastify.signToken(user.id, user.tokenVersion);
 
                 reply.send({
                     id: user.id,

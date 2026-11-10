@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import NoStyleButton from "../buttons/NoStyleButton";
 import XMark from "../../assets/svgs/XMark";
 import Checkbox from "../inputs/Checkbox";
@@ -14,6 +14,8 @@ import VolontaryKdo from "./friend/VoluntaryKdo";
 interface Props {
   kdo: Kdo;
   listAuthorId?: string;
+  // Drag handle, shown before the checkbox (see SortableKdos)
+  dragHandle?: ReactNode;
   autoFocus?: boolean;
   onUpdate: (kdo: KdoUpdate) => void;
   onDelete: (id: string) => void;
@@ -22,6 +24,7 @@ interface Props {
 export default function EditableCheckLine({
   kdo,
   listAuthorId = "",
+  dragHandle,
   autoFocus = false,
   onUpdate,
   onDelete,
@@ -87,6 +90,7 @@ export default function EditableCheckLine({
         <VolontaryKdo user={kdo.author!} />
       }
       <IconInlineText style={styles.isChecked}>
+        {dragHandle}
         <Checkbox name={`check-${kdo.id}`} checked={isChecked} setChecked={updateCheck} />
         <InvisibleTypingInput
           name={`kdo-${kdo.id}`}

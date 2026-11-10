@@ -33,6 +33,13 @@ export async function checkFriendKdo(id: string, isChecked: boolean): Promise<Kd
     });
 }
 
+// New order of my Kdos on one of my lists (every Kdo of the list, in order)
+export async function reorderMyKdos(listId: string, kdoIds: string[]): Promise<boolean> {
+    return await patchFetch(`${baseEndpoint}/me/reorder`, {
+        body: JSON.stringify({ listId: listId, kdoIds: kdoIds }),
+    });
+}
+
 export async function deleteKdo(id: string): Promise<boolean> {
     return await deleteFetch(`${baseEndpoint}/${id}`);
 }

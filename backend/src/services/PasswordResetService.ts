@@ -2,7 +2,7 @@ import { createHash, randomBytes } from 'node:crypto';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { PasswordResetServiceError } from '../errors/PasswordResetServiceError';
-import { MailService } from './MailService';
+import { MailService, escapeHtml, frontendUrl } from './MailService';
 
 // How long a reset link stays valid, and the minimum delay between two
 // e-mails for the same account (avoids flooding someone's inbox).
@@ -75,10 +75,7 @@ export class PasswordResetService {
             }),
         ]);
 
-        // Always set in production (checked in config.ts); the default is
-        // Vite's development server
-        const frontendUrl = (process.env.FRONTEND_URL ?? 'http://localhost:5173').replace(/\/$/, '');
-        const link = `${frontendUrl}/reset-password/${token}`;
+        const link = `${frontendUrl()}/reset-password/${token}`;
 
         await this.mailService.send({
             to: user.email,
@@ -119,7 +116,9 @@ export class PasswordResetService {
         await this.prisma.$transaction([
             this.prisma.user.update({
                 where: { id: resetToken.userId },
-                data: { passwordHash },
+                // Logs out every session: whoever had the old password
+                // (e.g. after an account theft) loses access
+                data: { passwordHash, tokenVersion: { increment: 1 } },
             }),
             this.prisma.passwordResetToken.update({
                 where: { id: resetToken.id },
@@ -127,8 +126,4 @@ export class PasswordResetService {
             }),
         ]);
     }
-}
-
-function escapeHtml(value: string): string {
-    return value.replace(/[&<>"']/g, (char) => `&#${char.charCodeAt(0)};`);
 }

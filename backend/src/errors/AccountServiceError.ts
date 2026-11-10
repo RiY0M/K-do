@@ -1,0 +1,8 @@
+export class AccountServiceError extends Error {
+    statusCode: number;
+    constructor(message: string, statusCode: number) {
+        super(message);
+        this.name = 'AccountServiceError';
+        this.statusCode = statusCode;
+    }
+}

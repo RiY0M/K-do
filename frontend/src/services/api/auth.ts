@@ -31,3 +31,10 @@ export async function resetPassword(token: string, password: string): Promise<{ 
     body: JSON.stringify({ token: token, password: password }),
   });
 }
+
+// Link of the e-mail sent after an e-mail / password change
+export async function revertAccountChange(token: string): Promise<{ restoredEmail: boolean; restoredPassword: boolean }> {
+  return await postFetch(`${baseEndpoint}/revertAccountChange`, {
+    body: JSON.stringify({ token: token }),
+  });
+}

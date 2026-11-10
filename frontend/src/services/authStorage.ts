@@ -20,6 +20,31 @@ export function getCurrentUser(): User | null {
   return raw ? (JSON.parse(raw) as User) : null;
 }
 
+/**
+ * Replaces the stored token with the renewed one the backend sends back on
+ * every authenticated request (see fetch.ts). Ignored if the session changed
+ * while the request was running (logged out, or another account logged in
+ * from another tab): `sentToken` is the token the request was made with.
+ */
+export function refreshToken(sentToken: string, newToken: string): void {
+  if (getToken() !== sentToken) return;
+
+  localStorage.setItem(TOKEN_KEY, newToken);
+
+  const user = getCurrentUser();
+  if (user) {
+    localStorage.setItem(USER_KEY, JSON.stringify({ ...user, token: newToken }));
+  }
+}
+
+// E.g. after renaming yourself on the account page
+export function updateCurrentUser(changes: Partial<User>): void {
+  const user = getCurrentUser();
+  if (user) {
+    localStorage.setItem(USER_KEY, JSON.stringify({ ...user, ...changes }));
+  }
+}
+
 export function clearSession(): void {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(USER_KEY);

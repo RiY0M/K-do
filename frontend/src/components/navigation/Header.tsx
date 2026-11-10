@@ -17,16 +17,24 @@ export default function Header({ forceHomeRedirect = false }: Readonly<Props>) {
     header: {
       fontStyle: "italic",
     },
+    row: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
   }
 
   return (
     <header style={styles.header}>
       {isLoggedIn && !forceHomeRedirect ?
-        <NoStyleButton onClick={logout}>
-          <IconInlineText style={styles.header} className="link">
-            <ArrowLeft />Déconnexion
-          </IconInlineText>
-        </NoStyleButton>
+        <div style={styles.row}>
+          <NoStyleButton onClick={logout}>
+            <IconInlineText style={styles.header} className="link">
+              <ArrowLeft />Déconnexion
+            </IconInlineText>
+          </NoStyleButton>
+          <Link to="/account">Mon compte</Link>
+        </div>
         :
         <Link to="/">
           <IconInlineText>
