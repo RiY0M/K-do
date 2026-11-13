@@ -1,10 +1,12 @@
 import { FriendRequests, Friendship } from "../../interfaces/Friendship";
-import { User } from "../../interfaces/User";
+import { FriendOverview } from "../../interfaces/FriendOverview";
 import { deleteFetch, getFetch, postFetch } from "./fetch";
 
 const baseEndpoint = "/friend";
 
-export async function getFriends(): Promise<User[]> {
+// With the news of each friend's list since I last opened it, and the gifts
+// I took for them
+export async function getFriends(): Promise<FriendOverview[]> {
     return await getFetch(`${baseEndpoint}/friends`);
 }
 

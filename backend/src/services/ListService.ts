@@ -1,7 +1,8 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { ListServiceError } from '../errors/ListServiceError';
 import { KdoDto, kdoLinksInclude, toKdoDto } from './itemMapper';
-import { areFriends, getFriendIds } from './friendshipQueries';
+import { findFriendshipBetween, getFriendIds } from './friendshipQueries';
+import { friendListItems, getItemNews, getNotificationSettings, recordFriendListVisit } from './friendNews';
 
 export interface UserSummary {
     id: string;
@@ -24,6 +25,8 @@ export interface ListDetailDto {
     position: number;
     uncheckedKdos: KdoDto[];
     checkedKdos: KdoDto[];
+    // Friend page only: gifts deleted since my last visit
+    deletedKdos?: { id: string; label: string }[];
 }
 
 type ListMeta = { id: string; label: string; description: string | null; position: number };
@@ -184,9 +187,15 @@ export class ListService {
             throw new ListServiceError('Cannot view your own list as a friend', 400);
         }
 
-        if (!(await areFriends(this.prisma, userId, friendId))) {
+        const friendship = await findFriendshipBetween(this.prisma, userId, friendId);
+        if (friendship?.status !== 'ACCEPTED') {
             throw new ListServiceError('You are not friends with this user', 403);
         }
+
+        // Its news on the home page start over from now; this page marks
+        // what changed since the previous visit
+        const since = await recordFriendListVisit(this.prisma, userId, friendId, friendship.updatedAt);
+        const settings = await getNotificationSettings(this.prisma, userId);
 
         const sharedLists = await this.prisma.list.findMany({
             where: {
@@ -220,10 +229,35 @@ export class ListService {
 
         const friendIds = await getFriendIds(this.prisma, userId);
         const reservableItems = [...friendItems, ...surpriseItems.filter((item) => item.authorId !== userId)];
-        const takenBy = await this.getTakenBy(
-            reservableItems.map((item) => item.id),
-            friendIds
-        );
+        const reservableIds = reservableItems.map((item) => item.id);
+        const takenBy = await this.getTakenBy(reservableIds, friendIds);
+
+        // Gifts someone else took since my previous visit
+        const newlyTaken = settings.taken
+            ? await this.prisma.userKDo.findMany({
+                  where: {
+                      kDoId: { in: reservableIds },
+                      userId: { not: userId },
+                      hasChecked: true,
+                      createdAt: { gt: since },
+                  },
+                  select: { kDoId: true },
+              })
+            : [];
+        const newlyTakenIds = new Set(newlyTaken.map((reservation) => reservation.kDoId));
+
+        const deletedKdos = settings.deleted
+            ? await this.prisma.kDo.findMany({
+                  where: {
+                      AND: [
+                          friendListItems(userId, friendId, sharedListIds),
+                          { createdAt: { lte: since }, deletedAt: { gt: since } },
+                      ],
+                  },
+                  orderBy: { deletedAt: 'asc' },
+                  select: { id: true, label: true },
+              })
+            : [];
 
         const allItems: KdoDto[] = [...friendItems, ...surpriseItems].map((item) => {
             const author = {
@@ -232,12 +266,18 @@ export class ListService {
                 isFriend: friendIds.has(item.user.id),
             };
 
+            // My own surprise ideas: no markers, I made the changes
             return item.authorId === userId
                 ? { ...toKdoDto(item), authorId: item.authorId, author }
-                : { ...toKdoDto(item), takenBy: takenBy.get(item.id) ?? [], author };
+                : {
+                      ...toKdoDto(item),
+                      takenBy: takenBy.get(item.id) ?? [],
+                      author,
+                      news: getItemNews(item, since, settings, newlyTakenIds.has(item.id)),
+                  };
         });
 
-        return this.buildListDetail(listMeta, allItems);
+        return { ...this.buildListDetail(listMeta, allItems), deletedKdos };
     }
 
     /** Who reserved each of the given items, keyed by item id. */

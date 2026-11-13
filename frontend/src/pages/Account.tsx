@@ -2,10 +2,19 @@ import { useEffect, useState } from "react";
 import Header from "../components/navigation/Header";
 import TypingInput from "../components/inputs/TypingInput";
 import FormSection from "../components/sections/FormSection";
-import { AccountInfo } from "../interfaces/AccountInfo";
-import { getMyAccount, updateMyAccount } from "../services/api/users";
+import { AccountInfo, NotificationSettings } from "../interfaces/AccountInfo";
+import { getMyAccount, updateMyAccount, updateMyNotifications } from "../services/api/users";
 import { updateCurrentUser } from "../services/authStorage";
-import { CSS } from "../services/utils";
+import { CSS, formSectionActualWidth } from "../services/utils";
+import Checkbox from "../components/inputs/Checkbox";
+import IconInlineText from "../components/IconInlineText";
+
+const notificationOptions: { key: keyof NotificationSettings; label: string }[] = [
+  { key: "added", label: "Cadeaux ajoutés" },
+  { key: "edited", label: "Cadeaux modifiés" },
+  { key: "deleted", label: "Cadeaux supprimés" },
+  { key: "taken", label: "Cadeaux pris par quelqu'un" },
+];
 
 export default function Account() {
   const [account, setAccount] = useState<AccountInfo | null>(null);
@@ -73,9 +82,31 @@ export default function Account() {
     }
   };
 
+  // Saved right away, rolled back if the server refuses
+  const toggleNotification = async (key: keyof NotificationSettings, value: boolean) => {
+    if (!account) return;
+    const previous = account.notifications;
+    setAccount({ ...account, notifications: { ...previous, [key]: value } });
+
+    try {
+      const notifications = await updateMyNotifications({ [key]: value });
+      setAccount((current) => current && { ...current, notifications });
+    } catch (error) {
+      console.error(error);
+      setAccount((current) => current && { ...current, notifications: previous });
+    }
+  };
+
   const styles: CSS = {
     message: {
       fontSize: "var(--sm-size)",
+    },
+    section: {
+      margin: "auto",
+      width: formSectionActualWidth,
+    },
+    options: {
+      gap: "var(--sm-space)",
     },
   };
 
@@ -153,6 +184,28 @@ export default function Account() {
 
         {message && <p style={styles.message}>{message}</p>}
       </FormSection>
+
+      {account &&
+        <section style={styles.section}>
+          <div style={styles.options}>
+            <h2>Nouveautés à signaler</h2>
+            <p style={styles.message}>
+              Sur la page d'accueil, à côté de chaque ami : ce qui a changé sur sa liste depuis la dernière fois que vous l'avez ouverte.
+            </p>
+
+            {notificationOptions.map((option) => (
+              <IconInlineText key={option.key}>
+                <Checkbox
+                  name={`notify-${option.key}`}
+                  checked={account.notifications[option.key]}
+                  setChecked={(value) => toggleNotification(option.key, value)}
+                />
+                <label htmlFor={`notify-${option.key}`}>{option.label}</label>
+              </IconInlineText>
+            ))}
+          </div>
+        </section>
+      }
     </>
   );
 }

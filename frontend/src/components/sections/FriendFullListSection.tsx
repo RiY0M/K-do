@@ -43,7 +43,13 @@ export default function FriendFullListSection() {
 			whiteSpace: "pre-wrap",
 			overflowWrap: "anywhere",
 		},
+		deleted: {
+			fontSize: "var(--sm-size)",
+			color: "var(--action)",
+		},
 	};
+
+	const deletedKdos = list?.deletedKdos ?? [];
 
 	return (
 		<section>
@@ -57,6 +63,13 @@ export default function FriendFullListSection() {
 						<FullAccordion label="Description" defaultOpening>
 							<p style={styles.description}>{list.description}</p>
 						</FullAccordion>
+					}
+
+					{/* Gone from the list, so marked here rather than on a line */}
+					{deletedKdos.length > 0 &&
+						<p style={styles.deleted} title="Depuis votre dernière visite de cette liste">
+							● {deletedKdos.length > 1 ? "Supprimés" : "Supprimé"}&nbsp;: {deletedKdos.map((kdo) => kdo.label.trim() || "Sans nom").join(", ")}
+						</p>
 					}
 
 					<FriendUncheckedList

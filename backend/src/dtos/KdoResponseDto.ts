@@ -44,6 +44,11 @@ export const KdoResponseDto = z.object({
     // Links attached by the item's author (where to buy it...). Sent with
     // lists; may be omitted from the responses of the /kdo mutations.
     links: z.array(LinkResponseDto).optional(),
+    // Friend page only: what changed on this gift since my last visit (see
+    // friendNews.ts getItemNews). Omitted when nothing changed.
+    news: z
+        .object({ added: z.boolean(), label: z.boolean(), links: z.boolean(), taken: z.boolean() })
+        .optional(),
 });
 
 export type KdoResponseDtoType = z.infer<typeof KdoResponseDto>;

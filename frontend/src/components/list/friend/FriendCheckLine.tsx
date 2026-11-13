@@ -10,6 +10,7 @@ import NoStyleButton from "../../buttons/NoStyleButton";
 import LinkIcon from "../../../assets/svgs/LinkIcon";
 import LinksModal from "../../modals/LinksModal";
 import VolontaryKdo from "./VoluntaryKdo";
+import KdoNewsTag from "./KdoNewsTag";
 
 interface Props {
   kdo: Kdo;
@@ -62,6 +63,9 @@ export default function FriendCheckLine({
 
   return (
     <div style={styles.div}>
+      {kdo.news &&
+        <KdoNewsTag news={kdo.news} />
+      }
       {kdo.author && kdo.author.id !== listAuthorId &&
         <VolontaryKdo user={kdo.author!} />
       }

@@ -131,7 +131,7 @@ export class ItemService {
 
         const kDo = await this.prisma.kDo.update({
             where: { id: itemId },
-            data: { label: value },
+            data: { label: value, labelEditedAt: new Date() },
         });
 
         await this.touchLastSave(userId);
@@ -211,9 +211,13 @@ export class ItemService {
             throw new ItemServiceError('Too many links on this item', 400);
         }
 
-        const link = await this.prisma.link.create({
-            data: { href, kDoId: itemId, authorId: userId },
-        });
+        const [link] = await this.prisma.$transaction([
+            this.prisma.link.create({
+                data: { href, kDoId: itemId, authorId: userId },
+            }),
+            // "Modified" news for friends (see friendNews.ts)
+            this.prisma.kDo.update({ where: { id: itemId }, data: { linksEditedAt: new Date() } }),
+        ]);
 
         await this.touchLastSave(userId);
 
@@ -233,7 +237,10 @@ export class ItemService {
             throw new ItemServiceError('You do not own this link', 403);
         }
 
-        await this.prisma.link.delete({ where: { id: linkId } });
+        await this.prisma.$transaction([
+            this.prisma.link.delete({ where: { id: linkId } }),
+            this.prisma.kDo.update({ where: { id: link.kDoId }, data: { linksEditedAt: new Date() } }),
+        ]);
         await this.touchLastSave(userId);
 
         return true;

@@ -18,6 +18,12 @@ model User {
     // Part of every session token (JWT "ver"): incrementing it logs out
     // every device at once (password changed, account change reverted...)
     tokenVersion Int      @default(0)
+    // What counts as news on the home page, for each friend's list (see
+    // friendNews.ts). Changed on the account page.
+    notifyAdded   Boolean @default(true)
+    notifyEdited  Boolean @default(true)
+    notifyDeleted Boolean @default(true)
+    notifyTaken   Boolean @default(true)
 
     createdAt  DateTime    @default(now())
     updatedAt  DateTime    @updatedAt
@@ -34,6 +40,8 @@ model User {
     invitations         Invitation[]
     passwordResetTokens PasswordResetToken[]
     accountChanges      AccountChange[]
+    friendListViews     FriendListView[] @relation("FriendListViewer")
+    viewedByFriends     FriendListView[] @relation("FriendListOwner")
     links               Link[]
 
     @@map("users")
@@ -79,6 +87,11 @@ model KDo {
     recipientId String?
     isChecked   Boolean @default(false) // Is checked by author, not by other poeple
     position    Int
+    // Last change of the label / of the links ("modified" news on the home
+    // page and on the friend page, see friendNews.ts). Unlike updatedAt, not
+    // touched by checking or reordering.
+    labelEditedAt DateTime?
+    linksEditedAt DateTime?
 
     createdAt DateTime  @default(now())
     updatedAt DateTime  @updatedAt
@@ -98,6 +111,8 @@ model UserKDo {
     hasChecked Boolean @default(true)
     userId String
     kDoId  String
+    // When it was taken ("taken" news on the home page)
+    createdAt DateTime @default(now())
 
     user User @relation(fields: [userId], references: [id])
     kDo  KDo  @relation(fields: [kDoId], references: [id])
@@ -208,4 +223,23 @@ model AccountChange {
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@map("account_changes")
+}
+
+// Last time a user opened a friend's list: news on the home page (added,
+// edited, deleted, taken gifts) are counted from there (see friendNews.ts).
+model FriendListView {
+    id       String   @id @default(uuid())
+    viewerId String
+    friendId String
+    seenAt   DateTime
+    // seenAt before the current visit (null: never seen before). The friend
+    // page shows what changed since then, so reloading it within the same
+    // visit (see VISIT_GAP_MS in friendNews.ts) doesn't wipe its markers.
+    previousSeenAt DateTime?
+
+    viewer User @relation("FriendListViewer", fields: [viewerId], references: [id], onDelete: Cascade)
+    friend User @relation("FriendListOwner", fields: [friendId], references: [id], onDelete: Cascade)
+
+    @@unique([viewerId, friendId])
+    @@map("friend_list_views")
 }

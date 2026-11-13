@@ -9,4 +9,6 @@ export interface List {
     uncheckedKdos?: Kdo[];
     checkedKdos?: Kdo[];
     friends?: User[];
+    // Friend page only: gifts deleted since my last visit
+    deletedKdos?: { id: string; label: string }[];
 }

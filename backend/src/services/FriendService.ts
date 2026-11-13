@@ -2,6 +2,7 @@ import { Friendship, PrismaClient, User } from '@prisma/client';
 import { FriendServiceError } from '../errors/FriendServiceError';
 import { findFriendshipBetween } from './friendshipQueries';
 import { ListService, UserSummary } from './ListService';
+import { FriendNewsDto, TakenKdoDto, getFriendNews, getSharedListIds, getTakenByMe } from './friendNews';
 
 export interface FriendshipDto {
     id: string;
@@ -17,6 +18,11 @@ export interface FriendRequestsDto {
 
 type FriendshipWithUsers = Friendship & { requester: User; addressee: User };
 
+export interface FriendOverviewDto extends UserSummary {
+    news: FriendNewsDto;
+    takenByMe: TakenKdoDto[];
+}
+
 /**
  * Friend requests and friendships. Backs the routes under /api/friend/*.
  *
@@ -31,18 +37,52 @@ export class FriendService {
         this.listService = new ListService(prisma);
     }
 
-    async getFriends(userId: string): Promise<UserSummary[]> {
-        const friendships = await this.prisma.friendship.findMany({
-            where: {
-                status: 'ACCEPTED',
-                OR: [{ requesterId: userId }, { addresseeId: userId }],
-            },
-            include: { requester: true, addressee: true },
-        });
+    /**
+     * My friends, each with the news of their list since I last opened it
+     * (only the kinds enabled on my account page) and the gifts I took for
+     * them.
+     */
+    async getFriends(userId: string): Promise<FriendOverviewDto[]> {
+        const [me, friendships, views] = await Promise.all([
+            this.prisma.user.findUniqueOrThrow({ where: { id: userId } }),
+            this.prisma.friendship.findMany({
+                where: {
+                    status: 'ACCEPTED',
+                    OR: [{ requesterId: userId }, { addresseeId: userId }],
+                },
+                include: { requester: true, addressee: true },
+            }),
+            this.prisma.friendListView.findMany({ where: { viewerId: userId } }),
+        ]);
 
-        return friendships
-            .map((friendship) => this.toFriendshipDto(friendship, userId).user)
-            .sort((a, b) => a.name.localeCompare(b.name));
+        const settings = {
+            added: me.notifyAdded,
+            edited: me.notifyEdited,
+            deleted: me.notifyDeleted,
+            taken: me.notifyTaken,
+        };
+        const seenAt = new Map(views.map((view) => [view.friendId, view.seenAt]));
+
+        const friends = await Promise.all(
+            friendships.map(async (friendship) => {
+                const friend = this.toFriendshipDto(friendship, userId).user;
+                const sharedListIds = await getSharedListIds(this.prisma, userId, friend.id);
+
+                // Never opened (or not since becoming friends again): counts
+                // from when the friendship started
+                const lastSeen = seenAt.get(friend.id);
+                const since = lastSeen && lastSeen > friendship.updatedAt ? lastSeen : friendship.updatedAt;
+
+                const [news, takenByMe] = await Promise.all([
+                    getFriendNews(this.prisma, userId, friend.id, sharedListIds, since, settings),
+                    getTakenByMe(this.prisma, userId, friend.id, sharedListIds),
+                ]);
+
+                return { ...friend, news, takenByMe };
+            })
+        );
+
+        return friends.sort((a, b) => a.name.localeCompare(b.name));
     }
 
     async getRequests(userId: string): Promise<FriendRequestsDto> {

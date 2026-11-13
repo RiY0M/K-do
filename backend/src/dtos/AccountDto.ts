@@ -1,10 +1,24 @@
 import { z } from 'zod';
 
+// Which changes on friends' lists show up as news on the home page
+export const NotificationSettingsDto = z.object({
+    added: z.boolean(),
+    edited: z.boolean(),
+    deleted: z.boolean(),
+    taken: z.boolean(),
+});
+
+// Body for PATCH /user/me/notifications: only the settings that change
+export const UpdateNotificationSettingsRequestDto = NotificationSettingsDto.partial();
+
+export type UpdateNotificationSettingsRequestDtoType = z.infer<typeof UpdateNotificationSettingsRequestDto>;
+
 // GET /user/me and PATCH /user/me
 export const AccountResponseDto = z.object({
     id: z.uuid(),
     name: z.string(),
     email: z.string().nullable(),
+    notifications: NotificationSettingsDto,
 });
 
 // Body for PATCH /user/me: the whole form of the account page. Same rules as

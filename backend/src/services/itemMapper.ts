@@ -16,6 +16,7 @@ export interface KdoDto {
     takenBy?: { id: string; name: string; isFriend: boolean }[];
     author?: { id: string; name: string; isFriend: boolean };
     links?: LinkDto[];
+    news?: { added: boolean; label: boolean; links: boolean; taken: boolean };
 }
 
 // Links are included when the query loaded them (`include: kdoLinksInclude`)

@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import { AccountServiceError } from '../errors/AccountServiceError';
 import { MailService, escapeHtml, frontendUrl } from './MailService';
 import { maskEmail } from './PasswordResetService';
+import { NotificationSettings } from './friendNews';
 
 // How long the "undo" link of an e-mail / password change stays valid
 const UNDO_TTL_MS = 7 * 24 * 60 * 60 * 1000;
@@ -14,7 +15,18 @@ export interface AccountDto {
     id: string;
     name: string;
     email: string | null;
+    notifications: NotificationSettings;
 }
+
+type AccountUser = {
+    id: string;
+    username: string;
+    email: string | null;
+    notifyAdded: boolean;
+    notifyEdited: boolean;
+    notifyDeleted: boolean;
+    notifyTaken: boolean;
+};
 
 export interface AccountUpdate {
     name: string;
@@ -48,7 +60,22 @@ export class AccountService {
             throw new AccountServiceError('User not found', 404);
         }
 
-        return { id: user.id, name: user.username, email: user.email };
+        return this.toAccount(user);
+    }
+
+    /** Turns news kinds of the home page on or off (account page). */
+    async updateNotifications(userId: string, changes: Partial<NotificationSettings>): Promise<NotificationSettings> {
+        const user = await this.prisma.user.update({
+            where: { id: userId },
+            data: {
+                notifyAdded: changes.added,
+                notifyEdited: changes.edited,
+                notifyDeleted: changes.deleted,
+                notifyTaken: changes.taken,
+            },
+        });
+
+        return this.toAccount(user).notifications;
     }
 
     /**
@@ -248,7 +275,17 @@ export class AccountService {
         });
     }
 
-    private toAccount(user: { id: string; username: string; email: string | null }): AccountDto {
-        return { id: user.id, name: user.username, email: user.email };
+    private toAccount(user: AccountUser): AccountDto {
+        return {
+            id: user.id,
+            name: user.username,
+            email: user.email,
+            notifications: {
+                added: user.notifyAdded,
+                edited: user.notifyEdited,
+                deleted: user.notifyDeleted,
+                taken: user.notifyTaken,
+            },
+        };
     }
 }

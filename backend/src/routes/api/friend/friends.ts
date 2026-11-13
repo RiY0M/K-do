@@ -1,6 +1,6 @@
 import type { FastifyPluginAsync, FastifySchema } from 'fastify';
 import { z } from 'zod';
-import { UserSummaryDto } from '../../../dtos/KdoResponseDto';
+import { FriendOverviewDto } from '../../../dtos/FriendOverviewDto';
 import { FriendService } from '../../../services/FriendService';
 
 // Backs getFriends() in frontend/src/services/api/friends.ts.
@@ -8,10 +8,10 @@ const getFriendsRoute: FastifyPluginAsync = async (fastify) => {
     const friendService = new FriendService(fastify.prisma);
 
     const schema: FastifySchema = {
-        summary: 'List my friends',
+        summary: 'List my friends, with the news of their lists and the gifts I took for them',
         tags: ['friend'],
         response: {
-            200: z.array(UserSummaryDto),
+            200: z.array(FriendOverviewDto),
         },
     };
 

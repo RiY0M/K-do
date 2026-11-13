@@ -2,6 +2,9 @@ import type { FastifyPluginAsync, FastifySchema } from 'fastify';
 import { z } from 'zod';
 import {
     AccountResponseDto,
+    NotificationSettingsDto,
+    UpdateNotificationSettingsRequestDto,
+    UpdateNotificationSettingsRequestDtoType,
     UpdateAccountRequestDto,
     UpdateAccountRequestDtoType,
     UpdateAccountResponseDto,
@@ -70,6 +73,23 @@ const meRoute: FastifyPluginAsync = async (fastify) => {
                 }
                 throw err;
             }
+        }
+    );
+
+    const notificationsSchema: FastifySchema = {
+        summary: 'Choose which changes on friends\' lists show up as news on the home page',
+        tags: ['users'],
+        body: UpdateNotificationSettingsRequestDto,
+        response: {
+            200: NotificationSettingsDto,
+        },
+    };
+
+    fastify.patch<{ Body: UpdateNotificationSettingsRequestDtoType }>(
+        '/me/notifications',
+        { schema: notificationsSchema, preHandler: fastify.authenticate },
+        async (request, reply) => {
+            reply.send(await accountService.updateNotifications(request.user.sub, request.body));
         }
     );
 };

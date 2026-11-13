@@ -1,5 +1,5 @@
 import { getFetch, patchFetch } from "./fetch";
-import { AccountInfo, AccountUpdate, UpdatedAccount } from "../../interfaces/AccountInfo";
+import { AccountInfo, AccountUpdate, NotificationSettings, UpdatedAccount } from "../../interfaces/AccountInfo";
 
 const baseEndpoint = "/user";
 
@@ -17,5 +17,12 @@ export async function getMyAccount(): Promise<AccountInfo> {
 export async function updateMyAccount(update: AccountUpdate): Promise<UpdatedAccount> {
     return await patchFetch<UpdatedAccount>(`${baseEndpoint}/me`, {
         body: JSON.stringify(update),
+    });
+}
+
+// Which changes on friends' lists show up as news on the home page
+export async function updateMyNotifications(changes: Partial<NotificationSettings>): Promise<NotificationSettings> {
+    return await patchFetch<NotificationSettings>(`${baseEndpoint}/me/notifications`, {
+        body: JSON.stringify(changes),
     });
 }

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useBehaviourDisplay } from "../../hooks/useBehaviourDisplay";
 import { FriendRequests, Friendship } from "../../interfaces/Friendship";
 import { User } from "../../interfaces/User";
+import { FriendOverview } from "../../interfaces/FriendOverview";
 import {
 	acceptFriendRequest,
 	deleteFriendRequest,
@@ -30,7 +31,7 @@ export default function FriendsSection({
 	const behaviourDisplay = useBehaviourDisplay();
 	const isLandscape = behaviourDisplay === "landscape";
 
-	const [friends, setFriends] = useState<User[]>([]);
+	const [friends, setFriends] = useState<FriendOverview[]>([]);
 	const [requests, setRequests] = useState<FriendRequests>({ received: [], sent: [] });
 	const [name, setName] = useState<string>("");
 	const [friendToRemove, setFriendToRemove] = useState<User | null>(null);

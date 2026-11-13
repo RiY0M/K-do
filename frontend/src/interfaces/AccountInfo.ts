@@ -1,7 +1,16 @@
+// Which changes on friends' lists show up as news on the home page
+export interface NotificationSettings {
+    added: boolean;
+    edited: boolean;
+    deleted: boolean;
+    taken: boolean;
+}
+
 export interface AccountInfo {
     id: string;
     name: string;
     email: string | null;
+    notifications: NotificationSettings;
 }
 
 export interface AccountUpdate {

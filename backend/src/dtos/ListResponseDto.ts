@@ -22,6 +22,8 @@ export const ListDetailResponseDto = z.object({
     description: z.string(),
     position: z.number(),
     uncheckedKdos: z.array(KdoResponseDto),
+    // Friend page only: gifts deleted since my last visit
+    deletedKdos: z.array(z.object({ id: z.uuid(), label: z.string() })).optional(),
     checkedKdos: z.array(KdoResponseDto),
 });
 
