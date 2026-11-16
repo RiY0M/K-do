@@ -1,10 +1,15 @@
+// Prisma 7: TypeScript client generated into src/ (gitignored), so it is
+// bundled with the app. Regenerate it with `npm run db:generate`.
 generator client {
-    provider = "prisma-client-js"
+    provider            = "prisma-client"
+    output              = "../src/generated/prisma"
+    moduleFormat        = "esm"
+    importFileExtension = "ts"
 }
 
+// The connection URL is set in prisma.config.ts (DATABASE_URL)
 datasource db {
     provider = "postgresql"
-    url      = env("DATABASE_URL")
 }
 
 model User {

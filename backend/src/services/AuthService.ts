@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient, User } from '@prisma/client';
+import { Prisma, PrismaClient, User } from '../generated/prisma/client';
 import bcrypt from 'bcrypt';
 import { AuthServiceError } from '../errors/AuthServiceError';
 import { DEFAULT_LIST_LABEL } from './ListService';

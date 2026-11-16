@@ -1,14 +1,16 @@
 FROM node:22-alpine
 WORKDIR /app
 
-# Prisma's engines need OpenSSL, which alpine doesn't ship by default
+# Prisma's migration engine needs OpenSSL, which alpine doesn't ship by default
 RUN apk add --no-cache openssl
 
 COPY package.json package-lock.json* ./
 RUN npm install
 
 COPY . .
-RUN npx prisma generate
+# Generating the client doesn't connect to the database, but prisma.config.ts
+# requires DATABASE_URL to be set
+RUN DATABASE_URL=postgresql://build@localhost:5432/build npx prisma generate
 
 EXPOSE 3000
 

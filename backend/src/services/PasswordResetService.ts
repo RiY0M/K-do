@@ -1,5 +1,5 @@
 import { createHash, randomBytes } from 'node:crypto';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../generated/prisma/client';
 import bcrypt from 'bcrypt';
 import { PasswordResetServiceError } from '../errors/PasswordResetServiceError';
 import { MailService, escapeHtml, frontendUrl } from './MailService';

@@ -1,0 +1,470 @@
+=== START 16/11/2026 20:36:14,56 
+=== [backend] install 
+
+added 107 packages, removed 7 packages, and changed 17 packages in 28s
+npm warn install-scripts 4 packages have install scripts not yet covered by allowScripts:
+npm warn install-scripts   bcrypt@6.0.0 (install: node-gyp rebuild)
+npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+npm warn install-scripts   prisma@7.10.1 (preinstall: node scripts/preinstall-entry.js)
+npm warn install-scripts   @prisma/engines@7.10.1 (postinstall: node scripts/postinstall.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+=== [backend] versions 
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+prisma               : 7.10.1
+@prisma/client       : 7.10.1
+Operating System     : win32
+Architecture         : x64
+Node.js              : v22.14.0
+TypeScript           : 6.0.3
+Query Compiler       : enabled
+PSL                  : @prisma/prisma-schema-wasm 8.1.0-1.d1b3f377ca835d73fd50954a5e22128b9ebdd6b8
+Schema Engine        : schema-engine-cli d1b3f377ca835d73fd50954a5e22128b9ebdd6b8 (at node_modules\@prisma\engines\schema-engine-windows.exe)
+Default Engines Hash : d1b3f377ca835d73fd50954a5e22128b9ebdd6b8
+Studio               : 0.33.0
+Prisma CLI Path      : C:\Users\yoni\Documents\Kdo\backend\node_modules\prisma
+=== [backend] validate 
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+The schema at prisma\schema.prisma is valid 🚀
+=== [backend] generate 
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+┌─────────────────────────────────────────────────────────┐
+│  Update available 7.10.1 -> 8.0.0-rc.34                 │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘
+
+✔ Generated Prisma Client (7.10.1) to .\src\generated\prisma in 179ms
+
+=== [backend] typecheck 
+
+> fastify-backend@1.0.4 typecheck
+> tsc --noEmit
+
+=== [backend] lint 
+
+> fastify-backend@1.0.4 lint
+> eslint src
+
+=== [backend] build 
+
+> fastify-backend@1.0.4 build
+> tsc --noEmit && esbuild src/server.ts --bundle --platform=node --format=esm --target=node22 --packages=external --outfile=dist/server.js
+
+
+  dist\server.js  177.3kb
+
+Done in 28ms
+=== [docker dev] 
+ Container react-frontend Stopping 
+ Container fastify-backend Stopping 
+ Container fastify-backend Stopped 
+ Container fastify-backend Removing 
+ Container fastify-backend Removed 
+ Container mailpit Stopping 
+ Container postgres-db Stopping 
+ Container react-frontend Stopped 
+ Container react-frontend Removing 
+ Container react-frontend Removed 
+ Container postgres-db Stopped 
+ Container postgres-db Removing 
+ Container postgres-db Removed 
+ Container mailpit Stopped 
+ Container mailpit Removing 
+ Container mailpit Removed 
+ Network kdo_default Removing 
+ Network kdo_default Removed 
+ Image kdo-backend Building 
+ Image kdo-frontend Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 977B 0.0s done
+#1 DONE 0.0s
+
+#2 [frontend internal] load build definition from Dockerfile
+#2 transferring dockerfile: 238B 0.0s done
+#2 DONE 0.0s
+
+#3 [backend internal] load build definition from Dockerfile
+#3 transferring dockerfile: 686B 0.0s done
+#3 DONE 0.0s
+
+#4 [backend internal] load metadata for docker.io/library/node:22-alpine
+#4 DONE 0.8s
+
+#5 [frontend internal] load .dockerignore
+#5 transferring context: 99B done
+#5 DONE 0.0s
+
+#6 [backend internal] load .dockerignore
+#6 transferring context: 104B 0.0s done
+#6 DONE 0.0s
+
+#7 [frontend internal] load build context
+#7 transferring context: 110.03kB 0.0s done
+#7 DONE 0.0s
+
+#8 [frontend 1/5] FROM docker.io/library/node:22-alpine@sha256:1314fb30ec37592d5845e5a160d522c0e680972aa534549940b8d73bde88481a
+#8 resolve docker.io/library/node:22-alpine@sha256:1314fb30ec37592d5845e5a160d522c0e680972aa534549940b8d73bde88481a 0.0s done
+#8 DONE 0.0s
+
+#9 [frontend 3/5] COPY package.json package-lock.json* ./
+#9 CACHED
+
+#10 [frontend 2/5] WORKDIR /app
+#10 CACHED
+
+#11 [frontend 4/5] RUN npm install
+#11 CACHED
+
+#12 [backend internal] load build context
+#12 transferring context: 302.03kB 0.0s done
+#12 DONE 0.0s
+
+#13 [frontend 5/5] COPY . .
+#13 DONE 0.1s
+
+#10 [backend 2/5] WORKDIR /app
+#10 CACHED
+
+#14 [backend 3/7] RUN apk add --no-cache openssl
+#14 CACHED
+
+#15 [backend 4/7] COPY package.json package-lock.json* ./
+#15 DONE 0.1s
+
+#16 [frontend] exporting to image
+#16 exporting layers 0.1s done
+#16 exporting manifest sha256:5b212f92b0703633ce75618f02e3bd2bc3cade9f91a7fa858b5c656ada239504 0.0s done
+#16 exporting config sha256:a964ab58d63d6fe837b6f890479226590b623fd634d44de2b5fef2fc5c7cb5f5 0.0s done
+#16 exporting attestation manifest sha256:872118e0163cc184976b7f0dca1ecf79453518ac268e4b16ef7f0232004d2fe2 0.0s done
+#16 exporting manifest list sha256:51d0b302779ea2c98a37090ce1e97425b2243be18963770e00b9e128d60895bf 0.0s done
+#16 naming to docker.io/library/kdo-frontend:latest done
+#16 unpacking to docker.io/library/kdo-frontend:latest 0.0s done
+#16 DONE 0.3s
+
+#17 [frontend] resolving provenance for metadata file
+#17 DONE 0.0s
+
+#18 [backend 5/7] RUN npm install
+#18 18.33 
+#18 18.33 added 416 packages, and audited 417 packages in 18s
+#18 18.33 
+#18 18.33 102 packages are looking for funding
+#18 18.33   run `npm fund` for details
+#18 18.34 
+#18 18.34 5 moderate severity vulnerabilities
+#18 18.34 
+#18 18.34 To address all issues (including breaking changes), run:
+#18 18.34   npm audit fix --force
+#18 18.34 
+#18 18.34 Run `npm audit` for details.
+#18 18.34 npm notice
+#18 18.34 npm notice New major version of npm available! 10.9.9 -> 12.2.2
+#18 18.34 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.2
+#18 18.34 npm notice To update run: npm install -g npm@12.2.2
+#18 18.34 npm notice
+#18 DONE 23.9s
+
+#19 [backend 6/7] COPY . .
+#19 DONE 0.3s
+
+#20 [backend 7/7] RUN DATABASE_URL=postgresql://build@localhost:5432/build npx prisma generate
+#20 1.720 Loaded Prisma config from prisma.config.ts.
+#20 1.720 
+#20 1.962 Prisma schema loaded from prisma/schema.prisma.
+#20 2.217 
+#20 2.217 ✔ Generated Prisma Client (7.10.1) to ./src/generated/prisma in 169ms
+#20 2.217 
+#20 DONE 2.3s
+
+#21 [backend] exporting to image
+#21 exporting layers
+#21 exporting layers 22.9s done
+#21 exporting manifest sha256:9c75bb3bea194d7a6f298974e2f5616f652f1f7b3b153c9dddf13df4f3623450 0.0s done
+#21 exporting config sha256:0f80dd7acac8204f4c1debe7495ada2c7fdd9e4627bfea05f2d925cffb70a8e3 0.0s done
+#21 exporting attestation manifest sha256:fc496c47de41dc8627bfc703e24111b04201b922d504ae60b3a199b59cc4d157 0.0s done
+#21 exporting manifest list sha256:e34edadbc59878d3447f98047901ceb5e134a46be414197a5828019b139ce17b 0.0s done
+#21 naming to docker.io/library/kdo-backend:latest done
+#21 unpacking to docker.io/library/kdo-backend:latest
+#21 unpacking to docker.io/library/kdo-backend:latest 15.7s done
+#21 DONE 38.8s
+
+#22 [backend] resolving provenance for metadata file
+#22 DONE 0.0s
+ Image kdo-backend Built 
+ Image kdo-frontend Built 
+ Network kdo_default Creating 
+ Network kdo_default Creating 
+ Network kdo_default Created 
+ Network kdo_default Created 
+ Container mailpit Creating 
+ Container react-frontend Creating 
+ Container postgres-db Creating 
+ Container mailpit Created 
+ Container postgres-db Created 
+ Container fastify-backend Creating 
+ Container react-frontend Created 
+ Container fastify-backend Created 
+ Container react-frontend Starting 
+ Container postgres-db Starting 
+ Container mailpit Starting 
+ Container react-frontend Started 
+ Container postgres-db Started 
+ Container postgres-db Waiting 
+ Container mailpit Started 
+ Container postgres-db Healthy 
+ Container fastify-backend Starting 
+ Container fastify-backend Started 
+API not reachable after 5 minutes 
+fastify-backend  | Loaded Prisma config from prisma.config.ts.
+fastify-backend  | 
+fastify-backend  | Prisma schema loaded from prisma/schema.prisma.
+fastify-backend  | Datasource "db": PostgreSQL database "kdo", schema "public" at "db:5433"
+fastify-backend  | 
+fastify-backend  | Error: P1001: Can't reach database server at `db:5433`
+fastify-backend  | 
+fastify-backend  | Please make sure your database server is running at `db:5433`.
+=== [docker prod] build image 
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.prod
+#1 transferring dockerfile: 1.06kB 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:22-alpine
+#2 DONE 0.7s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 104B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 6.42kB 0.0s done
+#4 DONE 0.0s
+
+#5 [base 1/3] FROM docker.io/library/node:22-alpine@sha256:1314fb30ec37592d5845e5a160d522c0e680972aa534549940b8d73bde88481a
+#5 resolve docker.io/library/node:22-alpine@sha256:1314fb30ec37592d5845e5a160d522c0e680972aa534549940b8d73bde88481a 0.0s done
+#5 DONE 0.0s
+
+#6 [base 2/3] WORKDIR /app
+#6 CACHED
+
+#7 [base 3/3] RUN apk add --no-cache openssl
+#7 CACHED
+
+#8 [deps 1/5] COPY package.json package-lock.json* ./
+#8 CACHED
+
+#9 [deps 2/5] COPY prisma ./prisma
+#9 DONE 0.1s
+
+#10 [deps 3/5] COPY prisma.config.ts ./
+#10 DONE 0.1s
+
+#11 [deps 4/5] RUN npm ci
+#11 18.78 
+#11 18.78 added 416 packages, and audited 417 packages in 18s
+#11 18.78 
+#11 18.78 102 packages are looking for funding
+#11 18.78   run `npm fund` for details
+#11 18.79 
+#11 18.79 5 moderate severity vulnerabilities
+#11 18.79 
+#11 18.79 To address all issues (including breaking changes), run:
+#11 18.79   npm audit fix --force
+#11 18.79 
+#11 18.79 Run `npm audit` for details.
+#11 18.79 npm notice
+#11 18.79 npm notice New major version of npm available! 10.9.9 -> 12.2.2
+#11 18.79 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.2
+#11 18.79 npm notice To update run: npm install -g npm@12.2.2
+#11 18.79 npm notice
+#11 DONE 24.3s
+
+#12 [deps 5/5] RUN DATABASE_URL=postgresql://build@localhost:5432/build npx prisma generate
+#12 2.270 Loaded Prisma config from prisma.config.ts.
+#12 2.270 
+#12 2.505 Prisma schema loaded from prisma/schema.prisma.
+#12 2.845 
+#12 2.845 ✔ Generated Prisma Client (7.10.1) to ./src/generated/prisma in 203ms
+#12 2.845 
+#12 DONE 2.9s
+
+#13 [build 1/3] COPY tsconfig.json ./
+#13 DONE 0.1s
+
+#14 [build 2/3] COPY src ./src
+#14 DONE 0.1s
+
+#15 [build 3/3] RUN npm run build
+#15 0.600 
+#15 0.600 > fastify-backend@1.0.4 build
+#15 0.600 > tsc --noEmit && esbuild src/server.ts --bundle --platform=node --format=esm --target=node22 --packages=external --outfile=dist/server.js
+#15 0.600 
+#15 8.336 
+#15 8.336   dist/server.js  177.3kb
+#15 8.336 
+#15 8.336 ⚡ Done in 47ms
+#15 DONE 12.0s
+
+#16 [prod 1/5] COPY --from=deps /app/node_modules ./node_modules
+#16 DONE 12.3s
+
+#17 [prod 2/5] COPY --from=build /app/dist ./dist
+#17 DONE 0.2s
+
+#18 [prod 3/5] COPY prisma ./prisma
+#18 DONE 0.1s
+
+#19 [prod 4/5] COPY prisma.config.ts ./
+#19 DONE 0.1s
+
+#20 [prod 5/5] COPY package.json ./
+#20 DONE 0.0s
+
+#21 exporting to image
+#21 exporting layers
+#21 exporting layers 20.5s done
+#21 exporting manifest sha256:669efdce5d9deb0f7471e084a636e82a146a528353f15b6912db804f7cd22fe3 0.0s done
+#21 exporting config sha256:e8c8e6c00713241889c2cc262e62260dd589e90f9cc60bea959bdb45c0bb2471 0.0s done
+#21 exporting attestation manifest sha256:fa64c18aed305f80c3b249ae8b6fd4691e4e593e97f07070b9efacaa714509cc 0.0s done
+#21 exporting manifest list sha256:7e4565f30d64f3f31be0c4a4a19a7a14c4b37990b6b474562f200a1f29641d6b 0.0s done
+#21 naming to docker.io/library/kdo-backend-prod-test:latest 0.0s done
+#21 unpacking to docker.io/library/kdo-backend-prod-test:latest
+#21 unpacking to docker.io/library/kdo-backend-prod-test:latest 20.5s done
+#21 DONE 41.1s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/fi9pb49chkbx533m94cyvymc4
+=== [docker prod] run against the dev database 
+93090e606442c815fd90a5f001ef47f5442aab86591a07b559babd5b9789b1c7
+Prod API is up 
+=== [docker prod] smoke test 
+OK   register alice_mwjoaqup
+OK   register bob_mwjoaqup
+OK   register carol_mwjoaqup
+OK   duplicate username -> 409
+OK   a name contained in another one is accepted
+OK   no token -> 401
+OK   bad token -> 401
+OK   alice has exactly one default list
+OK   create my item
+OK   rename my item
+OK   empty label allowed
+OK   check my item
+OK   bob cannot add to alice list
+OK   bob cannot see alice list before being friends
+OK   create invitation
+OK   invitation link reused
+OK   bob cannot create an invitation to alice list
+OK   bob reads invitation
+OK   alice cannot accept her own invitation
+OK   bob accepts invitation
+OK   accepting twice is harmless
+OK   unknown invitation -> 404
+OK   alice friends = [bob]
+OK   bob is a member of alice list
+OK   bob lists = only his own
+OK   getUsername returns JSON { name }
+OK   bob sees alice items
+OK   alice items are not editable for bob
+OK   bob reserves alice item
+OK   alice cannot reserve her own item
+OK   carol (not a friend) cannot reserve
+OK   bob adds a surprise idea for alice
+OK   alice does not see the surprise idea
+OK   alice does not see who reserved
+OK   surprise idea not on bob own list
+OK   surprise idea on alice page for bob (editable)
+OK   alice cannot reserve the surprise for herself
+OK   carol cannot create a surprise for alice
+OK   alice adds a link to her item
+OK   non-http link refused
+OK   bob cannot add a link to alice item
+OK   alice sees the link on her list
+OK   bob sees the link on alice page
+OK   item without link has an empty list
+OK   bob cannot delete alice link
+OK   alice deletes a link
+OK   deleted link is gone
+OK   request to unknown user -> 404
+OK   request to myself -> 400
+OK   carol sends a request to alice
+OK   duplicate request -> 409
+OK   alice received it
+OK   carol cannot accept her own request
+OK   alice accepts
+OK   carol sees alice list now
+OK   carol sees bob reserved it (bob not her friend)
+OK   reverse request accepts the pending one
+OK   register dave_mwjoaqup
+OK   dave cancels his request
+OK   alice declines dave
+OK   dave is not alice friend
+OK   bob removes alice
+OK   bob no longer sees alice list
+OK   bob reservation removed
+OK   bob surprise idea removed
+OK   bob left alice list
+OK   update description
+OK   delete my item
+OK   reset without e-mail on the account -> 400
+OK   reset for unknown user -> 404
+OK   reset e-mail sent (by e-mail address)
+OK   second request within a minute -> 429
+FAIL reset e-mail received in Mailpit with a link 
+OK   invalid reset link -> 400
+1 SMOKE TEST(S) FAILED
+=== [docker prod] logs 
+{"level":30,"time":1794858315590,"pid":1,"hostname":"93090e606442","reqId":"req-1p","res":{"statusCode":200},"responseTime":14.947135000000344,"msg":"request completed"}
+{"level":30,"time":1794858315592,"pid":1,"hostname":"93090e606442","reqId":"req-1q","req":{"method":"POST","url":"/api/friend/request","host":"localhost:3100","remoteAddress":"172.19.0.1","remotePort":57536},"msg":"incoming request"}
+{"level":30,"time":1794858315599,"pid":1,"hostname":"93090e606442","reqId":"req-1q","res":{"statusCode":201},"responseTime":7.0578629999999976,"msg":"request completed"}
+{"level":30,"time":1794858315601,"pid":1,"hostname":"93090e606442","reqId":"req-1r","req":{"method":"POST","url":"/api/friend/request","host":"localhost:3100","remoteAddress":"172.19.0.1","remotePort":57522},"msg":"incoming request"}
+{"level":30,"time":1794858315616,"pid":1,"hostname":"93090e606442","reqId":"req-1r","res":{"statusCode":201},"responseTime":15.11656800000037,"msg":"request completed"}
+{"level":30,"time":1794858315617,"pid":1,"hostname":"93090e606442","reqId":"req-1s","req":{"method":"POST","url":"/api/auth/register","host":"localhost:3100","remoteAddress":"172.19.0.1","remotePort":57536},"msg":"incoming request"}
+{"level":30,"time":1794858315675,"pid":1,"hostname":"93090e606442","reqId":"req-1s","res":{"statusCode":201},"responseTime":57.46515499999987,"msg":"request completed"}
+{"level":30,"time":1794858315677,"pid":1,"hostname":"93090e606442","reqId":"req-1t","req":{"method":"POST","url":"/api/friend/request","host":"localhost:3100","remoteAddress":"172.19.0.1","remotePort":57522},"msg":"incoming request"}
+{"level":30,"time":1794858315687,"pid":1,"hostname":"93090e606442","reqId":"req-1t","res":{"statusCode":201},"responseTime":9.701661000000058,"msg":"request completed"}
+{"level":30,"time":1794858315689,"pid":1,"hostname":"93090e606442","reqId":"req-1u","req":{"method":"DELETE","url":"/api/friend/request/38b7b21a-8cc7-4d00-9a43-18ef1199be4e","host":"localhost:3100","remoteAddress":"172.19.0.1","remotePort":57536},"msg":"incoming request"}
+{"level":30,"time":1794858315693,"pid":1,"hostname":"93090e606442","reqId":"req-1u","res":{"statusCode":200},"responseTime":4.4977740000003905,"msg":"request completed"}
+{"level":30,"time":1794858315696,"pid":1,"hostname":"93090e606442","reqId":"req-1v","req":{"method":"POST","url":"/api/friend/request","host":"localhost:3100","remoteAddress":"172.19.0.1","remotePort":57522},"msg":"incoming request"}
+{"level":30,"time":1794858315703,"pid":1,"hostname":"93090e606442","reqId":"req-1v","res":{"statusCode":201},"responseTime":7.614230000000134,"msg":"request completed"}
+{"level":30,"time":1794858315705,"pid":1,"hostname":"93090e606442","reqId":"req-1w","req":{"method":"DELETE","url":"/api/friend/request/ce3f003b-e2f7-4722-a61a-ff291834c165","host":"localhost:3100","remoteAddress":"172.19.0.1","remotePort":57536},"msg":"incoming request"}
+{"level":30,"time":1794858315707,"pid":1,"hostname":"93090e606442","reqId":"req-1w","res":{"statusCode":200},"responseTime":2.506095999999161,"msg":"request completed"}
+{"level":30,"time":1794858315708,"pid":1,"hostname":"93090e606442","reqId":"req-1x","req":{"method":"GET","url":"/api/list/friend/2304006f-3b68-4022-93ff-6614c72859b6","host":"localhost:3100","remoteAddress":"172.19.0.1","remotePort":57522},"msg":"incoming request"}
+{"level":30,"time":1794858315710,"pid":1,"hostname":"93090e606442","reqId":"req-1x","res":{"statusCode":403},"responseTime":2.122949000000517,"msg":"request completed"}
+{"level":30,"time":1794858315712,"pid":1,"hostname":"93090e606442","reqId":"req-1y","req":{"method":"DELETE","url":"/api/friend/2304006f-3b68-4022-93ff-6614c72859b6","host":"localhost:3100","remoteAddress":"172.19.0.1","remotePort":57536},"msg":"incoming request"}
+{"level":30,"time":1794858315726,"pid":1,"hostname":"93090e606442","reqId":"req-1y","res":{"statusCode":200},"responseTime":13.62491399999999,"msg":"request completed"}
+{"level":30,"time":1794858315727,"pid":1,"hostname":"93090e606442","reqId":"req-1z","req":{"method":"GET","url":"/api/list/friend/2304006f-3b68-4022-93ff-6614c72859b6","host":"localhost:3100","remoteAddress":"172.19.0.1","remotePort":57522},"msg":"incoming request"}
+{"level":30,"time":1794858315729,"pid":1,"hostname":"93090e606442","reqId":"req-1z","res":{"statusCode":403},"responseTime":2.143887000000177,"msg":"request completed"}
+{"level":30,"time":1794858315730,"pid":1,"hostname":"93090e606442","reqId":"req-20","req":{"method":"GET","url":"/api/list/friend/2304006f-3b68-4022-93ff-6614c72859b6","host":"localhost:3100","remoteAddress":"172.19.0.1","remotePort":57536},"msg":"incoming request"}
+{"level":30,"time":1794858315742,"pid":1,"hostname":"93090e606442","reqId":"req-20","res":{"statusCode":200},"responseTime":12.03126599999996,"msg":"request completed"}
+{"level":30,"time":1794858315744,"pid":1,"hostname":"93090e606442","reqId":"req-21","req":{"method":"GET","url":"/api/list/lists","host":"localhost:3100","remoteAddress":"172.19.0.1","remotePort":57522},"msg":"incoming request"}
+{"level":30,"time":1794858315749,"pid":1,"hostname":"93090e606442","reqId":"req-21","res":{"statusCode":200},"responseTime":4.97473699999955,"msg":"request completed"}
+{"level":30,"time":1794858315750,"pid":1,"hostname":"93090e606442","reqId":"req-22","req":{"method":"PUT","url":"/api/list/updateDescription/af726e59-e077-47b8-8f60-96fca1f02596","host":"localhost:3100","remoteAddress":"172.19.0.1","remotePort":57536},"msg":"incoming request"}
+{"level":30,"time":1794858315757,"pid":1,"hostname":"93090e606442","reqId":"req-22","res":{"statusCode":200},"responseTime":5.97072499999922,"msg":"request completed"}
+{"level":30,"time":1794858315758,"pid":1,"hostname":"93090e606442","reqId":"req-23","req":{"method":"DELETE","url":"/api/kdo/ecd8d1bd-1f51-4976-b5c6-3a77e811ea2f","host":"localhost:3100","remoteAddress":"172.19.0.1","remotePort":57522},"msg":"incoming request"}
+{"level":30,"time":1794858315765,"pid":1,"hostname":"93090e606442","reqId":"req-23","res":{"statusCode":200},"responseTime":6.770269000000553,"msg":"request completed"}
+{"level":30,"time":1794858315766,"pid":1,"hostname":"93090e606442","reqId":"req-24","req":{"method":"POST","url":"/api/auth/forgotPassword","host":"localhost:3100","remoteAddress":"172.19.0.1","remotePort":57536},"msg":"incoming request"}
+{"level":30,"time":1794858315772,"pid":1,"hostname":"93090e606442","reqId":"req-24","res":{"statusCode":400},"responseTime":4.929360999999517,"msg":"request completed"}
+{"level":30,"time":1794858315776,"pid":1,"hostname":"93090e606442","reqId":"req-25","req":{"method":"POST","url":"/api/auth/forgotPassword","host":"localhost:3100","remoteAddress":"172.19.0.1","remotePort":57522},"msg":"incoming request"}
+{"level":30,"time":1794858315778,"pid":1,"hostname":"93090e606442","reqId":"req-25","res":{"statusCode":404},"responseTime":2.029407999999421,"msg":"request completed"}
+{"level":30,"time":1794858315780,"pid":1,"hostname":"93090e606442","reqId":"req-26","req":{"method":"POST","url":"/api/auth/forgotPassword","host":"localhost:3100","remoteAddress":"172.19.0.1","remotePort":57536},"msg":"incoming request"}
+{"level":30,"time":1794858315791,"pid":1,"hostname":"93090e606442","to":"alice_mwjoaqup@example.com","subject":"K-do : réinitialisation de votre mot de passe","text":"Bonjour alice_mwjoaqup,\n\nPour choisir un nouveau mot de passe, ouvrez ce lien (valable une heure) :\nhttps://kdo.example.test/reset-password/KCywm40CnGLXHPn5BwzHfDKDG3h0z_mAnoSyoBIUj7M\n\nSi vous n'êtes pas à l'origine de cette demande, ignorez simplement cet e-mail.","msg":"SMTP_HOST not set, e-mail not sent"}
+{"level":30,"time":1794858315792,"pid":1,"hostname":"93090e606442","reqId":"req-26","res":{"statusCode":200},"responseTime":11.409992000000784,"msg":"request completed"}
+{"level":30,"time":1794858315794,"pid":1,"hostname":"93090e606442","reqId":"req-27","req":{"method":"POST","url":"/api/auth/forgotPassword","host":"localhost:3100","remoteAddress":"172.19.0.1","remotePort":57522},"msg":"incoming request"}
+{"level":30,"time":1794858315796,"pid":1,"hostname":"93090e606442","reqId":"req-27","res":{"statusCode":429},"responseTime":2.3267550000000483,"msg":"request completed"}
+{"level":30,"time":1794858325992,"pid":1,"hostname":"93090e606442","reqId":"req-28","req":{"method":"POST","url":"/api/auth/resetPassword","host":"localhost:3100","remoteAddress":"172.19.0.1","remotePort":57522},"msg":"incoming request"}
+{"level":30,"time":1794858326003,"pid":1,"hostname":"93090e606442","reqId":"req-28","res":{"statusCode":400},"responseTime":11.26841400000012,"msg":"request completed"}
+kdo-backend-prod-test
+=== DONE 16/11/2026 20:45:27,08 

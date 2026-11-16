@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '../generated/prisma/client';
 import { ListServiceError } from '../errors/ListServiceError';
 import { KdoDto, kdoLinksInclude, toKdoDto } from './itemMapper';
 import { findFriendshipBetween, getFriendIds } from './friendshipQueries';

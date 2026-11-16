@@ -1,4 +1,4 @@
-import { KDo, Link } from '@prisma/client';
+import { KDo, Link } from '../generated/prisma/client';
 
 export interface LinkDto {
     id: string;

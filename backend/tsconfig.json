@@ -19,6 +19,8 @@
       "node"
     ],
     "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "outDir": "dist",
     "rootDir": "src"
   },

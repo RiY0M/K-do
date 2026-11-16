@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../generated/prisma/client';
 
 // Small shared read helpers around the Friendship model, used by several
 // services (same idea as itemMapper.ts).

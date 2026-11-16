@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../generated/prisma/client';
 import { InvitationServiceError } from '../errors/InvitationServiceError';
 import { areFriends } from './friendshipQueries';
 import { FriendService } from './FriendService';

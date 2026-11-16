@@ -1,4 +1,4 @@
-import { Friendship, PrismaClient, User } from '@prisma/client';
+import { Friendship, PrismaClient, User } from '../generated/prisma/client';
 import { FriendServiceError } from '../errors/FriendServiceError';
 import { findFriendshipBetween } from './friendshipQueries';
 import { ListService, UserSummary } from './ListService';

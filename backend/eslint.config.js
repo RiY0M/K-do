@@ -5,7 +5,7 @@ import globals from 'globals';
 
 // `npm run lint` had no config to use
 export default [
-    { ignores: ['dist', 'node_modules'] },
+    { ignores: ['dist', 'node_modules', 'src/generated'] },
     ...tsPlugin.configs['flat/recommended'],
     {
         files: ['src/**/*.ts'],
