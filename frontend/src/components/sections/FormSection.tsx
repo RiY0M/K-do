@@ -7,8 +7,8 @@ interface Props {
   title: string;
   buttonLabel: string;
   validatedLabel?: string;
-  redirectMessage: string;
-  redirectLinkMessage: string;
+  redirectMessage?: string;
+  redirectLinkMessage?: string;
   redirectUri: string;
   onSubmit: () => Promise<void>;
   children: ReactNode;
@@ -18,8 +18,8 @@ export default function FormSection({
   title,
   buttonLabel,
   validatedLabel,
-  redirectMessage,
-  redirectLinkMessage,
+  redirectMessage = "",
+  redirectLinkMessage = "",
   redirectUri,
   onSubmit,
   children,
@@ -42,13 +42,6 @@ export default function FormSection({
     form: {
       textAlign: "center",
     },
-    error: {
-      color: "var(--important)",
-      fontSize: "var(--sm-size)",
-    },
-    switch: {
-      fontSize: "var(--sm-size)",
-    },
     section: {
       margin: "auto",
       width: formSectionActualWidth,
@@ -69,12 +62,14 @@ export default function FormSection({
             {buttonLabel}
           </MultiStateButton>
 
-          <p style={styles.switch}>
-            {redirectMessage + " "}
-            <Link style={styles.switch} to={redirectUri}>
-              {redirectLinkMessage}
-            </Link>
-          </p>
+          {(redirectMessage || redirectLinkMessage) &&
+            <p className="sub-text">
+              {redirectMessage + " "}
+              <Link className="sub-text" to={redirectUri}>
+                {redirectLinkMessage}
+              </Link>
+            </p>
+          }
         </div>
       </form>
     </section>

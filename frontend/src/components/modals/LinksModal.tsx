@@ -1,4 +1,5 @@
 import { useState } from "react";
+// import { markdownToPlainText } from "../../services/markdown"; // TODO markdown: put back later
 import XMark from "../../assets/svgs/XMark";
 import { Kdo, KdoUpdate } from "../../interfaces/Kdo";
 import { Link } from "../../interfaces/Link";
@@ -76,26 +77,17 @@ export default function LinksModal({
   };
 
   const styles: CSS = {
-    list: {
-      gap: "var(--sm-space)",
-    },
     line: {
       justifyContent: "space-between",
     },
     link: {
       overflowWrap: "anywhere",
     },
-    empty: {
-      fontSize: "var(--sm-size)",
-    },
-    form: {
-      gap: "var(--sm-space)",
-    },
   };
 
   return (
-    <Modal open={open} title={kdo.label || "Liens"} onClose={onClose}>
-      <div style={styles.list}>
+    <Modal open={open} title={kdo.label || "Liens"} /* TODO markdown: markdownToPlainText(kdo.label).trim() */ onClose={onClose}>
+      <div className="small-gap">
         {links.map((link) => (
           <IconInlineText key={link.id} style={styles.line}>
             <a href={link.href} target="_blank" rel="noopener noreferrer" style={styles.link} title={link.href}>
@@ -109,13 +101,13 @@ export default function LinksModal({
           </IconInlineText>
         ))}
         {links.length === 0 &&
-          <span style={styles.empty}>Aucun lien pour l'instant.</span>
+          <span className="sub-text">Aucun lien pour l'instant.</span>
         }
       </div>
 
       {editable &&
         <form onSubmit={(event) => event.preventDefault()}>
-          <div style={styles.form}>
+          <div className="small-gap">
             <TypingInput
               label="Ajouter un lien"
               name={`new-link-${kdo.id}`}

@@ -11,6 +11,8 @@ import LinkIcon from "../../../assets/svgs/LinkIcon";
 import LinksModal from "../../modals/LinksModal";
 import VolontaryKdo from "./VoluntaryKdo";
 import KdoNewsTag from "./KdoNewsTag";
+// import Markdown from "../../Markdown"; // TODO markdown: put back later
+import { checkLineRow, iconSlot } from "../checkLineStyles";
 
 interface Props {
   kdo: Kdo;
@@ -26,6 +28,9 @@ export default function FriendCheckLine({
   const user = getCurrentUser();
   const takenBy = kdo.takenBy ?? [];
   const isChecked = takenBy.some((friend) => friend.id === user?.id);
+  // One of the list owner's own wishes that they checked themselves: shown
+  // checked, and can't be reserved anymore
+  const isCheckedByOwner = !!kdo.isChecked && kdo.author?.id === listAuthorId;
   const [isLinksOpen, setIsLinksOpen] = useState(false);
   const linkCount = kdo.links?.length ?? 0;
 
@@ -55,9 +60,12 @@ export default function FriendCheckLine({
     },
     span: {
       flex: 1,
+      whiteSpace: "pre-wrap",
+      overflowWrap: "anywhere",
     },
     isChecked: {
-      textDecoration: isChecked ? "line-through" : "",
+      ...checkLineRow,
+      textDecoration: isChecked || isCheckedByOwner ? "line-through" : "",
     }
   };
 
@@ -74,14 +82,26 @@ export default function FriendCheckLine({
       }
 
       <IconInlineText style={styles.isChecked}>
-        <Checkbox name={`check-${kdo.id}`} checked={isChecked} setChecked={updateCheck} />
-        <span style={styles.span}>{kdo.label}</span>
+        <span style={iconSlot}>
+          <Checkbox
+            name={`check-${kdo.id}`}
+            checked={isChecked || isCheckedByOwner}
+            disabled={isCheckedByOwner}
+            setChecked={updateCheck}
+          />
+        </span>
+        <span style={styles.span}>
+          {kdo.label}
+          {/* <Markdown text={kdo.label} /> */}
+        </span>
 
         {linkCount > 0 &&
           <>
-            <NoStyleButton onClick={() => setIsLinksOpen(true)} title={`Liens (${linkCount})`}>
-              <LinkIcon />
-            </NoStyleButton>
+            <span style={iconSlot}>
+              <NoStyleButton onClick={() => setIsLinksOpen(true)} title={`Liens (${linkCount})`}>
+                <LinkIcon />
+              </NoStyleButton>
+            </span>
 
             <LinksModal
               kdo={kdo}

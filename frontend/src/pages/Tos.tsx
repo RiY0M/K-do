@@ -1,13 +1,13 @@
-import Header from "../components/navigation/Header";
+import HomeRedirect from "../components/navigation/HomeRedirect";
 
 export default function Tos() {
   return (
     <div>
-      <Header forceHomeRedirect />
+      <HomeRedirect />
       <section>
         <div>
           <h1>Important</h1>
-          En tout premier le site est uniquement destiné au groupe Famille Rigaut, je le trouve pas assez abouti pour l'exporter
+          En tout premier le site est uniquement destiné au personnes que j'ai contacté personnellement, je ne suis pas responsable si le site se propage sans mon autorisation. Si vous voyez ce message, c'est que je n'ai pas donné mon autorisation.
         </div>
       </section>
       <section>
@@ -19,7 +19,7 @@ export default function Tos() {
       <section>
         <div>
           <h1>E-mail et mdp</h1>
-          J'ai eu des galères avec le système d'e-mail donc oubliez pas votre mdp par pitié
+          J'ai encore des galères avec le système d'e-mail donc oubliez pas votre mdp par pitié
         </div>
       </section>
     </div>

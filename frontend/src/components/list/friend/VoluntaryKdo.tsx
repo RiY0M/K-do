@@ -1,6 +1,5 @@
-import { CSS } from "../../../services/utils";
 import { User } from "../../../interfaces/User";
-import UserLinkSm from "../../UserLinkSm";
+import UserLink from "../../UserLink";
 import IconInlineText from "../../IconInlineText";
 import ExclamationTriangle from "../../../assets/svgs/ExclamationTriangle";
 
@@ -12,17 +11,11 @@ export default function VolontaryKdo({
   user,
 }: Readonly<Props>) {
 
-  const styles: CSS = {
-    div: {
-      fontSize: "var(--sm-size)",
-    },
-  };
-
   return (
-    <IconInlineText style={styles.div}>
+    <IconInlineText className="sub-text">
       <ExclamationTriangle />
       Créé par :
-      <UserLinkSm key={user.id} user={user} />
+      <UserLink key={user.id} user={user} isSubText />
     </IconInlineText>
   );
 }

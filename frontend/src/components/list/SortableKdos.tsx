@@ -1,6 +1,7 @@
 import { KeyboardEvent, PointerEvent, ReactNode, useRef, useState } from "react";
 import { Kdo } from "../../interfaces/Kdo";
 import Grip from "../../assets/svgs/Grip";
+// import { markdownToPlainText } from "../../services/markdown"; // TODO markdown: put back later
 
 interface Props {
 	kdos: Kdo[];
@@ -128,6 +129,7 @@ export default function SortableKdos({
 					touchAction: "none",
 				}}
 				title="Glisser pour déplacer"
+				// TODO markdown: markdownToPlainText(kdo.label).trim()
 				aria-label={`Déplacer « ${kdo.label || "cadeau sans nom"} » (flèches haut et bas)`}
 				onPointerDown={(event) => handlePointerDown(event, kdo, index)}
 				onPointerMove={handlePointerMove}

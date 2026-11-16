@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import FriendCheckedList from "../list/friend/FriendCheckedList";
 import FriendUncheckedList from "../list/friend/FriendUncheckedList";
 import FullAccordion from "../accordions/FullAccordion";
@@ -8,13 +8,29 @@ import { useParams } from "react-router-dom";
 import { getUsername } from "../../services/api/users";
 import { useKdos } from "../../hooks/useKdos";
 import { CSS } from "../../services/utils";
+// import { markdownToPlainText } from "../../services/markdown"; // TODO markdown: put back later
+import { Kdo } from "../../interfaces/Kdo";
+import { getCurrentUser } from "../../services/authStorage";
 
 export default function FriendFullListSection() {
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [list, setList] = useState<List | null>(null);
 	const [username, setUsername] = useState<string>("");
-	const { setKdos, uncheckedKdos, checkedKdos, newKdoId, addKdo, updateKdo, removeKdo } = useKdos();
+	/**
+	 * "Éléments cochés" of a friend's list only holds:
+	 * - what the list's owner checked themselves (shown checked and disabled,
+	 *   see FriendCheckLine);
+	 * - what I took;
+	 * - free gifts their creator checked (unchanged).
+	 * A gift only taken by someone else stays in the main part.
+	 */
+	const myId = getCurrentUser()?.id;
+	const isInCheckedPart = useCallback(
+		(kdo: Kdo) => !!kdo.isChecked || (kdo.takenBy ?? []).some((user) => user.id === myId),
+		[myId]
+	);
+	const { setKdos, uncheckedKdos, checkedKdos, newKdoId, addKdo, updateKdo, removeKdo } = useKdos(isInCheckedPart);
 
 	// Same param name as the route in App.tsx (/friend/:userId)
 	const { userId } = useParams();
@@ -44,7 +60,6 @@ export default function FriendFullListSection() {
 			overflowWrap: "anywhere",
 		},
 		deleted: {
-			fontSize: "var(--sm-size)",
 			color: "var(--action)",
 		},
 	};
@@ -60,15 +75,15 @@ export default function FriendFullListSection() {
 					<h1>Liste de&nbsp;: {username}</h1>
 
 					{list.description.trim() &&
-						<FullAccordion label="Description" defaultOpening>
+						<FullAccordion label="Commentaires" defaultOpening>
 							<p style={styles.description}>{list.description}</p>
 						</FullAccordion>
 					}
 
 					{/* Gone from the list, so marked here rather than on a line */}
 					{deletedKdos.length > 0 &&
-						<p style={styles.deleted} title="Depuis votre dernière visite de cette liste">
-							● {deletedKdos.length > 1 ? "Supprimés" : "Supprimé"}&nbsp;: {deletedKdos.map((kdo) => kdo.label.trim() || "Sans nom").join(", ")}
+						<p style={styles.deleted} className="sub-text" title="Depuis votre dernière visite de cette liste">
+							● {deletedKdos.length > 1 ? "Supprimés" : "Supprimé"}&nbsp;: {deletedKdos.map((kdo) => kdo.label.trim() || "Sans nom" /* TODO markdown: markdownToPlainText(kdo.label) */).join(", ")}
 						</p>
 					}
 

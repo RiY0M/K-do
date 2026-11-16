@@ -5,7 +5,9 @@ import { useBehaviourDisplay } from "../hooks/useBehaviourDisplay";
 import { useCallback, useEffect, useState } from "react";
 import { List } from "../interfaces/List";
 import { getMyLists } from "../services/api/lists";
-import Header from "../components/navigation/Header";
+import { Link } from "react-router-dom";
+import IconInlineText from "../components/IconInlineText";
+import UserSvg from "../assets/svgs/UserSvg";
 
 export default function MyHome() {
 
@@ -36,7 +38,13 @@ export default function MyHome() {
 
   return (
     <>
-      <Header />
+      <Link to="/account">
+        <IconInlineText>
+          <UserSvg />Compte
+        </IconInlineText>
+      </Link>
+
+
       <div style={styles.subDiv}>
         <FriendsSection onFriendsChange={refreshLists} />
         {/* <div>

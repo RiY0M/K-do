@@ -14,6 +14,7 @@ import RevertAccountChange from "./pages/RevertAccountChange";
 import { isAuthenticated } from "./services/authStorage";
 import { CSS, groupSectionIdealWidth, listSectionActualWidth, listSectionIdealWidth } from "./services/utils";
 import { useBehaviourDisplay } from "./hooks/useBehaviourDisplay";
+import Header from "./components/navigation/Header";
 import Footer from "./components/navigation/Footer";
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
   }
   return (
     <>
+      {/* <Header /> */}
       <div id="main" style={styles.app}>
         <Routes>
           {!isLoggedIn && <>

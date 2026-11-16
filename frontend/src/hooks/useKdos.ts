@@ -2,13 +2,18 @@ import { useCallback, useMemo, useState } from "react";
 import { Kdo, KdoUpdate } from "../interfaces/Kdo";
 
 const byPosition = (a: Kdo, b: Kdo) => a.position - b.position;
+const isCheckedByAuthor = (kdo: Kdo) => !!kdo.isChecked;
 
 /**
  * Keeps the Kdos of a list in state, so that adding, editing, checking or
  * deleting one updates the page right away (checked ones move to the
  * "Éléments cochés" part).
+ *
+ * `isInCheckedPart` decides which Kdos go to that part. Default: the ones
+ * their author checked (my own list). Must be stable (module-level function
+ * or useCallback).
  */
-export function useKdos() {
+export function useKdos(isInCheckedPart: (kdo: Kdo) => boolean = isCheckedByAuthor) {
 	const [kdos, setKdos] = useState<Kdo[]>([]);
 	// Last created Kdo, focused so its label can be typed right away
 	const [newKdoId, setNewKdoId] = useState<string | null>(null);
@@ -47,8 +52,8 @@ export function useKdos() {
 		return { previous: kdos, orderedIds: reordered.map((kdo) => kdo.id) };
 	}, [kdos]);
 
-	const uncheckedKdos = useMemo(() => kdos.filter((kdo) => !kdo.isChecked).sort(byPosition), [kdos]);
-	const checkedKdos = useMemo(() => kdos.filter((kdo) => kdo.isChecked).sort(byPosition), [kdos]);
+	const uncheckedKdos = useMemo(() => kdos.filter((kdo) => !isInCheckedPart(kdo)).sort(byPosition), [kdos, isInCheckedPart]);
+	const checkedKdos = useMemo(() => kdos.filter((kdo) => isInCheckedPart(kdo)).sort(byPosition), [kdos, isInCheckedPart]);
 
 	return { setKdos, uncheckedKdos, checkedKdos, newKdoId, addKdo, updateKdo, removeKdo, reorderKdos };
 }

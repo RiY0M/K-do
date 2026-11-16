@@ -5,6 +5,9 @@ import { CSS } from "../../services/utils";
 
 interface Props {
 	label: ReactNode;
+	// Shown before the toggle, outside of it (e.g. a menu button, which
+	// can't go inside the toggle's own button)
+	leading?: ReactNode;
 	defaultOpening?: boolean;
 	preview?: boolean;
 	children: ReactNode;
@@ -12,6 +15,7 @@ interface Props {
 
 export default function FullAccordion({
 	label,
+	leading,
 	defaultOpening = false,
 	preview = false,
 	children
@@ -31,11 +35,24 @@ export default function FullAccordion({
 		div: {
 			gap: 0,
 		},
+		header: {
+			flexDirection: "row",
+			alignItems: "center",
+			justifyContent: "space-between",
+			gap: "var(--xs-space)",
+		},
 	}
 
 	return (
 		<div style={styles.div}>
-			<AccordionToggle label={label} open={open} setOpen={setOpen} />
+			{leading ?
+				<div style={styles.header}>
+					<AccordionToggle label={label} open={open} setOpen={setOpen} />
+					{leading}
+				</div>
+				:
+				<AccordionToggle label={label} open={open} setOpen={setOpen} />
+			}
 			<AccordionContent open={open} preview={preview}>{children}</AccordionContent>
 		</div>
 	);

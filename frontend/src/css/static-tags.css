@@ -2,10 +2,10 @@
   margin: 0;
   box-sizing: border-box;
   font-family: inherit;
-  font-size: var(--md-size);
 }
 
 body {
+  font-size: var(--md-size);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -31,6 +31,8 @@ section {
 
 header, footer {
   padding: var(--sm-space);
+  font-size: var(--sm-size);
+  font-style: italic;
 }
 
 dialog {
@@ -41,4 +43,8 @@ dialog {
   width: min(400px, calc(100% - 2 * var(--md-space)));
   overflow: visible;
   margin: auto;
+}
+
+dialog::backdrop {
+  background-color: var(--dialog-background);
 }

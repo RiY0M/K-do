@@ -2,6 +2,7 @@ import { CSS } from "../../../services/utils";
 import FullAccordion from "../../accordions/FullAccordion";
 import EditableCheckLine from "../EditableCheckLine";
 import SortableKdos from "../SortableKdos";
+import CheckedItemsMenu from "../CheckedItemsMenu";
 import { Kdo, KdoUpdate } from "../../../interfaces/Kdo";
 
 interface Props {
@@ -25,7 +26,12 @@ export default function MyCheckedList({
   };
 
   return (
-    <FullAccordion label="Éléments cochés" defaultOpening={true}>
+    <FullAccordion
+      label="Éléments cochés"
+      defaultOpening={true}
+      // My own list: every checked Kdo is mine
+      leading={<CheckedItemsMenu kdos={kdos} onUpdate={onUpdate} onDelete={onDelete} />}
+    >
       <div style={styles.div}>
         <SortableKdos
           kdos={kdos}

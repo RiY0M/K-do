@@ -5,6 +5,7 @@ import XMark from "../../assets/svgs/XMark";
 import NoStyleButton from "../buttons/NoStyleButton";
 import IconInlineText from "../IconInlineText";
 import UserLink from "../UserLink";
+// import { markdownToPlainText } from "../../services/markdown"; // TODO markdown: put back later
 
 interface Props {
   friend: FriendOverview;
@@ -14,6 +15,7 @@ interface Props {
 // Beginning of a label, for the line of taken gifts
 const excerpt = (label: string, maxLength = 20) => {
   const trimmed = label.trim();
+  // const trimmed = markdownToPlainText(label).trim(); // TODO markdown
   if (!trimmed) return "Sans nom";
   return trimmed.length > maxLength ? `${trimmed.slice(0, maxLength).trimEnd()}…` : trimmed;
 };
@@ -47,19 +49,10 @@ export default function FriendLine({
     count: {
       opacity: 0.8,
     },
-    newsDot: {
-      color: "var(--action)",
-      fontSize: "var(--sm-size)",
-    },
-    small: {
-      fontSize: "var(--sm-size)",
-    },
     news: {
-      fontSize: "var(--sm-size)",
       color: "var(--action)",
     },
     taken: {
-      fontSize: "var(--sm-size)",
       opacity: 0.8,
       // A single line, cut with "…" when too long
       display: "block",
@@ -78,21 +71,21 @@ export default function FriendLine({
             ({takenByMe.length})
           </span>
           {hasNews &&
-            <span style={styles.newsDot} title="Nouveautés depuis votre dernière visite de sa liste" aria-hidden>●</span>
+            <span style={styles.news} className="sub-text" title="Nouveautés depuis votre dernière visite de sa liste" aria-hidden>●</span>
           }
         </IconInlineText>
 
-        <NoStyleButton onClick={() => onRemove(friend)} title={`Retirer ${friend.name} de mes amis`}>
+        <NoStyleButton onClick={() => onRemove(friend)} title={`Retirer ${friend.name}`}>
           <XMark />
         </NoStyleButton>
       </IconInlineText>
 
       {hasNews &&
-        <span style={styles.news}>Nouveau : {newsParts.join(" · ")}</span>
+        <span style={styles.news} className="sub-text">Nouveau : {newsParts.join(" · ")}</span>
       }
 
       {takenByMe.length > 0 &&
-        <span style={styles.taken} title={takenByMe.map((kdo) => kdo.label.trim() || "Sans nom").join("\n")}>
+        <span style={styles.taken} className="sub-text" title={takenByMe.map((kdo) => kdo.label.trim() || "Sans nom").join("\n")}>
           {takenByMe.map((kdo) => excerpt(kdo.label)).join(", ")}
         </span>
       }

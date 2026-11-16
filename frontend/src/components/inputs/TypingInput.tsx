@@ -64,7 +64,6 @@ export default function TypingInput({
 			textAlign: "left",
 		},
 		hint: {
-			fontSize: "var(--sm-size)",
 			textAlign: "left",
 			opacity: 0.8,
 		},
@@ -146,7 +145,7 @@ export default function TypingInput({
 				</div>
 			}
 
-			{hint && <span style={styles.hint}>{hint}</span>}
+			{hint && <span style={styles.hint} className="sub-text">{hint}</span>}
 		</div>
 	);
 }

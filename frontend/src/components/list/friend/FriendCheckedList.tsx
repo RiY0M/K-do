@@ -2,6 +2,7 @@ import { CSS } from "../../../services/utils";
 import FullAccordion from "../../accordions/FullAccordion";
 import { Kdo, KdoUpdate } from "../../../interfaces/Kdo";
 import ListKdos from "../ListKdos";
+import CheckedItemsMenu from "../CheckedItemsMenu";
 
 interface Props {
   listAuthorId: string;
@@ -24,7 +25,18 @@ export default function FriendCheckedList({
   };
 
   return (
-    <FullAccordion label="Éléments cochés" defaultOpening={true}>
+    <FullAccordion
+      label="Éléments cochés"
+      defaultOpening={true}
+      // Only the free gifts I created and checked: authorId is only sent on mine
+      leading={
+        <CheckedItemsMenu
+          kdos={kdos.filter((kdo) => kdo.authorId && kdo.isChecked)}
+          onUpdate={onUpdate}
+          onDelete={onDelete}
+        />
+      }
+    >
       <div style={styles.div}>
         <ListKdos listAuthorId={listAuthorId} kdos={kdos} onUpdate={onUpdate} onDelete={onDelete} />
       </div>

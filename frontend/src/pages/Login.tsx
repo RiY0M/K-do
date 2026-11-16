@@ -46,7 +46,7 @@ export default function Login() {
         setValue={setPassword}
       />
 
-      <Link to="/forgot-password" style={{ fontSize: "var(--sm-size)" }}>
+      <Link to="/forgot-password" className="sub-text">
         Mot de passe oublié&nbsp;?
       </Link>
     </FormSection>

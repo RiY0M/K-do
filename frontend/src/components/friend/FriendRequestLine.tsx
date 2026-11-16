@@ -23,16 +23,12 @@ export default function FriendRequestLine({
     line: {
       justifyContent: "space-between",
     },
-    buttons: {
-      flexDirection: "row",
-      gap: "var(--sm-space)",
-    },
   };
 
   return (
     <IconInlineText style={styles.line}>
       <span>{request.user.name}</span>
-      <div style={styles.buttons}>
+      <div className="row small-gap">
         {onAccept &&
           <NoStyleButton onClick={() => onAccept(request)} title="Accepter">
             <Check />

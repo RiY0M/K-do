@@ -2,7 +2,6 @@ import { useState } from "react";
 import TypingInput from "../components/inputs/TypingInput";
 import FormSection from "../components/sections/FormSection";
 import { forgotPassword } from "../services/api/auth";
-import { CSS } from "../services/utils";
 
 export default function ForgotPassword() {
   const [identifier, setIdentifier] = useState<string>("");
@@ -11,12 +10,6 @@ export default function ForgotPassword() {
   const handleSubmit = async () => {
     const { email } = await forgotPassword(identifier.trim());
     setSentTo(email);
-  };
-
-  const styles: CSS = {
-    message: {
-      fontSize: "var(--sm-size)",
-    },
   };
 
   return (
@@ -29,7 +22,7 @@ export default function ForgotPassword() {
       redirectUri="/login"
       onSubmit={handleSubmit}
     >
-      <p style={styles.message}>
+      <p className="sub-text">
         Un lien pour choisir un nouveau mot de passe sera envoyé à l'e-mail de votre compte.
         Ce n'est possible que si vous en avez renseigné un à l'inscription.
       </p>
@@ -44,7 +37,7 @@ export default function ForgotPassword() {
       />
 
       {sentTo &&
-        <p style={styles.message}>
+        <p className="sub-text">
           E-mail envoyé à {sentTo}. Le lien est valable une heure.
         </p>
       }

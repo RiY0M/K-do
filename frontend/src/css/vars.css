@@ -57,6 +57,7 @@
     --shadow-color: #141414fc;
     --action: #7077ff;
     --action-hover: #3e47f7;
+    --dialog-background: rgb(0 0 0 / 50%);
   }
 }
 
@@ -72,6 +73,7 @@
     --shadow-color: #ccd2d9b3;
     --action: #3572c2;
     --action-hover: #1b4377;
+    --dialog-background: rgb(0 0 0 / 50%);
   }
 }
 

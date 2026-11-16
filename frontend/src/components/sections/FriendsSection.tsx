@@ -102,15 +102,6 @@ export default function FriendsSection({
 		section: {
 			width: isLandscape ? groupSectionActualWidth : listSectionActualWidth,
 		},
-		form: {
-			gap: "var(--sm-space)",
-		},
-		list: {
-			gap: "var(--sm-space)",
-		},
-		empty: {
-			fontSize: "var(--sm-size)",
-		},
 	};
 
 	return (
@@ -119,7 +110,7 @@ export default function FriendsSection({
 				<h1>Amis</h1>
 
 				<form onSubmit={(event) => event.preventDefault()}>
-					<div style={styles.form}>
+					<div className="small-gap">
 						<TypingInput
 							label="Ajouter un ami"
 							name="friend-name"
@@ -136,7 +127,7 @@ export default function FriendsSection({
 
 				{requests.received.length > 0 &&
 					<FullAccordion label={`Demandes reçues (${requests.received.length})`} defaultOpening={true}>
-						<div style={styles.list}>
+						<div className="small-gap">
 							{requests.received.map((request) => (
 								<FriendRequestLine
 									key={request.id}
@@ -151,7 +142,7 @@ export default function FriendsSection({
 
 				{requests.sent.length > 0 &&
 					<FullAccordion label={`Demandes envoyées (${requests.sent.length})`}>
-						<div style={styles.list}>
+						<div className="small-gap">
 							{requests.sent.map((request) => (
 								<FriendRequestLine
 									key={request.id}
@@ -164,12 +155,12 @@ export default function FriendsSection({
 				}
 
 				<FullAccordion label={`Mes amis (${friends.length})`} defaultOpening={isLandscape}>
-					<div style={styles.list}>
+					<div className="small-gap">
 						{friends.map((friend) => (
 							<FriendLine key={friend.id} friend={friend} onRemove={handleRemove} />
 						))}
 						{friends.length === 0 &&
-							<span style={styles.empty}>Pas encore d'amis : envoyez une demande ou partagez un lien d'invitation.</span>
+							<span className="sub-text">Pas encore d'amis : envoyez une demande ou partagez un lien d'invitation.</span>
 						}
 					</div>
 				</FullAccordion>

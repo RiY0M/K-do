@@ -20,6 +20,14 @@
   color: var(--important);
 }
 
-dialog::backdrop {
-  background-color: rgb(0 0 0 / 50%);
+.row {
+  flex-direction: row;
+}
+
+.small-gap {
+  gap: var(--sm-space);
+}
+
+.sub-text {
+  font-size: var(--sm-size);
 }

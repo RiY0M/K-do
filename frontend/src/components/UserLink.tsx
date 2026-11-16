@@ -1,23 +1,22 @@
-import { CSS } from "../services/utils";
 import { User } from "../interfaces/User";
 import { Link } from "react-router-dom";
 
 interface Props {
   user: User;
-  style?: CSS,
+  isSubText?: boolean;
 }
 
 export default function UserLink({
   user,
-  style,
+  isSubText = false,
 }: Readonly<Props>) {
 
   return (
     user.isFriend ?
-      <Link style={style?.link} to={`/friend/${user.id}`}>
+      <Link className={isSubText ? "sub-text" : ""} to={`/friend/${user.id}`}>
         {user.name}
       </Link>
       :
-      <span style={style?.span}>{user.name}</span>
+      <span className={isSubText ? "sub-text" : ""}>{user.name}</span>
   );
 }

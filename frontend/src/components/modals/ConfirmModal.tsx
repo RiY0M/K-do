@@ -6,15 +6,13 @@ import Modal from "./Modal";
 interface Props {
   open: boolean;
   title: ReactNode;
-  children: ReactNode;
+  children?: ReactNode;
   confirmLabel?: string;
   cancelLabel?: string;
-  // Closes the modal once it resolves; an error is shown on the button
   onConfirm: () => Promise<void>;
   onClose: () => void;
 }
 
-// Replaces window.confirm(): asks before an action that can't be undone
 export default function ConfirmModal({
   open,
   title,
@@ -32,9 +30,7 @@ export default function ConfirmModal({
 
   const styles: CSS = {
     buttons: {
-      flexDirection: "row",
       justifyContent: "flex-end",
-      gap: "var(--sm-space)",
       flexWrap: "wrap",
     },
   };
@@ -43,7 +39,7 @@ export default function ConfirmModal({
     <Modal open={open} title={title} onClose={onClose}>
       {children}
 
-      <div style={styles.buttons}>
+      <div style={styles.buttons} className="row small-gap">
         <button type="button" onClick={onClose}>{cancelLabel}</button>
         <MultiStateButton onClick={handleConfirm}>
           <span className="important">{confirmLabel}</span>

@@ -13,9 +13,9 @@ export default function KdoNewsTag({
 
   const edited =
     news.label && news.links ? "Nom et liens modifiés"
-    : news.label ? "Nom modifié"
-    : news.links ? "Liens modifiés"
-    : null;
+      : news.label ? "Nom modifié"
+        : news.links ? "Liens modifiés"
+          : null;
 
   const parts = [
     news.added && "Nouveau",
@@ -25,13 +25,12 @@ export default function KdoNewsTag({
 
   const styles: CSS = {
     tag: {
-      fontSize: "var(--sm-size)",
       color: "var(--action)",
     },
   };
 
   return (
-    <span style={styles.tag} title="Depuis votre dernière visite de cette liste">
+    <span style={styles.tag} className="sub-text" title="Depuis votre dernière visite de cette liste">
       ● {parts.join(" · ")}
     </span>
   );

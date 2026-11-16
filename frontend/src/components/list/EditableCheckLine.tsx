@@ -10,6 +10,8 @@ import LinkIcon from "../../assets/svgs/LinkIcon";
 import LinksModal from "../modals/LinksModal";
 import { CSS } from "../../services/utils";
 import VolontaryKdo from "./friend/VoluntaryKdo";
+// import Markdown from "../Markdown"; // TODO markdown: put back later
+import { checkLineRow, iconSlot } from "./checkLineStyles";
 
 interface Props {
   kdo: Kdo;
@@ -73,6 +75,7 @@ export default function EditableCheckLine({
       gap: "var(--xs-space)",
     },
     isChecked: {
+      ...checkLineRow,
       textDecoration: isChecked ? "line-through" : "",
     },
     isFocused: {
@@ -90,8 +93,15 @@ export default function EditableCheckLine({
         <VolontaryKdo user={kdo.author!} />
       }
       <IconInlineText style={styles.isChecked}>
-        {dragHandle}
-        <Checkbox name={`check-${kdo.id}`} checked={isChecked} setChecked={updateCheck} />
+        {dragHandle && <span style={iconSlot}>{dragHandle}</span>}
+        <span style={iconSlot}>
+          <Checkbox name={`check-${kdo.id}`} checked={isChecked} setChecked={updateCheck} />
+        </span>
+
+        {/* Always the same textarea, focused or not: swapping it for a <div>
+            outside of editing (to render markdown) changed the line's height,
+            a textarea doesn't take the page's line-height. To bring markdown
+            back, give the <div> the textarea's exact line-height first. */}
         <InvisibleTypingInput
           name={`kdo-${kdo.id}`}
           value={kdo.label}
@@ -101,20 +111,24 @@ export default function EditableCheckLine({
           onBlur={() => setIsFocused(false)}
         />
 
-        <NoStyleButton
-          onClick={() => setIsLinksOpen(true)}
-          onMouseDown={(e) => e.preventDefault()}
-          style={styles.linkButton}
-          title={linkCount > 0 ? `Liens (${linkCount})` : "Ajouter un lien"}
-        >
-          <LinkIcon />
-        </NoStyleButton>
+        <span style={iconSlot}>
+          <NoStyleButton
+            onClick={() => setIsLinksOpen(true)}
+            onMouseDown={(e) => e.preventDefault()}
+            style={styles.linkButton}
+            title={linkCount > 0 ? `Liens (${linkCount})` : "Ajouter un lien"}
+          >
+            <LinkIcon />
+          </NoStyleButton>
+        </span>
 
         {/* onMouseDown: keeps the focus on the input, otherwise the button
             disappears (blur) before the click is registered */}
-        <NoStyleButton onClick={handleDelete} onMouseDown={(e) => e.preventDefault()} style={styles.isFocused} title="Supprimer">
-          <XMark />
-        </NoStyleButton>
+        <span style={iconSlot}>
+          <NoStyleButton onClick={handleDelete} onMouseDown={(e) => e.preventDefault()} style={styles.isFocused} title="Supprimer">
+            <XMark />
+          </NoStyleButton>
+        </span>
 
         <LinksModal
           kdo={kdo}

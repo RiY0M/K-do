@@ -18,6 +18,11 @@ export default function IconInlineText({ children, style, className = "" }: Read
     const firstChild = line.children[0] as HTMLElement;
     if (!firstChild) return;
 
+    // An icon follows the line's size, not the other way around: copying it
+    // onto the line wrote an inline size that beat the line's classes
+    // (e.g. .sub-text on VoluntaryKdo)
+    if (firstChild instanceof SVGElement) return;
+
     // Copies the first child's size/weight onto the line (e.g. a title),
     // unless the caller set them through `style`: writing to the DOM here
     // would otherwise override them after every render
@@ -28,15 +33,13 @@ export default function IconInlineText({ children, style, className = "" }: Read
 
   const styles: CSS = {
     line: {
-      flexDirection: "row",
-      gap: "var(--sm-space)",
       alignItems: "center",
       ...style
     },
   }
 
   return (
-    <div ref={lineRef} style={styles.line} className={className}>
+    <div ref={lineRef} style={styles.line} className={`row small-gap ${className}`}>
       {children}
     </div>
   );

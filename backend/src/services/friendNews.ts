@@ -98,24 +98,39 @@ export async function getFriendNews(
     return { added, edited, deleted, taken };
 }
 
-/** The gifts of a friend's list the viewer has taken, oldest first. */
+/**
+ * The gifts of a friend's list the viewer is taking care of: the ones they
+ * reserved (oldest first), then the free gifts they created for this friend
+ * and checked themselves. Those can't be reserved (you don't reserve your own
+ * idea): checking one is how its author says they're buying it.
+ */
 export async function getTakenByMe(
     prisma: PrismaClient,
     viewerId: string,
     friendId: string,
     sharedListIds: string[]
 ): Promise<TakenKdoDto[]> {
-    const reservations = await prisma.userKDo.findMany({
-        where: {
-            userId: viewerId,
-            hasChecked: true,
-            kDo: { AND: [friendListItems(viewerId, friendId, sharedListIds), { deletedAt: null }] },
-        },
-        include: { kDo: true },
-        orderBy: { createdAt: 'asc' },
-    });
+    const [reservations, myCheckedSurprises] = await Promise.all([
+        prisma.userKDo.findMany({
+            where: {
+                userId: viewerId,
+                hasChecked: true,
+                kDo: { AND: [friendListItems(viewerId, friendId, sharedListIds), { deletedAt: null }] },
+            },
+            include: { kDo: true },
+            orderBy: { createdAt: 'asc' },
+        }),
+        prisma.kDo.findMany({
+            where: { authorId: viewerId, recipientId: friendId, isChecked: true, deletedAt: null },
+            orderBy: [{ position: 'asc' }, { createdAt: 'asc' }],
+            select: { id: true, label: true },
+        }),
+    ]);
 
-    return reservations.map((reservation) => ({ id: reservation.kDo.id, label: reservation.kDo.label }));
+    return [
+        ...reservations.map((reservation) => ({ id: reservation.kDo.id, label: reservation.kDo.label })),
+        ...myCheckedSurprises,
+    ];
 }
 
 /** Ids of the friend's lists the viewer is a member of. */

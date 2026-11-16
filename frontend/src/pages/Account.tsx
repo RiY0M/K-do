@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
-import Header from "../components/navigation/Header";
+import HomeRedirect from "../components/navigation/HomeRedirect";
 import TypingInput from "../components/inputs/TypingInput";
 import FormSection from "../components/sections/FormSection";
 import { AccountInfo, NotificationSettings } from "../interfaces/AccountInfo";
 import { getMyAccount, updateMyAccount, updateMyNotifications } from "../services/api/users";
-import { updateCurrentUser } from "../services/authStorage";
+import { logout, updateCurrentUser } from "../services/authStorage";
 import { CSS, formSectionActualWidth } from "../services/utils";
 import Checkbox from "../components/inputs/Checkbox";
 import IconInlineText from "../components/IconInlineText";
+import ArrowLeft from "../assets/svgs/ArrowLeft";
+import NoStyleButton from "../components/buttons/NoStyleButton";
+import { useBehaviourDisplay } from "../hooks/useBehaviourDisplay";
+import ConfirmModal from "../components/modals/ConfirmModal";
 
 const notificationOptions: { key: keyof NotificationSettings; label: string }[] = [
   { key: "added", label: "Cadeaux ajoutés" },
@@ -24,6 +28,9 @@ export default function Account() {
   const [confirmation, setConfirmation] = useState<string>("");
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const [message, setMessage] = useState<string>("");
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState<boolean>(false);
+
+  const behaviourDisplay = useBehaviourDisplay();
 
   useEffect(() => {
     getMyAccount()
@@ -98,114 +105,128 @@ export default function Account() {
   };
 
   const styles: CSS = {
-    message: {
-      fontSize: "var(--sm-size)",
+    subDiv: {
+      flexDirection: behaviourDisplay === "landscape" ? "row" : "column",
     },
     section: {
       margin: "auto",
       width: formSectionActualWidth,
     },
-    options: {
-      gap: "var(--sm-space)",
+    logout: {
+      fontStyle: "italic",
     },
   };
 
   return (
     <>
-      <Header forceHomeRedirect />
-      <FormSection
-        title="Mon compte"
-        buttonLabel="Enregistrer"
-        validatedLabel="Enregistré&nbsp;!"
-        redirectMessage="Rien à changer ?"
-        redirectLinkMessage="Retour à l'accueil"
-        redirectUri="/"
-        onSubmit={handleSubmit}
-      >
-        <TypingInput
-          label="Nom"
-          name="name"
-          type="text"
-          required
-          maxLength={32}
-          value={name}
-          setValue={setName}
-        />
+      <HomeRedirect />
 
-        <TypingInput
-          label="E-mail"
-          name="email"
-          type="email"
-          placeholder="k-do@exemple.com"
-          hint={account && !account.email ? "Sans e-mail, impossible de réinitialiser le mot de passe ni d'annuler un changement." : undefined}
-          value={email}
-          setValue={setEmail}
-        />
-
-        <TypingInput
-          label="Nouveau mot de passe"
-          name="new-password"
-          type="password"
-          hint="Laissez vide pour garder l'actuel"
-          value={newPassword}
-          setValue={setNewPassword}
-        />
-
-        {newPassword &&
+      <div style={styles.subDiv}>
+        <FormSection
+          title="Mon compte"
+          buttonLabel="Enregistrer"
+          validatedLabel="Enregistré&nbsp;!"
+          redirectUri="/"
+          onSubmit={handleSubmit}
+        >
           <TypingInput
-            label="Confirmation"
-            name="confirmation"
-            type="password"
+            label="Nom"
+            name="name"
+            type="text"
             required
-            value={confirmation}
-            setValue={setConfirmation}
+            maxLength={32}
+            value={name}
+            setValue={setName}
           />
-        }
 
-        {needsCurrentPassword &&
-          <>
+          <TypingInput
+            label="E-mail"
+            name="email"
+            type="email"
+            placeholder="k-do@exemple.com"
+            hint={account && !account.email ? "Sans e-mail, impossible de réinitialiser le mot de passe ni d'annuler un changement." : undefined}
+            value={email}
+            setValue={setEmail}
+          />
+
+          <TypingInput
+            label="Nouveau mot de passe"
+            name="new-password"
+            type="password"
+            hint="Laissez vide pour garder l'actuel"
+            value={newPassword}
+            setValue={setNewPassword}
+          />
+
+          {newPassword &&
             <TypingInput
-              label="Mot de passe actuel"
-              name="current-password"
+              label="Confirmation"
+              name="confirmation"
               type="password"
               required
-              value={currentPassword}
-              setValue={setCurrentPassword}
+              value={confirmation}
+              setValue={setConfirmation}
             />
+          }
 
-            <p style={styles.message}>
-              {account?.email
-                ? `Un e-mail sera envoyé à votre adresse actuelle pour pouvoir annuler ce changement pendant 7 jours, au cas où ce ne serait pas vous.`
-                : "Votre compte n'a pas d'e-mail : aucun e-mail d'annulation ne pourra être envoyé."}
-              {" "}Vos autres appareils seront déconnectés.
-            </p>
-          </>
+          {needsCurrentPassword &&
+            <>
+              <TypingInput
+                label="Mot de passe actuel"
+                name="current-password"
+                type="password"
+                required
+                value={currentPassword}
+                setValue={setCurrentPassword}
+              />
+
+              <p className="sub-text">
+                {account?.email
+                  ? `Un e-mail sera envoyé à votre adresse actuelle pour pouvoir annuler ce changement pendant 7 jours, au cas où ce ne serait pas vous.`
+                  : "Votre compte n'a pas d'e-mail : aucun e-mail d'annulation ne pourra être envoyé."}
+                {" "}Vos autres appareils seront déconnectés.
+              </p>
+            </>
+          }
+
+          {message && <p className="sub-text">{message}</p>}
+        </FormSection>
+
+        {account &&
+          <section style={styles.section}>
+            <div className="small-gap">
+              <h2>Nouveautés à signaler</h2>
+              <p className="sub-text">
+                Sur la page d'accueil, à côté de chaque ami : ce qui a changé sur sa liste depuis la dernière fois que vous l'avez ouverte.
+              </p>
+
+              {notificationOptions.map((option) => (
+                <IconInlineText key={option.key}>
+                  <Checkbox
+                    name={`notify-${option.key}`}
+                    checked={account.notifications[option.key]}
+                    setChecked={(value) => toggleNotification(option.key, value)}
+                  />
+                  <label htmlFor={`notify-${option.key}`}>{option.label}</label>
+                </IconInlineText>
+              ))}
+            </div>
+          </section>
         }
+      </div>
 
-        {message && <p style={styles.message}>{message}</p>}
-      </FormSection>
+      <NoStyleButton onClick={() => setIsLogoutModalOpen(true)}>
+        <IconInlineText style={styles.logout} className="link">
+          <ArrowLeft />Déconnexion
+        </IconInlineText>
+      </NoStyleButton>
 
-      {account &&
-        <section style={styles.section}>
-          <div style={styles.options}>
-            <h2>Nouveautés à signaler</h2>
-            <p style={styles.message}>
-              Sur la page d'accueil, à côté de chaque ami : ce qui a changé sur sa liste depuis la dernière fois que vous l'avez ouverte.
-            </p>
-
-            {notificationOptions.map((option) => (
-              <IconInlineText key={option.key}>
-                <Checkbox
-                  name={`notify-${option.key}`}
-                  checked={account.notifications[option.key]}
-                  setChecked={(value) => toggleNotification(option.key, value)}
-                />
-                <label htmlFor={`notify-${option.key}`}>{option.label}</label>
-              </IconInlineText>
-            ))}
-          </div>
-        </section>
-      }
+      <ConfirmModal
+        title="Se déconnecter ?"
+        open={isLogoutModalOpen}
+        onConfirm={async () => await logout()}
+        onClose={() => setIsLogoutModalOpen(false)}
+      />
     </>
   );
 }

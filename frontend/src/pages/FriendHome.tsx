@@ -1,11 +1,11 @@
 import FriendFullListSection from "../components/sections/FriendFullListSection";
-import Header from "../components/navigation/Header";
+import HomeRedirect from "../components/navigation/HomeRedirect";
 
 export default function FriendHome() {
 
   return (
     <div>
-      <Header forceHomeRedirect />
+      <HomeRedirect />
       <FriendFullListSection />
     </div>
   );
