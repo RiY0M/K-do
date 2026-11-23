@@ -16,7 +16,6 @@ import { checkLineRow, iconSlot } from "./checkLineStyles";
 interface Props {
   kdo: Kdo;
   listAuthorId?: string;
-  // Drag handle, shown before the checkbox (see SortableKdos)
   dragHandle?: ReactNode;
   autoFocus?: boolean;
   onUpdate: (kdo: KdoUpdate) => void;
@@ -38,7 +37,6 @@ export default function EditableCheckLine({
   const linkCount = kdo.links?.length ?? 0;
 
   const updateCheck = async (checkStatus: boolean) => {
-    // Updated right away, the line moves to the checked/unchecked part
     onUpdate({ id: kdo.id, isChecked: checkStatus });
 
     try {
@@ -98,10 +96,6 @@ export default function EditableCheckLine({
           <Checkbox name={`check-${kdo.id}`} checked={isChecked} setChecked={updateCheck} />
         </span>
 
-        {/* Always the same textarea, focused or not: swapping it for a <div>
-            outside of editing (to render markdown) changed the line's height,
-            a textarea doesn't take the page's line-height. To bring markdown
-            back, give the <div> the textarea's exact line-height first. */}
         <InvisibleTypingInput
           name={`kdo-${kdo.id}`}
           value={kdo.label}
@@ -112,6 +106,12 @@ export default function EditableCheckLine({
         />
 
         <span style={iconSlot}>
+          <NoStyleButton onClick={handleDelete} onMouseDown={(e) => e.preventDefault()} style={styles.isFocused} title="Supprimer">
+            <XMark />
+          </NoStyleButton>
+        </span>
+
+        <span style={iconSlot}>
           <NoStyleButton
             onClick={() => setIsLinksOpen(true)}
             onMouseDown={(e) => e.preventDefault()}
@@ -119,14 +119,6 @@ export default function EditableCheckLine({
             title={linkCount > 0 ? `Liens (${linkCount})` : "Ajouter un lien"}
           >
             <LinkIcon />
-          </NoStyleButton>
-        </span>
-
-        {/* onMouseDown: keeps the focus on the input, otherwise the button
-            disappears (blur) before the click is registered */}
-        <span style={iconSlot}>
-          <NoStyleButton onClick={handleDelete} onMouseDown={(e) => e.preventDefault()} style={styles.isFocused} title="Supprimer">
-            <XMark />
           </NoStyleButton>
         </span>
 
