@@ -1,7 +1,7 @@
-import { useBehaviourDisplay } from "../../hooks/useBehaviourDisplay";
-import { List } from "../../interfaces/List";
-import { CSS, smSectionActualWidth, lgSectionActualWidth } from "../../services/utils";
-import ListPreview from "../list/ListPreview";
+import { useBehaviourDisplay } from "../../../hooks/useBehaviourDisplay";
+import { List } from "../../../interfaces/List";
+import { CSS, smSectionActualWidth, lgSectionActualWidth } from "../../../services/utils";
+import ListPreview from "../../list/ListPreview";
 
 interface Props {
 	lists: List[];

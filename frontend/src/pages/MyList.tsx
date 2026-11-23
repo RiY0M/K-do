@@ -1,5 +1,5 @@
-import MyFullListSection from "../components/sections/MyFullListSection";
-import FriendsSection from "../components/sections/FriendsSection";
+import MyFullListSection from "../components/sections/specific/MyFullListSection";
+import FriendsSection from "../components/sections/specific/FriendsSection";
 import { CSS, lgSectionIdealWidth, smSectionIdealWidth } from "../services/utils";
 import { useBehaviourDisplay } from "../hooks/useBehaviourDisplay";
 import { useCallback, useEffect, useState } from "react";
@@ -10,7 +10,7 @@ import IconInlineText from "../components/IconInlineText";
 import UserSvg from "../assets/svgs/UserSvg";
 import Page from "./Page";
 
-export default function MyHome() {
+export default function MyList() {
 
   const behaviourDisplay = useBehaviourDisplay();
 
@@ -38,7 +38,11 @@ export default function MyHome() {
   };
 
   return (
-    <Page idealSectionsWidth={lgSectionIdealWidth + smSectionIdealWidth} nbInlineSections={2}>
+    <Page
+      title="Ma liste"
+      idealSectionsWidth={lgSectionIdealWidth + smSectionIdealWidth}
+      nbInlineSections={2}
+    >
       <Link to="/account">
         <IconInlineText>
           <UserSvg />Compte

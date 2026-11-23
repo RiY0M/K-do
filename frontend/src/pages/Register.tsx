@@ -1,65 +1,15 @@
-import { useState } from "react";
-import { registerAndSaveSession } from "../services/authStorage";
-import { mdSectionIdealWidth, toUrlParam, useOptionalUrl } from "../services/utils";
-import TypingInput from "../components/inputs/TypingInput";
-import FormSection from "../components/sections/FormSection";
 import Page from "./Page";
+import RegisterSection from "../components/sections/specific/RegisterSection";
+import { mdSectionIdealWidth } from "../services/utils";
 
 export default function Register() {
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-
-  // Page to go back to once registered (e.g. an invitation)
-  const url = useOptionalUrl();
-
-  const handleSubmit = async () => {
-    await registerAndSaveSession({
-      name: name,
-      email: email,
-      password: password,
-    }, url || "/");
-  };
 
   return (
-    <Page idealSectionsWidth={mdSectionIdealWidth}>
-      <FormSection
-        title="Inscription"
-        buttonLabel="S'inscrire"
-        redirectMessage="Déjà inscrit ?"
-        redirectLinkMessage="Se connecter"
-        redirectUri={`/login${toUrlParam(url)}`}
-        onSubmit={handleSubmit}
-      >
-        <TypingInput
-          label="Nom"
-          name="name"
-          type="text"
-          required
-          maxLength={32}
-          value={name}
-          setValue={setName}
-        />
-
-        <TypingInput
-          label="E-mail"
-          name="email"
-          type="email"
-          placeholder="k-do@exemple.com"
-          hint="Facultatif, mais nécessaire pour récupérer votre mot de passe"
-          value={email}
-          setValue={setEmail}
-        />
-
-        <TypingInput
-          label="Mot de passe"
-          name="password"
-          type="password"
-          required
-          value={password}
-          setValue={setPassword}
-        />
-      </FormSection>
+    <Page
+      title="Inscription"
+      idealSectionsWidth={mdSectionIdealWidth}
+    >
+      <RegisterSection />
     </Page>
   );
 }

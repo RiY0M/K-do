@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import { useBehaviourDisplay } from "../../hooks/useBehaviourDisplay";
-import { FriendRequests, Friendship } from "../../interfaces/Friendship";
-import { User } from "../../interfaces/User";
-import { FriendOverview } from "../../interfaces/FriendOverview";
+import { useBehaviourDisplay } from "../../../hooks/useBehaviourDisplay";
+import { FriendRequests, Friendship } from "../../../interfaces/Friendship";
+import { User } from "../../../interfaces/User";
+import { FriendOverview } from "../../../interfaces/FriendOverview";
 import {
 	acceptFriendRequest,
 	deleteFriendRequest,
@@ -10,14 +10,14 @@ import {
 	getFriends,
 	removeFriend,
 	sendFriendRequest,
-} from "../../services/api/friends";
-import { CSS, smSectionActualWidth } from "../../services/utils";
-import FullAccordion from "../accordions/FullAccordion";
-import MultiStateButton from "../buttons/MultiStateButton";
-import FriendLine from "../friend/FriendLine";
-import FriendRequestLine from "../friend/FriendRequestLine";
-import TypingInput from "../inputs/TypingInput";
-import ConfirmModal from "../modals/ConfirmModal";
+} from "../../../services/api/friends";
+import { CSS, smSectionActualWidth } from "../../../services/utils";
+import FullAccordion from "../../accordions/FullAccordion";
+import MultiStateButton from "../../buttons/MultiStateButton";
+import FriendLine from "../../friend/FriendLine";
+import FriendRequestLine from "../../friend/FriendRequestLine";
+import TypingInput from "../../inputs/TypingInput";
+import ConfirmModal from "../../modals/ConfirmModal";
 
 interface Props {
 	// Called when friends are added or removed (list members change too)

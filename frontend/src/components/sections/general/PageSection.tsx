@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { CSS, mdSectionActualWidth } from "../../services/utils";
+import { CSS, mdSectionActualWidth } from "../../../services/utils";
 
 interface Props {
   title: string;

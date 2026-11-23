@@ -1,10 +1,13 @@
 import MyListRedirect from "../components/navigation/MyListRedirect";
-import { lgSectionIdealWidth } from "../services/utils";
 import Page from "./Page";
+import { lgSectionIdealWidth } from "../services/utils";
 
 export default function Tos() {
   return (
-    <Page idealSectionsWidth={lgSectionIdealWidth}>
+    <Page
+      title="CGU"
+      idealSectionsWidth={lgSectionIdealWidth}
+    >
       <MyListRedirect />
       <section>
         <div>

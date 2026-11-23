@@ -1,7 +1,7 @@
 import { ReactNode, MouseEvent } from "react";
 import { Link } from "react-router-dom";
-import { CSS, mdSectionActualWidth } from "../../services/utils";
-import MultiStateButton from "../../components/buttons/MultiStateButton";
+import { CSS, mdSectionActualWidth } from "../../../services/utils";
+import MultiStateButton from "../../buttons/MultiStateButton";
 
 interface Props {
   title: string;

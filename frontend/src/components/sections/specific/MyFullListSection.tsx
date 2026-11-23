@@ -1,12 +1,12 @@
-import MyCheckedList from "../list/me/MyCheckedList";
-import MyUncheckedList from "../list/me/MyUnCheckedList";
-import Description from "../inputs/Description";
+import MyCheckedList from "../../list/me/MyCheckedList";
+import MyUncheckedList from "../../list/me/MyUnCheckedList";
+import Description from "../../inputs/Description";
 import { useEffect, useState } from "react";
-import { List } from "../../interfaces/List";
-import { getMyListDetail } from "../../services/api/lists";
-import { CSS, lgSectionActualWidth } from "../../services/utils";
-import { useKdos } from "../../hooks/useKdos";
-import { reorderMyKdos } from "../../services/api/kdos";
+import { List } from "../../../interfaces/List";
+import { getMyListDetail } from "../../../services/api/lists";
+import { CSS, lgSectionActualWidth } from "../../../services/utils";
+import { useKdos } from "../../../hooks/useKdos";
+import { reorderMyKdos } from "../../../services/api/kdos";
 
 interface Props {
 	listPreview: List;

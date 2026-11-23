@@ -1,22 +1,26 @@
 import { useCallback, useEffect, useState } from "react";
-import FriendCheckedList from "../list/friend/FriendCheckedList";
-import FriendUncheckedList from "../list/friend/FriendUncheckedList";
-import FullAccordion from "../accordions/FullAccordion";
-import { List } from "../../interfaces/List";
-import { getListByFriendId } from "../../services/api/lists";
+import FriendCheckedList from "../../list/friend/FriendCheckedList";
+import FriendUncheckedList from "../../list/friend/FriendUncheckedList";
+import FullAccordion from "../../accordions/FullAccordion";
+import { List } from "../../../interfaces/List";
+import { getListByFriendId } from "../../../services/api/lists";
 import { useParams } from "react-router-dom";
-import { getUsername } from "../../services/api/users";
-import { useKdos } from "../../hooks/useKdos";
-import { CSS, lgSectionActualWidth } from "../../services/utils";
+import { useKdos } from "../../../hooks/useKdos";
+import { CSS, lgSectionActualWidth } from "../../../services/utils";
 // import { markdownToPlainText } from "../../services/markdown"; // TODO markdown: put back later
-import { Kdo } from "../../interfaces/Kdo";
-import { getCurrentUser } from "../../services/authStorage";
+import { Kdo } from "../../../interfaces/Kdo";
+import { getCurrentUser } from "../../../services/authStorage";
 
-export default function FriendFullListSection() {
+interface Props {
+	username: string;
+}
+
+export default function FriendFullListSection({
+	username,
+}: Readonly<Props>) {
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [list, setList] = useState<List | null>(null);
-	const [username, setUsername] = useState<string>("");
 	/**
 	 * "Éléments cochés" of a friend's list only holds:
 	 * - what the list's owner checked themselves (shown checked and disabled,
@@ -31,20 +35,17 @@ export default function FriendFullListSection() {
 		[myId]
 	);
 	const { setKdos, uncheckedKdos, checkedKdos, newKdoId, addKdo, updateKdo, removeKdo } = useKdos(isInCheckedPart);
-
-	// Same param name as the route in App.tsx (/friend/:userId)
 	const { userId } = useParams();
 
 	useEffect(() => {
 		if (!userId) return;
 		let ignore = false;
 
-		Promise.all([getListByFriendId(userId), getUsername(userId)])
-			.then(([friendList, friendName]) => {
+		getListByFriendId(userId)
+			.then((friendList) => {
 				if (ignore) return;
 				setList(friendList);
 				setKdos([...(friendList.uncheckedKdos ?? []), ...(friendList.checkedKdos ?? [])]);
-				setUsername(friendName);
 			})
 			.catch(console.error)
 			.finally(() => {

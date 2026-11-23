@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 import ChevronDown from "../../assets/svgs/ChevronDown";
 import { CSS } from "../../services/utils";
 import NoStyleButton from "../buttons/NoStyleButton";
@@ -7,7 +7,7 @@ import IconInlineText from "../IconInlineText";
 interface Props {
 	label: ReactNode;
 	open: boolean;
-	setOpen: (value: boolean) => void;
+	setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function AccordionToggle({ label, open, setOpen }: Readonly<Props>) {

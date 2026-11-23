@@ -1,10 +1,11 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { CSS } from "../services/utils";
 import { useBehaviourDisplay } from "../hooks/useBehaviourDisplay";
 
 type GapSpace = "xs" | "sm" | "md" | "lg" | "xl";
 
 interface Props {
+  title: string;
   idealSectionsWidth: number;
   nbInlineSections?: number;
   gapSpace?: GapSpace;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export default function Page({
+  title,
   idealSectionsWidth,
   nbInlineSections = 1,
   gapSpace = "md",
@@ -20,6 +22,10 @@ export default function Page({
 
   const behaviourDisplay = useBehaviourDisplay();
   const isLandscape = behaviourDisplay === "landscape";
+
+  useEffect(() => {
+    document.title = `${title} | ${__APP_NAME__}`;
+  }, [title]);
 
   const styles: CSS = {
     page: {
