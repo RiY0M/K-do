@@ -11,7 +11,7 @@ import {
 	removeFriend,
 	sendFriendRequest,
 } from "../../services/api/friends";
-import { CSS, groupSectionActualWidth, listSectionActualWidth } from "../../services/utils";
+import { CSS, smSectionActualWidth, lgSectionActualWidth } from "../../services/utils";
 import FullAccordion from "../accordions/FullAccordion";
 import MultiStateButton from "../buttons/MultiStateButton";
 import FriendLine from "../friend/FriendLine";
@@ -100,7 +100,7 @@ export default function FriendsSection({
 
 	const styles: CSS = {
 		section: {
-			width: isLandscape ? groupSectionActualWidth : listSectionActualWidth,
+			width: isLandscape ? smSectionActualWidth : lgSectionActualWidth,
 		},
 	};
 

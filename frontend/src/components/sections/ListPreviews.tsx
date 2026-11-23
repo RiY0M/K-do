@@ -1,6 +1,6 @@
 import { useBehaviourDisplay } from "../../hooks/useBehaviourDisplay";
 import { List } from "../../interfaces/List";
-import { CSS, groupSectionActualWidth, listSectionActualWidth } from "../../services/utils";
+import { CSS, smSectionActualWidth, lgSectionActualWidth } from "../../services/utils";
 import ListPreview from "../list/ListPreview";
 
 interface Props {
@@ -16,7 +16,7 @@ export default function ListPreviews({
 
 	const styles: CSS = {
 		section: {
-			width: isLandscape ? groupSectionActualWidth : listSectionActualWidth,
+			width: isLandscape ? smSectionActualWidth : lgSectionActualWidth,
 		},
 	};
 

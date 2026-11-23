@@ -4,7 +4,7 @@ import Description from "../inputs/Description";
 import { useEffect, useState } from "react";
 import { List } from "../../interfaces/List";
 import { getMyListDetail } from "../../services/api/lists";
-import { CSS, listSectionActualWidth } from "../../services/utils";
+import { CSS, lgSectionActualWidth } from "../../services/utils";
 import { useKdos } from "../../hooks/useKdos";
 import { reorderMyKdos } from "../../services/api/kdos";
 
@@ -51,7 +51,7 @@ export default function MyFullListSection({
 
 	const styles: CSS = {
 		section: {
-			width: listSectionActualWidth,
+			width: lgSectionActualWidth,
 		},
 	};
 

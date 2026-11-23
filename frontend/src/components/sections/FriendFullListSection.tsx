@@ -7,7 +7,7 @@ import { getListByFriendId } from "../../services/api/lists";
 import { useParams } from "react-router-dom";
 import { getUsername } from "../../services/api/users";
 import { useKdos } from "../../hooks/useKdos";
-import { CSS } from "../../services/utils";
+import { CSS, lgSectionActualWidth } from "../../services/utils";
 // import { markdownToPlainText } from "../../services/markdown"; // TODO markdown: put back later
 import { Kdo } from "../../interfaces/Kdo";
 import { getCurrentUser } from "../../services/authStorage";
@@ -55,6 +55,9 @@ export default function FriendFullListSection() {
 	}, [userId, setKdos]);
 
 	const styles: CSS = {
+		section: {
+			width: lgSectionActualWidth,
+		},
 		description: {
 			whiteSpace: "pre-wrap",
 			overflowWrap: "anywhere",
@@ -67,7 +70,7 @@ export default function FriendFullListSection() {
 	const deletedKdos = list?.deletedKdos ?? [];
 
 	return (
-		<section>
+		<section style={styles.section}>
 			{isLoading && <h1>Chargement...</h1>}
 			{!list && !isLoading && <h1>Erreur lors du chargement de la liste</h1>}
 			{list && userId &&

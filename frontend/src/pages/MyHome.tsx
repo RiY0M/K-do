@@ -1,6 +1,6 @@
 import MyFullListSection from "../components/sections/MyFullListSection";
 import FriendsSection from "../components/sections/FriendsSection";
-import { CSS } from "../services/utils";
+import { CSS, lgSectionIdealWidth, smSectionIdealWidth } from "../services/utils";
 import { useBehaviourDisplay } from "../hooks/useBehaviourDisplay";
 import { useCallback, useEffect, useState } from "react";
 import { List } from "../interfaces/List";
@@ -8,6 +8,7 @@ import { getMyLists } from "../services/api/lists";
 import { Link } from "react-router-dom";
 import IconInlineText from "../components/IconInlineText";
 import UserSvg from "../assets/svgs/UserSvg";
+import Page from "./Page";
 
 export default function MyHome() {
 
@@ -37,7 +38,7 @@ export default function MyHome() {
   };
 
   return (
-    <>
+    <Page idealSectionsWidth={lgSectionIdealWidth + smSectionIdealWidth} nbInlineSections={2}>
       <Link to="/account">
         <IconInlineText>
           <UserSvg />Compte
@@ -52,6 +53,6 @@ export default function MyHome() {
         </div> */}
         {selectedList && <MyFullListSection listPreview={selectedList} />}
       </div>
-    </>
+    </Page>
   );
 }

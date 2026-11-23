@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import IconInlineText from "../IconInlineText";
 import ArrowLeft from "../../assets/svgs/ArrowLeft";
 
-export default function HomeRedirect() {
+export default function MyListRedirect() {
 
   const styles: CSS = {
     div: {
@@ -15,7 +15,7 @@ export default function HomeRedirect() {
     <div style={styles.div}>
       <Link to="/">
         <IconInlineText>
-          <ArrowLeft />Accueil
+          <ArrowLeft />Ma liste
         </IconInlineText>
       </Link>
     </div>

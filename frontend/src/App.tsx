@@ -11,26 +11,18 @@ import ResetPassword from "./pages/ResetPassword";
 import Tos from "./pages/Tos";
 import Account from "./pages/Account";
 import RevertAccountChange from "./pages/RevertAccountChange";
-import { isAuthenticated } from "./services/authStorage";
-import { CSS, groupSectionIdealWidth, listSectionActualWidth, listSectionIdealWidth } from "./services/utils";
-import { useBehaviourDisplay } from "./hooks/useBehaviourDisplay";
 import Header from "./components/navigation/Header";
 import Footer from "./components/navigation/Footer";
+import { isAuthenticated } from "./services/authStorage";
 
 export default function App() {
-  const isLoggedIn = isAuthenticated();
-  const behaviourDisplay = useBehaviourDisplay();
-  const isLandscape = behaviourDisplay === "landscape";
 
-  const styles: CSS = {
-    app: {
-      width: isLandscape ? `min(calc(${listSectionIdealWidth + groupSectionIdealWidth}px + var(--md-space)), 100%)` : listSectionActualWidth,
-    }
-  }
+  const isLoggedIn = isAuthenticated();
+
   return (
     <>
       {/* <Header /> */}
-      <div id="main" style={styles.app}>
+      <div id="main">
         <Routes>
           {!isLoggedIn && <>
             <Route path="/" element={<Forbidden />} />

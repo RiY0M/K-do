@@ -1,6 +1,6 @@
 import { ReactNode, MouseEvent } from "react";
 import { Link } from "react-router-dom";
-import { CSS, formSectionActualWidth } from "../../services/utils";
+import { CSS, mdSectionActualWidth } from "../../services/utils";
 import MultiStateButton from "../../components/buttons/MultiStateButton";
 
 interface Props {
@@ -43,8 +43,7 @@ export default function FormSection({
       textAlign: "center",
     },
     section: {
-      margin: "auto",
-      width: formSectionActualWidth,
+      width: mdSectionActualWidth,
     },
   };
 

@@ -3,13 +3,13 @@ import { useParams } from "react-router-dom";
 
 export type CSS = Record<string, CSSProperties>
 
-export const listSectionIdealWidth = 350;
-export const groupSectionIdealWidth = 250;
-export const formSectionIdealWidth = 250;
+export const lgSectionIdealWidth = 600;
+export const mdSectionIdealWidth = 350;
+export const smSectionIdealWidth = 250;
 
-export const listSectionActualWidth = `min(${listSectionIdealWidth}px, 100%)`;
-export const groupSectionActualWidth = `min(${groupSectionIdealWidth}px, 100%)`;
-export const formSectionActualWidth = `min(${formSectionIdealWidth}px, 100%)`;
+export const lgSectionActualWidth = `min(${lgSectionIdealWidth}px, 100%)`;
+export const mdSectionActualWidth = `min(${mdSectionIdealWidth}px, 100%)`;
+export const smSectionActualWidth = `min(${smSectionIdealWidth}px, 100%)`;
 
 /**
  * Page to come back to after logging in, from the optional `:url` route param

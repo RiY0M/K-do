@@ -2,6 +2,8 @@ import { useState } from "react";
 import TypingInput from "../components/inputs/TypingInput";
 import FormSection from "../components/sections/FormSection";
 import { forgotPassword } from "../services/api/auth";
+import Page from "./Page";
+import { mdSectionIdealWidth } from "../services/utils";
 
 export default function ForgotPassword() {
   const [identifier, setIdentifier] = useState<string>("");
@@ -13,34 +15,36 @@ export default function ForgotPassword() {
   };
 
   return (
-    <FormSection
-      title="Mot de passe oublié"
-      buttonLabel="Envoyer le lien"
-      validatedLabel="E-mail envoyé&nbsp;!"
-      redirectMessage="Vous l'avez retrouvé ?"
-      redirectLinkMessage="Se connecter"
-      redirectUri="/login"
-      onSubmit={handleSubmit}
-    >
-      <p className="sub-text">
-        Un lien pour choisir un nouveau mot de passe sera envoyé à l'e-mail de votre compte.
-        Ce n'est possible que si vous en avez renseigné un à l'inscription.
-      </p>
-
-      <TypingInput
-        label="Nom ou e-mail"
-        name="identifier"
-        type="text"
-        required
-        value={identifier}
-        setValue={setIdentifier}
-      />
-
-      {sentTo &&
+    <Page idealSectionsWidth={mdSectionIdealWidth}>
+      <FormSection
+        title="Mot de passe oublié"
+        buttonLabel="Envoyer le lien"
+        validatedLabel="E-mail envoyé&nbsp;!"
+        redirectMessage="Vous l'avez retrouvé ?"
+        redirectLinkMessage="Se connecter"
+        redirectUri="/login"
+        onSubmit={handleSubmit}
+      >
         <p className="sub-text">
-          E-mail envoyé à {sentTo}. Le lien est valable une heure.
+          Un lien pour choisir un nouveau mot de passe sera envoyé à l'e-mail de votre compte.
+          Ce n'est possible que si vous en avez renseigné un à l'inscription.
         </p>
-      }
-    </FormSection>
+
+        <TypingInput
+          label="Nom ou e-mail"
+          name="identifier"
+          type="text"
+          required
+          value={identifier}
+          setValue={setIdentifier}
+        />
+
+        {sentTo &&
+          <p className="sub-text">
+            E-mail envoyé à {sentTo}. Le lien est valable une heure.
+          </p>
+        }
+      </FormSection>
+    </Page>
   );
 }

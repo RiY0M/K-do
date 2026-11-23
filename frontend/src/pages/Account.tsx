@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
-import HomeRedirect from "../components/navigation/HomeRedirect";
+import MyListRedirect from "../components/navigation/MyListRedirect";
 import TypingInput from "../components/inputs/TypingInput";
 import FormSection from "../components/sections/FormSection";
 import { AccountInfo, NotificationSettings } from "../interfaces/AccountInfo";
 import { getMyAccount, updateMyAccount, updateMyNotifications } from "../services/api/users";
 import { logout, updateCurrentUser } from "../services/authStorage";
-import { CSS, formSectionActualWidth } from "../services/utils";
+import { CSS, mdSectionIdealWidth, smSectionActualWidth, smSectionIdealWidth } from "../services/utils";
 import Checkbox from "../components/inputs/Checkbox";
 import IconInlineText from "../components/IconInlineText";
 import ArrowLeft from "../assets/svgs/ArrowLeft";
 import NoStyleButton from "../components/buttons/NoStyleButton";
 import { useBehaviourDisplay } from "../hooks/useBehaviourDisplay";
 import ConfirmModal from "../components/modals/ConfirmModal";
+import Page from "./Page";
 
 const notificationOptions: { key: keyof NotificationSettings; label: string }[] = [
   { key: "added", label: "Cadeaux ajoutés" },
@@ -109,8 +110,7 @@ export default function Account() {
       flexDirection: behaviourDisplay === "landscape" ? "row" : "column",
     },
     section: {
-      margin: "auto",
-      width: formSectionActualWidth,
+      width: smSectionActualWidth,
     },
     logout: {
       fontStyle: "italic",
@@ -118,8 +118,8 @@ export default function Account() {
   };
 
   return (
-    <>
-      <HomeRedirect />
+    <Page idealSectionsWidth={mdSectionIdealWidth + smSectionIdealWidth} nbInlineSections={2}>
+      <MyListRedirect />
 
       <div style={styles.subDiv}>
         <FormSection
@@ -194,22 +194,21 @@ export default function Account() {
 
         {account &&
           <section style={styles.section}>
-            <div className="small-gap">
-              <h2>Nouveautés à signaler</h2>
-              <p className="sub-text">
-                Sur la page d'accueil, à côté de chaque ami : ce qui a changé sur sa liste depuis la dernière fois que vous l'avez ouverte.
-              </p>
+            <div>
+              <h2>Notifications</h2>
+              <div className="small-gap">
 
-              {notificationOptions.map((option) => (
-                <IconInlineText key={option.key}>
-                  <Checkbox
-                    name={`notify-${option.key}`}
-                    checked={account.notifications[option.key]}
-                    setChecked={(value) => toggleNotification(option.key, value)}
-                  />
-                  <label htmlFor={`notify-${option.key}`}>{option.label}</label>
-                </IconInlineText>
-              ))}
+                {notificationOptions.map((option) => (
+                  <IconInlineText key={option.key}>
+                    <Checkbox
+                      name={`notify-${option.key}`}
+                      checked={account.notifications[option.key]}
+                      setChecked={(value) => toggleNotification(option.key, value)}
+                    />
+                    <label htmlFor={`notify-${option.key}`}>{option.label}</label>
+                  </IconInlineText>
+                ))}
+              </div>
             </div>
           </section>
         }
@@ -227,6 +226,6 @@ export default function Account() {
         onConfirm={async () => await logout()}
         onClose={() => setIsLogoutModalOpen(false)}
       />
-    </>
+    </Page>
   );
 }

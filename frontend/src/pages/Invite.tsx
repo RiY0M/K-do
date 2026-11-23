@@ -4,6 +4,8 @@ import MultiStateButton from "../components/buttons/MultiStateButton";
 import { acceptInvitation, getInvitation } from "../services/api/invitations";
 import { useEffect, useState } from "react";
 import { Invitation } from "../interfaces/Invitation";
+import Page from "./Page";
+import { mdSectionIdealWidth } from "../services/utils";
 
 export default function Invite() {
   const [invitation, setInvitation] = useState<Invitation | null>(null);
@@ -33,14 +35,16 @@ export default function Invite() {
   }
 
   return (
-    <PageSection title={getTitle()}>
-      <Link to="/"><button>Retour à l'accueil</button></Link>
-      {invitation && !invitation.inviter.isFriend &&
-        <MultiStateButton onClick={handleClick}>Accepter</MultiStateButton>
-      }
-      {invitation?.inviter.isFriend &&
-        <Link to={`/friend/${invitation.inviter.id}`}><button>Voir sa liste</button></Link>
-      }
-    </PageSection>
+    <Page idealSectionsWidth={mdSectionIdealWidth}>
+      <PageSection title={getTitle()}>
+        <Link to="/"><button>Retour à l'accueil</button></Link>
+        {invitation && !invitation.inviter.isFriend &&
+          <MultiStateButton onClick={handleClick}>Accepter</MultiStateButton>
+        }
+        {invitation?.inviter.isFriend &&
+          <Link to={`/friend/${invitation.inviter.id}`}><button>Voir sa liste</button></Link>
+        }
+      </PageSection>
+    </Page>
   );
 }

@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { CSS } from "../../services/utils";
+import { CSS, mdSectionActualWidth } from "../../services/utils";
 
 interface Props {
   title: string;
@@ -17,6 +17,7 @@ export default function PageSection({
       flexDirection: "column",
       gap: "var(--xl-space)",
       alignItems: "center",
+      width: mdSectionActualWidth,
     },
     div: {
       flexDirection: "row",

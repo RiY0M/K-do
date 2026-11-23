@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import TypingInput from "../components/inputs/TypingInput";
 import FormSection from "../components/sections/FormSection";
 import { resetPassword } from "../services/api/auth";
+import Page from "./Page";
+import { mdSectionIdealWidth } from "../services/utils";
 
 // Opened from the link of the "forgot password" e-mail: /reset-password/:token
 export default function ResetPassword() {
@@ -26,32 +28,34 @@ export default function ResetPassword() {
   };
 
   return (
-    <FormSection
-      title="Nouveau mot de passe"
-      buttonLabel="Changer le mot de passe"
-      validatedLabel="Mot de passe changé&nbsp;!"
-      redirectMessage="Lien expiré ?"
-      redirectLinkMessage="En demander un nouveau"
-      redirectUri="/forgot-password"
-      onSubmit={handleSubmit}
-    >
-      <TypingInput
-        label="Nouveau mot de passe"
-        name="password"
-        type="password"
-        required
-        value={password}
-        setValue={setPassword}
-      />
+    <Page idealSectionsWidth={mdSectionIdealWidth}>
+      <FormSection
+        title="Nouveau mot de passe"
+        buttonLabel="Changer le mot de passe"
+        validatedLabel="Mot de passe changé&nbsp;!"
+        redirectMessage="Lien expiré ?"
+        redirectLinkMessage="En demander un nouveau"
+        redirectUri="/forgot-password"
+        onSubmit={handleSubmit}
+      >
+        <TypingInput
+          label="Nouveau mot de passe"
+          name="password"
+          type="password"
+          required
+          value={password}
+          setValue={setPassword}
+        />
 
-      <TypingInput
-        label="Confirmation"
-        name="confirmation"
-        type="password"
-        required
-        value={confirmation}
-        setValue={setConfirmation}
-      />
-    </FormSection>
+        <TypingInput
+          label="Confirmation"
+          name="confirmation"
+          type="password"
+          required
+          value={confirmation}
+          setValue={setConfirmation}
+        />
+      </FormSection>
+    </Page>
   );
 }

@@ -1,12 +1,14 @@
 import FriendFullListSection from "../components/sections/FriendFullListSection";
-import HomeRedirect from "../components/navigation/HomeRedirect";
+import MyListRedirect from "../components/navigation/MyListRedirect";
+import { lgSectionIdealWidth } from "../services/utils";
+import Page from "./Page";
 
 export default function FriendHome() {
 
   return (
-    <div>
-      <HomeRedirect />
+    <Page idealSectionsWidth={lgSectionIdealWidth}>
+      <MyListRedirect />
       <FriendFullListSection />
-    </div>
+    </Page>
   );
 }

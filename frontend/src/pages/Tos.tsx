@@ -1,9 +1,11 @@
-import HomeRedirect from "../components/navigation/HomeRedirect";
+import MyListRedirect from "../components/navigation/MyListRedirect";
+import { lgSectionIdealWidth } from "../services/utils";
+import Page from "./Page";
 
 export default function Tos() {
   return (
-    <div>
-      <HomeRedirect />
+    <Page idealSectionsWidth={lgSectionIdealWidth}>
+      <MyListRedirect />
       <section>
         <div>
           <h1>Important</h1>
@@ -22,6 +24,6 @@ export default function Tos() {
           J'ai encore des galères avec le système d'e-mail donc oubliez pas votre mdp par pitié
         </div>
       </section>
-    </div>
+    </Page>
   );
 }
