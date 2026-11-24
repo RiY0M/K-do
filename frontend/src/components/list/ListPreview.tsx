@@ -1,7 +1,7 @@
 import { List } from "../../interfaces/List";
 import FullAccordion from "../accordions/FullAccordion";
 import CopyLinkButton from "../buttons/CopyLinkButton";
-import UserLink from "../UserLink";
+import UserLink from "../statics/UserLink";
 
 interface Props {
   list: List;
@@ -16,7 +16,7 @@ export default function ListPreview({
       label={list.label}
       defaultOpening={true}
     >
-      <div className="small-gap">
+      <div className="sm-gap">
         <CopyLinkButton listId={list.id} />
         {list.friends && list.friends.map((friend) => (
           <UserLink key={friend.id} user={friend} />

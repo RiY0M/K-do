@@ -1,12 +1,12 @@
 import { ReactNode, useRef, useState } from "react";
 import NoStyleButton from "../buttons/NoStyleButton";
-import XMark from "../../assets/svgs/XMark";
+import XMarkSvg from "../../assets/svgs/XMarkSvg";
 import Checkbox from "../inputs/Checkbox";
 import InvisibleTypingInput from "../inputs/InvisibleTypingInput";
 import { Kdo, KdoUpdate } from "../../interfaces/Kdo";
 import { checkMyKdo, deleteKdo, updateKdoLabel } from "../../services/api/kdos";
-import IconInlineText from "../IconInlineText";
-import LinkIcon from "../../assets/svgs/LinkIcon";
+import IconInlineText from "../statics/IconInlineText";
+import LinkSvg from "../../assets/svgs/LinkSvg";
 import LinksModal from "../modals/LinksModal";
 import { CSS } from "../../services/utils";
 import VolontaryKdo from "./friend/VoluntaryKdo";
@@ -69,9 +69,6 @@ export default function EditableCheckLine({
 
 
   const styles: CSS = {
-    div: {
-      gap: "var(--xs-space)",
-    },
     isChecked: {
       ...checkLineRow,
       textDecoration: isChecked ? "line-through" : "",
@@ -86,7 +83,7 @@ export default function EditableCheckLine({
   };
 
   return (
-    <div style={styles.div}>
+    <div className="sm-gap">
       {kdo.author && kdo.author.id !== listAuthorId &&
         <VolontaryKdo user={kdo.author!} />
       }
@@ -107,7 +104,7 @@ export default function EditableCheckLine({
 
         <span style={iconSlot}>
           <NoStyleButton onClick={handleDelete} onMouseDown={(e) => e.preventDefault()} style={styles.isFocused} title="Supprimer">
-            <XMark />
+            <XMarkSvg />
           </NoStyleButton>
         </span>
 
@@ -118,7 +115,7 @@ export default function EditableCheckLine({
             style={styles.linkButton}
             title={linkCount > 0 ? `Liens (${linkCount})` : "Ajouter un lien"}
           >
-            <LinkIcon />
+            <LinkSvg />
           </NoStyleButton>
         </span>
 

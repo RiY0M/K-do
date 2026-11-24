@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useBehaviourDisplay } from "../../../hooks/useBehaviourDisplay";
+import { useDisplay } from "../../../hooks/useDisplay";
 import { FriendRequests, Friendship } from "../../../interfaces/Friendship";
 import { User } from "../../../interfaces/User";
 import { FriendOverview } from "../../../interfaces/FriendOverview";
@@ -28,8 +28,7 @@ export default function FriendsSection({
 	onFriendsChange,
 }: Readonly<Props>) {
 
-	const behaviourDisplay = useBehaviourDisplay();
-	const isLandscape = behaviourDisplay === "landscape";
+	const { isLandscape } = useDisplay();
 
 	const [friends, setFriends] = useState<FriendOverview[]>([]);
 	const [requests, setRequests] = useState<FriendRequests>({ received: [], sent: [] });
@@ -110,7 +109,7 @@ export default function FriendsSection({
 				<h1>Amis</h1>
 
 				<form onSubmit={(event) => event.preventDefault()}>
-					<div className="small-gap">
+					<div className="sm-gap">
 						<TypingInput
 							label="Ajouter un ami"
 							name="friend-name"
@@ -127,7 +126,7 @@ export default function FriendsSection({
 
 				{requests.received.length > 0 &&
 					<FullAccordion label={`Demandes reçues (${requests.received.length})`} defaultOpening={true}>
-						<div className="small-gap">
+						<div className="sm-gap">
 							{requests.received.map((request) => (
 								<FriendRequestLine
 									key={request.id}
@@ -142,7 +141,7 @@ export default function FriendsSection({
 
 				{requests.sent.length > 0 &&
 					<FullAccordion label={`Demandes envoyées (${requests.sent.length})`}>
-						<div className="small-gap">
+						<div className="sm-gap">
 							{requests.sent.map((request) => (
 								<FriendRequestLine
 									key={request.id}
@@ -155,7 +154,7 @@ export default function FriendsSection({
 				}
 
 				<FullAccordion label={`Mes amis (${friends.length})`} defaultOpening={isLandscape}>
-					<div className="small-gap">
+					<div className="sm-gap">
 						{friends.map((friend) => (
 							<FriendLine key={friend.id} friend={friend} onRemove={handleRemove} />
 						))}

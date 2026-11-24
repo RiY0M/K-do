@@ -1,5 +1,5 @@
-import Plus from "../../assets/svgs/Plus";
-import IconInlineText from "../IconInlineText";
+import PlusSvg from "../../assets/svgs/PlusSvg";
+import IconInlineText from "../statics/IconInlineText";
 import MultiStateButton from "../buttons/MultiStateButton";
 import { createInvitation, getInvitationLink } from "../../services/api/invitations";
 
@@ -27,7 +27,7 @@ export default function CopyLinkButton({
   return (
     <MultiStateButton onClick={handleAdd} validatedLabel="Copié&nbsp;!">
       <IconInlineText>
-        <Plus />Inviter
+        <PlusSvg />Inviter
       </IconInlineText>
     </MultiStateButton>
   );

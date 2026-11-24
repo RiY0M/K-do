@@ -2,12 +2,12 @@ import { CSS } from "../../../services/utils";
 import { Kdo, KdoUpdate } from "../../../interfaces/Kdo";
 import TakeList from "./TakeList";
 import Checkbox from "../../inputs/Checkbox";
-import IconInlineText from "../../IconInlineText";
+import IconInlineText from "../../statics/IconInlineText";
 import { checkFriendKdo } from "../../../services/api/kdos";
 import { getCurrentUser } from "../../../services/authStorage";
 import { useState } from "react";
 import NoStyleButton from "../../buttons/NoStyleButton";
-import LinkIcon from "../../../assets/svgs/LinkIcon";
+import LinkSvg from "../../../assets/svgs/LinkSvg";
 import LinksModal from "../../modals/LinksModal";
 import VolontaryKdo from "./VoluntaryKdo";
 import KdoNewsTag from "./KdoNewsTag";
@@ -55,9 +55,6 @@ export default function FriendCheckLine({
   }
 
   const styles: CSS = {
-    div: {
-      gap: "var(--xs-space)",
-    },
     span: {
       flex: 1,
       whiteSpace: "pre-wrap",
@@ -70,7 +67,7 @@ export default function FriendCheckLine({
   };
 
   return (
-    <div style={styles.div}>
+    <div className="sm-gap">
       {kdo.news &&
         <KdoNewsTag news={kdo.news} />
       }
@@ -99,7 +96,7 @@ export default function FriendCheckLine({
           <>
             <span style={iconSlot}>
               <NoStyleButton onClick={() => setIsLinksOpen(true)} title={`Liens (${linkCount})`}>
-                <LinkIcon />
+                <LinkSvg />
               </NoStyleButton>
             </span>
 

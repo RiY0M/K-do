@@ -1,8 +1,8 @@
 import { ReactNode, useLayoutEffect, useRef, useState } from "react";
 import { CSS } from "../../services/utils";
 import NoStyleButton from "../buttons/NoStyleButton";
-import Eye from "../../assets/svgs/Eye";
-import EyeSlash from "../../assets/svgs/EyeSlash";
+import EyeSvg from "../../assets/svgs/EyeSvg";
+import EyeSlash from "../../assets/svgs/EyeSlashSvg";
 
 type inputType = "text" | "link" | "email" | "number" | "password" | "textarea" | "search";
 
@@ -56,9 +56,6 @@ export default function TypingInput({
 	const iconSpace = "var(--sm-space)";
 
 	const styles: CSS = {
-		div: {
-			gap: "var(--xs-space)",
-		},
 		label: {
 			cursor: "text",
 			textAlign: "left",
@@ -71,24 +68,19 @@ export default function TypingInput({
 			resize: "none",
 			overflow: "hidden",
 		},
-		inputWrapper: {
-			position: "relative",
-		},
 		passwordInput: {
 			// Leaves room for the show/hide button
 			paddingRight: `calc(${iconSpace} * 2 + ${iconSize})`,
 		},
 		toggleButton: {
-			position: "absolute",
 			right: iconSpace,
 			top: "50%",
 			transform: "translateY(-50%)",
-			display: "flex",
 		},
 	}
 
 	return (
-		<div style={styles.div}>
+		<div className="sm-gap">
 			{label &&
 				<label htmlFor={name} style={styles.label}>
 					{label}
@@ -115,7 +107,7 @@ export default function TypingInput({
 			}
 
 			{type !== "textarea" &&
-				<div style={styles.inputWrapper}>
+				<div className="relative">
 					<input
 						id={name}
 						name={name}
@@ -134,12 +126,13 @@ export default function TypingInput({
 
 					{isPassword &&
 						<NoStyleButton
+							className="absolute flex"
 							style={styles.toggleButton}
 							title={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
 							onMouseDown={(e) => e.preventDefault()}
 							onClick={() => setShowPassword(!showPassword)}
 						>
-							{showPassword ? <EyeSlash size={iconSize} /> : <Eye size={iconSize} />}
+							{showPassword ? <EyeSlash size={iconSize} /> : <EyeSvg size={iconSize} />}
 						</NoStyleButton>
 					}
 				</div>

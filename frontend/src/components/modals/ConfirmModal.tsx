@@ -39,7 +39,7 @@ export default function ConfirmModal({
     <Modal open={open} title={title} onClose={onClose}>
       {children}
 
-      <div style={styles.buttons} className="row small-gap">
+      <div style={styles.buttons} className="row sm-gap">
         <button type="button" onClick={onClose}>{cancelLabel}</button>
         <MultiStateButton onClick={handleConfirm}>
           <span className="important">{confirmLabel}</span>

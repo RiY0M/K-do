@@ -1,22 +1,20 @@
 import MyFullListSection from "../components/sections/specific/MyFullListSection";
 import FriendsSection from "../components/sections/specific/FriendsSection";
-import { CSS, lgSectionIdealWidth, smSectionIdealWidth } from "../services/utils";
-import { useBehaviourDisplay } from "../hooks/useBehaviourDisplay";
-import { useCallback, useEffect, useState } from "react";
+import { lgSectionIdealWidth, smSectionIdealWidth } from "../services/utils"; import { useCallback, useEffect, useState } from "react";
 import { List } from "../interfaces/List";
 import { getMyLists } from "../services/api/lists";
-import { Link } from "react-router-dom";
-import IconInlineText from "../components/IconInlineText";
-import UserSvg from "../assets/svgs/UserSvg";
 import Page from "./Page";
+import InlineSections from "../components/statics/InlineSections";
+import AccountRedirect from "../components/navigation/redirects/AccountRedirect";
+import HomeRedirect from "../components/navigation/redirects/HomeRedirect";
+import NavLink from "../components/navigation/redirects/NavLink";
 
 export default function MyList() {
-
-  const behaviourDisplay = useBehaviourDisplay();
 
   const [lists, setLists] = useState<List[]>([]);
   // The backend always returns at least the default list ("Tous")
   const selectedList = lists[0] ?? null;
+  const reverseButtons = false; // TODO : user parameter
 
   // Also called when friends change, to refresh the members of the lists
   const refreshLists = useCallback(async () => {
@@ -31,32 +29,26 @@ export default function MyList() {
     getMyLists().then(setLists).catch(console.error);
   }, []);
 
-  const styles: CSS = {
-    subDiv: {
-      flexDirection: behaviourDisplay === "landscape" ? "row" : "column-reverse",
-    },
-  };
-
   return (
     <Page
       title="Ma liste"
-      idealSectionsWidth={lgSectionIdealWidth + smSectionIdealWidth}
+      idealWidthLandscape={lgSectionIdealWidth + smSectionIdealWidth}
+      idealWidthPortrait={lgSectionIdealWidth}
       nbInlineSections={2}
     >
-      <Link to="/account">
-        <IconInlineText>
-          <UserSvg />Compte
-        </IconInlineText>
-      </Link>
+      <NavLink reverseDirection={reverseButtons}>
+        <HomeRedirect reverseDirection />
+        <AccountRedirect />
+      </NavLink>
 
 
-      <div style={styles.subDiv}>
+      <InlineSections reverseOnChangeDirection>
+        {selectedList && <MyFullListSection listPreview={selectedList} />}
         <FriendsSection onFriendsChange={refreshLists} />
         {/* <div>
           <ListPreviews lists={lists} />
         </div> */}
-        {selectedList && <MyFullListSection listPreview={selectedList} />}
-      </div>
+      </InlineSections>
     </Page>
   );
 }

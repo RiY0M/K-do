@@ -1,7 +1,7 @@
 import { MouseEventHandler } from "react";
 import NoStyleButton from "../buttons/NoStyleButton";
-import Plus from "../../assets/svgs/Plus";
-import IconInlineText from "../IconInlineText";
+import PlusSvg from "../../assets/svgs/PlusSvg";
+import IconInlineText from "../statics/IconInlineText";
 
 interface Props {
   label: string;
@@ -12,7 +12,7 @@ export default function AddInput({ label, onClick }: Readonly<Props>) {
 
   return (
     <NoStyleButton onClick={onClick}>
-      <IconInlineText><Plus />{label}</IconInlineText>
+      <IconInlineText><PlusSvg />{label}</IconInlineText>
     </NoStyleButton>
   );
 }

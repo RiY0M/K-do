@@ -1,23 +1,28 @@
-import { Dispatch, ReactNode, SetStateAction } from "react";
-import ChevronDown from "../../assets/svgs/ChevronDown";
+import { CSSProperties, Dispatch, ReactNode, SetStateAction } from "react";
+import ChevronDownSvg from "../../assets/svgs/ChevronDownSvg";
 import { CSS } from "../../services/utils";
 import NoStyleButton from "../buttons/NoStyleButton";
-import IconInlineText from "../IconInlineText";
+import IconInlineText from "../statics/IconInlineText";
 
 interface Props {
-	label: ReactNode;
+	children: ReactNode;
+	dontShowIcon?: boolean;
+	className?: string;
+	style?: CSSProperties;
 	open: boolean;
 	setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function AccordionToggle({ label, open, setOpen }: Readonly<Props>) {
+export default function AccordionToggle({
+	children,
+	dontShowIcon = false,
+	className = "",
+	style,
+	open,
+	setOpen,
+}: Readonly<Props>) {
 
 	const styles: CSS = {
-		label: {
-			display: "flex",
-			flexDirection: "row",
-			gap: "var(--xs-space)",
-		},
 		iconContainer: {
 			justifyContent: "end",
 		},
@@ -28,12 +33,14 @@ export default function AccordionToggle({ label, open, setOpen }: Readonly<Props
 	}
 
 	return (
-		<NoStyleButton onClick={() => setOpen(!open)}>
-			<IconInlineText>
-				<div style={styles.icon}>
-					<ChevronDown />
-				</div>
-				{label}
+		<NoStyleButton style={style} onClick={() => setOpen(!open)}>
+			<IconInlineText className={className}>
+				{!dontShowIcon &&
+					<div style={styles.icon}>
+						<ChevronDownSvg />
+					</div>
+				}
+				{children}
 			</IconInlineText>
 		</NoStyleButton>
 	);

@@ -7,7 +7,8 @@ export default function Invite() {
   return (
     <Page
       title="Invitation"
-      idealSectionsWidth={mdSectionIdealWidth}
+      idealWidthLandscape={mdSectionIdealWidth}
+      idealWidthPortrait={mdSectionIdealWidth}
     >
       <InviteSection />
     </Page>

@@ -1,10 +1,10 @@
 import { FriendOverview } from "../../interfaces/FriendOverview";
 import { User } from "../../interfaces/User";
 import { CSS } from "../../services/utils";
-import XMark from "../../assets/svgs/XMark";
+import XMarkSvg from "../../assets/svgs/XMarkSvg";
 import NoStyleButton from "../buttons/NoStyleButton";
-import IconInlineText from "../IconInlineText";
-import UserLink from "../UserLink";
+import IconInlineText from "../statics/IconInlineText";
+import UserLink from "../statics/UserLink";
 // import { markdownToPlainText } from "../../services/markdown"; // TODO markdown: put back later
 
 interface Props {
@@ -37,15 +37,6 @@ export default function FriendLine({
   const hasNews = newsParts.length > 0;
 
   const styles: CSS = {
-    div: {
-      gap: "var(--xs-space)",
-    },
-    line: {
-      justifyContent: "space-between",
-    },
-    name: {
-      gap: "var(--xs-space)",
-    },
     count: {
       opacity: 0.8,
     },
@@ -63,9 +54,9 @@ export default function FriendLine({
   };
 
   return (
-    <div style={styles.div}>
-      <IconInlineText style={styles.line}>
-        <IconInlineText style={styles.name}>
+    <div className="sm-gap">
+      <IconInlineText className="space-between">
+        <IconInlineText className="sm-gap">
           <UserLink user={friend} />
           <span style={styles.count} title={`Cadeaux que vous avez pris pour ${friend.name}`}>
             ({takenByMe.length})
@@ -76,7 +67,7 @@ export default function FriendLine({
         </IconInlineText>
 
         <NoStyleButton onClick={() => onRemove(friend)} title={`Retirer ${friend.name}`}>
-          <XMark />
+          <XMarkSvg />
         </NoStyleButton>
       </IconInlineText>
 

@@ -1,15 +1,12 @@
 import { Friendship } from "../../interfaces/Friendship";
-import { CSS } from "../../services/utils";
-import Check from "../../assets/svgs/Check";
-import XMark from "../../assets/svgs/XMark";
+import CheckSvg from "../../assets/svgs/Check";
+import XMarkSvg from "../../assets/svgs/XMarkSvg";
 import NoStyleButton from "../buttons/NoStyleButton";
-import IconInlineText from "../IconInlineText";
+import IconInlineText from "../statics/IconInlineText";
 
 interface Props {
   request: Friendship;
-  // Only for received requests
   onAccept?: (request: Friendship) => void;
-  // Declines a received request, cancels a sent one
   onDelete: (request: Friendship) => void;
 }
 
@@ -19,23 +16,17 @@ export default function FriendRequestLine({
   onDelete,
 }: Readonly<Props>) {
 
-  const styles: CSS = {
-    line: {
-      justifyContent: "space-between",
-    },
-  };
-
   return (
-    <IconInlineText style={styles.line}>
+    <IconInlineText className="space-between">
       <span>{request.user.name}</span>
-      <div className="row small-gap">
+      <div className="row sm-gap">
         {onAccept &&
           <NoStyleButton onClick={() => onAccept(request)} title="Accepter">
-            <Check />
+            <CheckSvg />
           </NoStyleButton>
         }
         <NoStyleButton onClick={() => onDelete(request)} title={onAccept ? "Refuser" : "Annuler la demande"}>
-          <XMark />
+          <XMarkSvg />
         </NoStyleButton>
       </div>
     </IconInlineText>

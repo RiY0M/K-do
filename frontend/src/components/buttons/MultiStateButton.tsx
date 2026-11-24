@@ -1,8 +1,8 @@
 import { MouseEvent, ReactNode, useEffect, useRef, useState } from "react";
-import Check from "../../assets/svgs/Check";
-import XMark from "../../assets/svgs/XMark";
+import CheckSvg from "../../assets/svgs/Check";
+import XMarkSvg from "../../assets/svgs/XMarkSvg";
 import { CSS } from "../../services/utils";
-import IconInlineText from "../IconInlineText";
+import IconInlineText from "../statics/IconInlineText";
 
 type validStates = "default" | "loading" | "validated" | "error";
 
@@ -42,28 +42,22 @@ export default function MultiStateButton({
   };
 
   const styles: CSS = {
-    div: {
-      position: "relative",
-    },
     default: {
       opacity: buttonState === "default" ? 1 : 0,
       transition: "opacity var(--sm-speed)",
     },
     loading: {
-      position: "absolute",
       inset: 0,
       opacity: buttonState === "loading" ? 1 : 0,
       transition: "opacity var(--sm-speed)",
     },
     validated: {
-      position: "absolute",
       inset: 0,
       color: "var(--validate)",
       opacity: buttonState === "validated" ? 1 : 0,
       transition: "opacity var(--sm-speed)",
     },
     error: {
-      position: "absolute",
       inset: 0,
       color: "var(--important)",
       opacity: buttonState === "error" ? 1 : 0,
@@ -73,26 +67,26 @@ export default function MultiStateButton({
 
   return (
     <button onClick={handleClick} disabled={buttonState === "loading"}>
-      <div style={styles.div}>
+      <div className="relative">
         <span style={styles.default}>{children}</span>
 
-        <span style={styles.loading}>
+        <span className="absolute" style={styles.loading}>
           <IconInlineText>
-            <Check />
+            <CheckSvg />
             Chargement...
           </IconInlineText>
         </span>
 
-        <span style={styles.validated}>
+        <span className="absolute" style={styles.validated}>
           <IconInlineText>
-            <Check />
+            <CheckSvg />
             {validatedLabel}
           </IconInlineText>
         </span>
 
-        <span style={styles.error}>
+        <span className="absolute" style={styles.error}>
           <IconInlineText>
-            <XMark />
+            <XMarkSvg />
             {errorMessage}
           </IconInlineText>
         </span>

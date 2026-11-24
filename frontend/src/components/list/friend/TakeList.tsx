@@ -1,5 +1,5 @@
 import { User } from "../../../interfaces/User";
-import UserLink from "../../UserLink";
+import UserLink from "../../statics/UserLink";
 
 interface Props {
   users: User[];
@@ -10,7 +10,7 @@ export default function TakeList({
 }: Readonly<Props>) {
 
   return (
-    <div className="row small-gap sub-text">
+    <div className="row sm-gap sub-text">
       Pris par :
       {users.map((user) => (
         <UserLink key={user.id} user={user} isSubText />

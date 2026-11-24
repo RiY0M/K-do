@@ -1,4 +1,4 @@
-import { User } from "../interfaces/User";
+import { User } from "../../interfaces/User";
 import { Link } from "react-router-dom";
 
 interface Props {

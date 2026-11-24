@@ -7,7 +7,8 @@ export default function Forbidden() {
   return (
     <Page
       title="Interdit"
-      idealSectionsWidth={mdSectionIdealWidth}
+      idealWidthLandscape={mdSectionIdealWidth}
+      idealWidthPortrait={mdSectionIdealWidth}
     >
       <ForbiddenSection />
     </Page>

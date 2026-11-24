@@ -1,13 +1,19 @@
 import { ReactNode, TransitionEvent, useLayoutEffect, useRef, useState } from "react";
-import { CSS } from "../../services/utils";
+import { CSS, GapSpaceType } from "../../services/utils";
 
 interface Props {
 	open: boolean;
 	preview?: boolean;
+	topSpace?: GapSpaceType;
 	children: ReactNode;
 }
 
-export default function AccordionContent({ open, preview = false, children }: Readonly<Props>) {
+export default function AccordionContent({
+	open,
+	preview = false,
+	topSpace = "md",
+	children
+}: Readonly<Props>) {
 	const defaultHeight = preview ? 15 : 0;
 	const contentRef = useRef<HTMLDivElement>(null);
 	const [height, setHeight] = useState(defaultHeight);
@@ -50,7 +56,7 @@ export default function AccordionContent({ open, preview = false, children }: Re
 			maxHeight: open ? height : defaultHeight,
 		},
 		content: {
-			paddingTop: "var(--sm-space)",
+			paddingTop: `var(--${topSpace}-space)`,
 		},
 	};
 

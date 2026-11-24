@@ -1,7 +1,7 @@
 import { User } from "../../../interfaces/User";
-import UserLink from "../../UserLink";
-import IconInlineText from "../../IconInlineText";
-import ExclamationTriangle from "../../../assets/svgs/ExclamationTriangle";
+import UserLink from "../../statics/UserLink";
+import IconInlineText from "../../statics/IconInlineText";
+import ExclamationTriangleSvg from "../../../assets/svgs/ExclamationTriangleSvg";
 
 interface Props {
   user: User;
@@ -13,7 +13,7 @@ export default function VolontaryKdo({
 
   return (
     <IconInlineText className="sub-text">
-      <ExclamationTriangle />
+      <ExclamationTriangleSvg />
       Créé par :
       <UserLink key={user.id} user={user} isSubText />
     </IconInlineText>

@@ -7,7 +7,8 @@ export default function NotFound() {
   return (
     <Page
       title="Introuvable"
-      idealSectionsWidth={mdSectionIdealWidth}
+      idealWidthLandscape={mdSectionIdealWidth}
+      idealWidthPortrait={mdSectionIdealWidth}
     >
       <NotFoundSection />
     </Page>

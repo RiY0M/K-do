@@ -1,27 +1,28 @@
-import { ReactNode, useEffect } from "react";
-import { CSS } from "../services/utils";
-import { useBehaviourDisplay } from "../hooks/useBehaviourDisplay";
-
-type GapSpace = "xs" | "sm" | "md" | "lg" | "xl";
+import { CSSProperties, ReactNode, useEffect } from "react";
+import { CSS, GapSpaceType } from "../services/utils";
+import { useDisplay } from "../hooks/useDisplay";
 
 interface Props {
   title: string;
-  idealSectionsWidth: number;
+  idealWidthLandscape: number;
+  idealWidthPortrait: number;
   nbInlineSections?: number;
-  gapSpace?: GapSpace;
+  gapSpace?: GapSpaceType;
+  style?: CSSProperties;
   children: ReactNode;
 }
 
 export default function Page({
   title,
-  idealSectionsWidth,
+  idealWidthLandscape,
+  idealWidthPortrait,
   nbInlineSections = 1,
   gapSpace = "md",
+  style,
   children,
 }: Readonly<Props>) {
 
-  const behaviourDisplay = useBehaviourDisplay();
-  const isLandscape = behaviourDisplay === "landscape";
+  const { isLandscape } = useDisplay();
 
   useEffect(() => {
     document.title = `${title} | ${__APP_NAME__}`;
@@ -30,7 +31,10 @@ export default function Page({
   const styles: CSS = {
     page: {
       margin: "auto",
-      width: isLandscape ? `calc(${idealSectionsWidth}px + var(--${gapSpace}-space) * ${nbInlineSections - 1})` : "100%",
+      width: isLandscape ?
+        `calc(${idealWidthLandscape}px + var(--${gapSpace}-space) * ${nbInlineSections - 1})`
+        : `min(${idealWidthPortrait}px, 100%)`,
+      ...style,
     },
   }
 

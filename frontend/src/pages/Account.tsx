@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
-import MyListRedirect from "../components/navigation/MyListRedirect";
+import MyListRedirect from "../components/navigation/redirects/MyListRedirect";
 import { AccountInfo } from "../interfaces/AccountInfo";
 import { getMyAccount } from "../services/api/users";
-import { CSS, mdSectionIdealWidth, smSectionIdealWidth } from "../services/utils";
-import { useBehaviourDisplay } from "../hooks/useBehaviourDisplay";
+import { mdSectionIdealWidth, smSectionIdealWidth } from "../services/utils";
 import Page from "./Page";
 import AccountDisplaySection from "../components/sections/specific/AccountDisplaySection";
-import Logout from "../components/navigation/Logout";
+import Logout from "../components/navigation/redirects/Logout";
 import NotificationsSection from "../components/sections/specific/NotificationsSection";
+import InlineSections from "../components/statics/InlineSections";
+import NavLink from "../components/navigation/redirects/NavLink";
 
 export default function Account() {
 
+  const reverseButtons = false; // TODO : user parameter
   const [account, setAccount] = useState<AccountInfo | null>(null);
-
-  const behaviourDisplay = useBehaviourDisplay();
 
   useEffect(() => {
     getMyAccount()
@@ -23,22 +23,19 @@ export default function Account() {
       .catch(console.error);
   }, []);
 
-  const styles: CSS = {
-    subDiv: {
-      flexDirection: behaviourDisplay === "landscape" ? "row" : "column",
-    },
-  };
-
   return (
     <Page
       title="Compte"
-      idealSectionsWidth={mdSectionIdealWidth + smSectionIdealWidth}
+      idealWidthLandscape={mdSectionIdealWidth + smSectionIdealWidth}
+      idealWidthPortrait={mdSectionIdealWidth}
       nbInlineSections={2}
     >
-      <MyListRedirect />
+      <NavLink soloButton reverseDirection={reverseButtons}>
+        <MyListRedirect reverseDirection={reverseButtons} />
+      </NavLink>
 
       {account &&
-        <div style={styles.subDiv}>
+        <InlineSections>
           <AccountDisplaySection
             account={account}
             setAccount={setAccount}
@@ -48,10 +45,12 @@ export default function Account() {
             account={account}
             setAccount={setAccount}
           />
-        </div>
+        </InlineSections>
       }
 
-      <Logout />
+      <NavLink soloButton reverseDirection={reverseButtons}>
+        <Logout reverseDirection={reverseButtons} />
+      </NavLink>
     </Page>
   );
 }

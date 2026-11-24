@@ -7,7 +7,8 @@ export default function Login() {
   return (
     <Page
       title="Connexion"
-      idealSectionsWidth={mdSectionIdealWidth}
+      idealWidthLandscape={mdSectionIdealWidth}
+      idealWidthPortrait={mdSectionIdealWidth}
     >
       <LoginSection />
     </Page>

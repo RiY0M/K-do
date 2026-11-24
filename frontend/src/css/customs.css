@@ -10,22 +10,73 @@
 #main {
   margin: auto;
   padding: var(--sm-space);
+  width: min(1000px, 100%);
+}
+
+.absolute {
+  position: absolute;
 }
 
 .action {
   color: var(--color);
 }
 
+.align-items-center {
+  align-items: center;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-end {
+  justify-content: flex-end;
+}
+
+.flex-start {
+  justify-content: flex-start;
+}
+
 .important {
   color: var(--important);
+}
+
+.italic {
+  font-style: italic;
+}
+
+.no-border {
+  border: none;
+}
+
+.no-gap {
+  gap: 0;
+}
+
+.relative {
+  position: relative;
 }
 
 .row {
   flex-direction: row;
 }
 
-.small-gap {
+.row-reverse {
+  flex-direction: row-reverse;
+}
+
+.semi-hidden-text {
+  font-size: var(--sm-size);
+  opacity: .5;
+  font-style: italic;
+}
+
+.sm-gap {
   gap: var(--sm-space);
+}
+
+.space-between {
+  justify-content: space-between;
 }
 
 .sub-text {

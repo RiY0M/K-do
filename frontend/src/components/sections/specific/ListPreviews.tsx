@@ -1,4 +1,4 @@
-import { useBehaviourDisplay } from "../../../hooks/useBehaviourDisplay";
+import { useDisplay } from "../../../hooks/useDisplay";
 import { List } from "../../../interfaces/List";
 import { CSS, smSectionActualWidth, lgSectionActualWidth } from "../../../services/utils";
 import ListPreview from "../../list/ListPreview";
@@ -11,8 +11,7 @@ export default function ListPreviews({
 	lists,
 }: Readonly<Props>) {
 
-	const behaviourDisplay = useBehaviourDisplay();
-	const isLandscape = behaviourDisplay === "landscape";
+	const { isLandscape } = useDisplay();
 
 	const styles: CSS = {
 		section: {

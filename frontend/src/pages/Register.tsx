@@ -7,7 +7,8 @@ export default function Register() {
   return (
     <Page
       title="Inscription"
-      idealSectionsWidth={mdSectionIdealWidth}
+      idealWidthLandscape={mdSectionIdealWidth}
+      idealWidthPortrait={mdSectionIdealWidth}
     >
       <RegisterSection />
     </Page>

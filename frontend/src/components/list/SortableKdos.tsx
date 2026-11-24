@@ -1,6 +1,6 @@
 import { KeyboardEvent, PointerEvent, ReactNode, useRef, useState } from "react";
 import { Kdo } from "../../interfaces/Kdo";
-import Grip from "../../assets/svgs/Grip";
+import GripSvg from "../../assets/svgs/GripSvg";
 // import { markdownToPlainText } from "../../services/markdown"; // TODO markdown: put back later
 
 interface Props {
@@ -113,7 +113,7 @@ export default function SortableKdos({
 		const dragHandle = (
 			<button
 				type="button"
-				className="action"
+				className="action flex no-border"
 				ref={(element) => {
 					if (element) handleRefs.current.set(kdo.id, element);
 					else handleRefs.current.delete(kdo.id);
@@ -122,8 +122,6 @@ export default function SortableKdos({
 					padding: 0,
 					background: "transparent",
 					boxShadow: "none",
-					border: "none",
-					display: "flex",
 					cursor: isDragged ? "grabbing" : "grab",
 					// Lets a finger drag the line instead of scrolling the page
 					touchAction: "none",
@@ -137,7 +135,7 @@ export default function SortableKdos({
 				onPointerCancel={() => setDrag(null)}
 				onKeyDown={(event) => handleKeyDown(event, kdo, index)}
 			>
-				<Grip />
+				<GripSvg />
 			</button>
 		);
 
@@ -148,8 +146,8 @@ export default function SortableKdos({
 					if (element) lineRefs.current.set(kdo.id, element);
 					else lineRefs.current.delete(kdo.id);
 				}}
+				className="relative"
 				style={{
-					position: "relative",
 					transform: offset ? `translateY(${offset}px)` : undefined,
 					// The dragged line follows the pointer, the others slide
 					transition: drag && !isDragged ? "transform var(--sm-speed)" : "none",

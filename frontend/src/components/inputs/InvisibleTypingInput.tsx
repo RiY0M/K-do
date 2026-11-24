@@ -31,7 +31,6 @@ export default function InvisibleTypingInput({
 
 	const styles: CSS = {
 		input: {
-			border: "none",
 			boxShadow: "none",
 			padding: 0,
 			backgroundColor: "transparent",
@@ -44,6 +43,7 @@ export default function InvisibleTypingInput({
 		<textarea
 			ref={ref}
 			style={styles.input}
+			className="no-border"
 			id={name}
 			name={name}
 			value={value}

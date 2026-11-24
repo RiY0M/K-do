@@ -1,8 +1,9 @@
+import { useDisplay } from "../../../hooks/useDisplay";
 import { AccountInfo, NotificationSettings } from "../../../interfaces/AccountInfo";
 import { updateMyNotifications } from "../../../services/api/users";
 import { CSS, smSectionActualWidth } from "../../../services/utils";
 import Checkbox from "../../inputs/Checkbox";
-import IconInlineText from "../../IconInlineText";
+import IconInlineText from "../../statics/IconInlineText";
 import { Dispatch, SetStateAction } from "react";
 
 const notificationOptions: { key: keyof NotificationSettings; label: string }[] = [
@@ -22,6 +23,7 @@ export default function NotificationsSection({
 	setAccount,
 }: Readonly<Props>) {
 
+	const { isLandscape } = useDisplay();
 
 	const toggleNotification = async (key: keyof NotificationSettings, value: boolean) => {
 		if (!account) return;
@@ -39,7 +41,7 @@ export default function NotificationsSection({
 
 	const styles: CSS = {
 		section: {
-			width: smSectionActualWidth,
+			width: isLandscape ? smSectionActualWidth : "100%",
 		},
 	};
 
@@ -47,7 +49,7 @@ export default function NotificationsSection({
 		<section style={styles.section}>
 			<div>
 				<h2>Notifications</h2>
-				<div className="small-gap">
+				<div className="sm-gap">
 
 					{notificationOptions.map((option) => (
 						<IconInlineText key={option.key}>

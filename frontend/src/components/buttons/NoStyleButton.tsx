@@ -5,18 +5,25 @@ interface Props {
   children: ReactNode;
   onClick: MouseEventHandler<HTMLButtonElement>;
   onMouseDown?: MouseEventHandler<HTMLButtonElement>;
+  className?: string;
   style?: CSSProperties;
   title?: string;
 }
 
-export default function NoStyleButton({ children, onClick, onMouseDown, style, title }: Readonly<Props>) {
+export default function NoStyleButton({
+  children,
+  onClick,
+  onMouseDown,
+  className = "",
+  style,
+  title
+}: Readonly<Props>) {
 
   const styles: CSS = {
     button: {
-      padding: "0",
+      padding: 0,
       background: "transparent",
       boxShadow: "none",
-      border: "none",
       textAlign: "left",
       ...style
     },
@@ -26,7 +33,7 @@ export default function NoStyleButton({ children, onClick, onMouseDown, style, t
     <button
       type="button"
       style={styles.button}
-      className="action"
+      className={`action no-border ${className}`}
       onClick={onClick}
       onMouseDown={onMouseDown}
       title={title}

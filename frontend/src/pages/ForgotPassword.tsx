@@ -7,7 +7,8 @@ export default function ForgotPassword() {
   return (
     <Page
       title="Mot de passe oublié"
-      idealSectionsWidth={mdSectionIdealWidth}
+      idealWidthLandscape={mdSectionIdealWidth}
+      idealWidthPortrait={mdSectionIdealWidth}
     >
       <ForgotPasswordSection />
     </Page>

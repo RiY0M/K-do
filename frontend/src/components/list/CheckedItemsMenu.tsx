@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import EllipsisVertical from "../../assets/svgs/EllipsisVertical";
+import EllipsisVerticalSvg from "../../assets/svgs/EllipsisVerticalSvg";
 import { Kdo, KdoUpdate } from "../../interfaces/Kdo";
 import { checkMyKdo, deleteKdo } from "../../services/api/kdos";
 import { CSS } from "../../services/utils";
@@ -79,15 +79,10 @@ export default function CheckedItemsMenu({
   };
 
   const styles: CSS = {
-    container: {
-      position: "relative",
-    },
     menu: {
-      position: "absolute",
       top: "100%",
       left: 0,
       zIndex: 2,
-      gap: "var(--xs-space)",
       padding: "var(--sm-space)",
       background: "var(--mainer)",
       boxShadow: "var(--shadow)",
@@ -97,13 +92,13 @@ export default function CheckedItemsMenu({
   };
 
   return (
-    <div ref={menuRef} style={styles.container}>
+    <div ref={menuRef} className="relative">
       <NoStyleButton onClick={() => setIsOpen(!isOpen)} title="Actions sur mes éléments cochés">
-        <EllipsisVertical />
+        <EllipsisVerticalSvg />
       </NoStyleButton>
 
       {isOpen &&
-        <div role="menu" style={styles.menu}>
+        <div role="menu" className="absolute sm-gap" style={styles.menu}>
           <NoStyleButton onClick={uncheckAll}>Tout décocher</NoStyleButton>
           <NoStyleButton onClick={() => { setIsOpen(false); setIsConfirmOpen(true); }}>
             <span className="important">Supprimer les éléments cochés</span>

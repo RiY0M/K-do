@@ -1,5 +1,4 @@
 import { CSSProperties, ReactNode, useLayoutEffect, useRef } from "react";
-import { CSS } from "../services/utils";
 
 interface Props {
   children: ReactNode;
@@ -31,15 +30,12 @@ export default function IconInlineText({ children, style, className = "" }: Read
     if (style?.fontWeight === undefined) line.style.fontWeight = styles.fontWeight;
   });
 
-  const styles: CSS = {
-    line: {
-      alignItems: "center",
-      ...style
-    },
-  }
-
   return (
-    <div ref={lineRef} style={styles.line} className={`row small-gap ${className}`}>
+    <div
+      ref={lineRef}
+      style={style}
+      className={`align-items-center row sm-gap ${className}`}
+    >
       {children}
     </div>
   );

@@ -1,12 +1,9 @@
 import { ReactNode, useState } from "react";
 import AccordionToggle from "./AccordionToggle";
 import AccordionContent from "./AccordionContent";
-import { CSS } from "../../services/utils";
 
 interface Props {
 	label: ReactNode;
-	// Shown before the toggle, outside of it (e.g. a menu button, which
-	// can't go inside the toggle's own button)
 	leading?: ReactNode;
 	defaultOpening?: boolean;
 	preview?: boolean;
@@ -31,29 +28,22 @@ export default function FullAccordion({
 		setOpen(defaultOpening);
 	}
 
-	const styles: CSS = {
-		div: {
-			gap: 0,
-		},
-		header: {
-			flexDirection: "row",
-			alignItems: "center",
-			justifyContent: "space-between",
-			gap: "var(--xs-space)",
-		},
-	}
-
 	return (
-		<div style={styles.div}>
-			{leading ?
-				<div style={styles.header}>
-					<AccordionToggle label={label} open={open} setOpen={setOpen} />
-					{leading}
-				</div>
-				:
-				<AccordionToggle label={label} open={open} setOpen={setOpen} />
-			}
-			<AccordionContent open={open} preview={preview}>{children}</AccordionContent>
+		<div className="no-gap">
+			<div className="align-items-center row sm-gap space-between">
+				<AccordionToggle open={open} setOpen={setOpen}>
+					{label}
+				</AccordionToggle>
+				{leading}
+			</div>
+
+			<AccordionContent
+				open={open}
+				topSpace="sm"
+				preview={preview}
+			>
+				{children}
+			</AccordionContent>
 		</div>
 	);
 }

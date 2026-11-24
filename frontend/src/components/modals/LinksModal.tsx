@@ -1,13 +1,13 @@
 import { useState } from "react";
 // import { markdownToPlainText } from "../../services/markdown"; // TODO markdown: put back later
-import XMark from "../../assets/svgs/XMark";
+import XMarkSvg from "../../assets/svgs/XMarkSvg";
 import { Kdo, KdoUpdate } from "../../interfaces/Kdo";
 import { Link } from "../../interfaces/Link";
 import { addKdoLink, deleteKdoLink } from "../../services/api/kdos";
 import { CSS } from "../../services/utils";
 import MultiStateButton from "../buttons/MultiStateButton";
 import NoStyleButton from "../buttons/NoStyleButton";
-import IconInlineText from "../IconInlineText";
+import IconInlineText from "../statics/IconInlineText";
 import TypingInput from "../inputs/TypingInput";
 import Modal from "./Modal";
 
@@ -77,9 +77,6 @@ export default function LinksModal({
   };
 
   const styles: CSS = {
-    line: {
-      justifyContent: "space-between",
-    },
     link: {
       overflowWrap: "anywhere",
     },
@@ -87,15 +84,15 @@ export default function LinksModal({
 
   return (
     <Modal open={open} title={kdo.label || "Liens"} /* TODO markdown: markdownToPlainText(kdo.label).trim() */ onClose={onClose}>
-      <div className="small-gap">
+      <div className="sm-gap">
         {links.map((link) => (
-          <IconInlineText key={link.id} style={styles.line}>
+          <IconInlineText key={link.id} className="space-between">
             <a href={link.href} target="_blank" rel="noopener noreferrer" style={styles.link} title={link.href}>
               {formatLink(link.href)}
             </a>
             {editable &&
               <NoStyleButton onClick={() => handleDelete(link)} title="Retirer ce lien">
-                <XMark />
+                <XMarkSvg />
               </NoStyleButton>
             }
           </IconInlineText>
@@ -107,7 +104,7 @@ export default function LinksModal({
 
       {editable &&
         <form onSubmit={(event) => event.preventDefault()}>
-          <div className="small-gap">
+          <div className="sm-gap">
             <TypingInput
               label="Ajouter un lien"
               name={`new-link-${kdo.id}`}

@@ -7,7 +7,8 @@ export default function RevertAccountChange() {
   return (
     <Page
       title="Annuler les changements"
-      idealSectionsWidth={mdSectionIdealWidth}
+      idealWidthLandscape={mdSectionIdealWidth}
+      idealWidthPortrait={mdSectionIdealWidth}
     >
       <RevertAccountChangeSection />
     </Page>

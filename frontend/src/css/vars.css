@@ -1,6 +1,6 @@
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  line-height: var(--line-height);
   font-weight: 400;
 
   color-scheme: light dark;
@@ -13,10 +13,12 @@
   color: var(--color);
   background-color: var(--main);
 
+  --line-height: 1.5em;
   --sm-rounded-radius: 5px;
   --md-rounded-radius: 10px;
   --lg-rounded-radius: 20px;
 
+  --xs-size: .7rem;
   --sm-size: .8rem;
   --md-size: 1rem;
   --lg-size: 1.3rem;

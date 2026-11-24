@@ -13,23 +13,23 @@ export default function PageSection({
 
   const styles: CSS = {
     section: {
-      display: "flex",
-      flexDirection: "column",
-      gap: "var(--xl-space)",
-      alignItems: "center",
       width: mdSectionActualWidth,
     },
+    mainDiv: {
+      gap: "var(--xl-space)",
+    },
     div: {
-      flexDirection: "row",
       justifyContent: "space-around",
-      width: "100%",
+      alignItems: "center",
     },
   }
 
   return (
     <section style={styles.section}>
-      <h1>{title}</h1>
-      <div style={styles.div}>{children}</div>
+      <div style={styles.mainDiv}>
+        <h1>{title}</h1>
+        <div className="row" style={styles.div}>{children}</div>
+      </div>
     </section>
   );
 }

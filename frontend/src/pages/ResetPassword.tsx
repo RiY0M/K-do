@@ -7,7 +7,8 @@ export default function ResetPassword() {
   return (
     <Page
       title="Réinitialisation du mot de passe"
-      idealSectionsWidth={mdSectionIdealWidth}
+      idealWidthLandscape={mdSectionIdealWidth}
+      idealWidthPortrait={mdSectionIdealWidth}
     >
       <ResetPasswordSection />
     </Page>

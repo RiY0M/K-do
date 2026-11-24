@@ -1,9 +1,9 @@
 import { ReactNode, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import XMark from "../../assets/svgs/XMark";
+import XMarkSvg from "../../assets/svgs/XMarkSvg";
 import { CSS } from "../../services/utils";
 import NoStyleButton from "../buttons/NoStyleButton";
-import IconInlineText from "../IconInlineText";
+import IconInlineText from "../statics/IconInlineText";
 
 interface Props {
   open: boolean;
@@ -12,9 +12,6 @@ interface Props {
   children: ReactNode;
 }
 
-// Native <dialog>: closes with Escape, the cross or a click outside. Rendered
-// in <body> so it doesn't inherit the styles of the line that opens it
-// (strikethrough of checked Kdos...).
 export default function Modal({
   open,
   title,
@@ -32,9 +29,6 @@ export default function Modal({
   }, [open]);
 
   const styles: CSS = {
-    header: {
-      justifyContent: "space-between",
-    },
     title: {
       fontSize: "var(--lg-size)",
       overflowWrap: "anywhere",
@@ -52,10 +46,10 @@ export default function Modal({
     >
       <section>
         <div>
-          <IconInlineText style={styles.header}>
+          <IconInlineText className="space-between">
             <h2 style={styles.title}>{title}</h2>
             <NoStyleButton onClick={onClose} title="Fermer">
-              <XMark />
+              <XMarkSvg />
             </NoStyleButton>
           </IconInlineText>
 
