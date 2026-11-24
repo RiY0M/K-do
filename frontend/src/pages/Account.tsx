@@ -9,6 +9,7 @@ import Logout from "../components/navigation/redirects/Logout";
 import NotificationsSection from "../components/sections/specific/NotificationsSection";
 import InlineSections from "../components/statics/InlineSections";
 import NavLink from "../components/navigation/redirects/NavLink";
+import HomeRedirect from "../components/navigation/redirects/HomeRedirect";
 
 export default function Account() {
 
@@ -30,7 +31,8 @@ export default function Account() {
       idealWidthPortrait={mdSectionIdealWidth}
       nbInlineSections={2}
     >
-      <NavLink soloButton reverseDirection={reverseButtons}>
+      <NavLink reverseDirection={reverseButtons}>
+        <HomeRedirect reverseDirection={!reverseButtons} />
         <MyListRedirect reverseDirection={reverseButtons} />
       </NavLink>
 

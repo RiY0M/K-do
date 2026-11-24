@@ -56,13 +56,13 @@ export function isAuthenticated(): boolean {
 
 // Full page loads (rather than the Navigation API, which isn't available in
 // every browser) so that App re-reads the session and shows the right routes.
-export async function loginAndSaveSession(credentials: AuthPayload, redirectUrl: string = "/") {
+export async function loginAndSaveSession(credentials: AuthPayload, redirectUrl: string = "/list") {
   const user = await login(credentials);
   saveSession(user);
   window.location.assign(redirectUrl);
 }
 
-export async function registerAndSaveSession(credentials: AuthPayload, redirectUrl: string = "/") {
+export async function registerAndSaveSession(credentials: AuthPayload, redirectUrl: string = "/list") {
   const user = await register(credentials);
   saveSession(user);
   window.location.assign(redirectUrl);
